@@ -1,0 +1,348 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "OUTDOORKA API",
+    "description": "OUTDOORKA API Documentation"
+  },
+  "host": "http://localhost:3006",
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "請加上 Bearer Token 以取得授權"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/sample/user/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "取得所有User資料",
+        "responses": {
+          "200": {
+            "description": "取得所有User資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "661f4919e7a934d777e3cf1f"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "XXX"
+                      },
+                      "photo": {
+                        "type": "string",
+                        "example": "https://thispersondoesnotexist.com/"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sample/user/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "取得User資料",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得User資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "661f4919e7a934d777e3cf1f"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sample/post/": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "description": "取得所有 Posts 文章",
+        "parameters": [
+          {
+            "name": "timeSort",
+            "in": "query",
+            "description": "排序 asc, desc",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "content",
+            "in": "query",
+            "description": "搜尋內容",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得所有文章",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "661f4919e7a934d777e3cf1f"
+                      },
+                      "user": {
+                        "type": "string",
+                        "example": "661f4919e7a934d77"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "title"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example": "content"
+                      },
+                      "tag": {
+                        "type": "array",
+                        "example": [
+                          "教學"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "image": {
+                        "type": "string",
+                        "example": "https://placehold.co/600x400"
+                      },
+                      "likes": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "comments": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "isPublic": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-04-17T03:59:21.350Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-04-24T16:18:34.032Z"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "description": "新增 Post 文章",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "新增文章",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "string",
+                  "example": "662a1a9ce3a68306b1ccac02"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "title"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "content"
+                },
+                "tag": {
+                  "type": "array",
+                  "example": [
+                    "教學"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "image": {
+                  "type": "string",
+                  "example": "https://placehold.co/600x400"
+                },
+                "isPublic": {
+                  "type": "boolean",
+                  "example": true
+                }
+              },
+              "required": [
+                "user",
+                "title",
+                "content",
+                "tag"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/sample/post/{id}": {
+      "patch": {
+        "tags": [
+          "Post"
+        ],
+        "description": "修改 Post 文章",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "description": "修改文章",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "title"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "content"
+                }
+              },
+              "required": [
+                "title",
+                "content"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "description": "刪除 Post 文章",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    }
+  }
+}

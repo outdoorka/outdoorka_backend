@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo ">>> Start pre-commit hook"
+echo ">>> Running lint..."
+
+npm run lint

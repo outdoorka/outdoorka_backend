@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "module": "commonjs",
+    "types": ["node"],
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "removeComments": true,
+    "esModuleInterop": true, //兼容模組導入的方式
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noImplicitOverride": true, // 使用 @override 時，必須要有父類別的方法
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "pretty": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "src/__tests__"]
+}
