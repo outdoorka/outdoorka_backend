@@ -2,7 +2,7 @@
 
 ## API
 
-```http1
+```http
 https://
 ```
 

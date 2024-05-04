@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/CityRay/outdoorka_backend"
+    "url": "https://github.com/outdoorka/outdoorka_backend"
   },
   "scripts": {
     "preinstall": "npx -y only-allow pnpm",
