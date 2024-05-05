@@ -46,4 +46,5 @@ router.get(
   handleErrorAsync(userSampleController.getUser)
 );
 
+// swagger 加上 Bearer Token 驗證例子：#swagger.security = [{ "bearerAuth": [] }]
 export default router;

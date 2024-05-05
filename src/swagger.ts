@@ -17,11 +17,11 @@ const doc = {
   consumes: ['application/json'],
   produces: ['application/json'],
   securityDefinitions: {
-    JWT: {
+    bearerAuth: {
       type: 'apiKey',
-      in: 'header',
-      name: 'Authorization',
-      description: '請加上 Bearer Token 以取得授權'
+      in: 'header', // can be 'header', 'query' or 'cookie'
+      name: 'Authorization', // name of the header, query parameter or cookie
+      description: '請加上 Bearer "Token" 以取得授權'
     }
   }
 };
