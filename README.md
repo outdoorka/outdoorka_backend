@@ -36,7 +36,7 @@ pnpm run dev
 pnpm run lint
 ```
 
-### Swagger
+### Swagger Autogen(Swagger 2.0)
 
 SwaggerUI ： <http://localhost:3006/api-docs>
 
