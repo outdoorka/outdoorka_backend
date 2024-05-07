@@ -15,7 +15,7 @@ class Config {
   public JWT_EXPIRES_DAYS: string | undefined;
 
   constructor() {
-    this.PORT = process.env.PORT || '3000';
+    this.PORT = process.env.PORT || '3006';
     this.NODE_ENV = process.env.NODE_ENV || 'production';
     this.APP_URL = process.env.APP_URL || 'http://localhost:3006';
     this.DATABASE_URL = process.env.DATABASE_URL || '';

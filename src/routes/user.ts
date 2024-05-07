@@ -69,5 +69,20 @@ router.post(
   */
   handleErrorAsync(userController.createUser)
 );
+router.delete(
+  '/:id',
+  /**
+   * #swagger.tags = ['User']
+   * #swagger.description = 'Delete User'
+   */
+  /* #swagger.responses[200] = {
+      description: 'User deleted',
+      schema: {
+        "data": []
+      }
+    }
+  */
+  handleErrorAsync(userController.deleteUser)
+);
 
 export default router;

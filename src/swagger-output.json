@@ -7,7 +7,10 @@
   },
   "host": "http://localhost:3006",
   "basePath": "/",
-  "schemes": ["http", "https"],
+  "schemes": [
+    "http",
+    "https"
+  ],
   "securityDefinitions": {
     "JWT": {
       "type": "apiKey",
@@ -16,12 +19,18 @@
       "description": "請加上 Bearer Token 以取得授權"
     }
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "${USER_BASE_URL}/users/": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "description": "取得所有User資料",
         "parameters": [
           {
@@ -64,11 +73,32 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Create a new User",
+        "parameters": [
+          {
+            "name": "USER_BASE_URL",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
       }
     },
     "${USER_BASE_URL}/users/{id}": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "description": "取得User資料",
         "parameters": [
           {
@@ -114,11 +144,51 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "description": "Delete User",
+        "parameters": [
+          {
+            "name": "USER_BASE_URL",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/sample/post/": {
       "get": {
-        "tags": ["Post"],
+        "tags": [
+          "Post"
+        ],
         "description": "取得所有 Posts 文章",
         "parameters": [
           {
@@ -165,7 +235,9 @@
                       },
                       "tag": {
                         "type": "array",
-                        "example": ["教學"],
+                        "example": [
+                          "教學"
+                        ],
                         "items": {
                           "type": "string"
                         }
@@ -206,7 +278,9 @@
         }
       },
       "post": {
-        "tags": ["Post"],
+        "tags": [
+          "Post"
+        ],
         "description": "新增 Post 文章",
         "parameters": [
           {
@@ -231,7 +305,9 @@
                 },
                 "tag": {
                   "type": "array",
-                  "example": ["教學"],
+                  "example": [
+                    "教學"
+                  ],
                   "items": {
                     "type": "string"
                   }
@@ -245,7 +321,12 @@
                   "example": true
                 }
               },
-              "required": ["user", "title", "content", "tag"]
+              "required": [
+                "user",
+                "title",
+                "content",
+                "tag"
+              ]
             }
           }
         ],
@@ -263,7 +344,9 @@
     },
     "/api/sample/post/{id}": {
       "patch": {
-        "tags": ["Post"],
+        "tags": [
+          "Post"
+        ],
         "description": "修改 Post 文章",
         "parameters": [
           {
@@ -289,7 +372,10 @@
                   "example": "content"
                 }
               },
-              "required": ["title", "content"]
+              "required": [
+                "title",
+                "content"
+              ]
             }
           }
         ],
@@ -305,7 +391,9 @@
         ]
       },
       "delete": {
-        "tags": ["Post"],
+        "tags": [
+          "Post"
+        ],
         "description": "刪除 Post 文章",
         "parameters": [
           {
