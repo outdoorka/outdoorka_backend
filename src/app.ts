@@ -18,8 +18,11 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerFile from './swagger-output.json';
 
 // router
-import userSampleRouter from './routes/sample.user';
+import userRouter from './routes/user';
 import postsSampleRouter from './routes/sample.posts';
+
+const USER_BASE_URL = '/api/v1';
+// const ORGANIZER_BASE_URL = '/api/v1/organizer';
 
 // Validate Config
 config.validateConfig();
@@ -46,7 +49,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route
-app.use('/api/sample/user', userSampleRouter);
+app.use(`${USER_BASE_URL}/users`, userRouter);
 app.use('/api/sample/post', postsSampleRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
@@ -64,8 +67,13 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
   if (err.name === 'ValidationError') {
     err.message = '資料欄位未填寫正確，請重新輸入！';
     err.isOperational = true;
+  } else if (
+    err.name === 'TypeError' &&
+    err.message === 'Expected a string but received a undefined'
+  ) {
+    err.message = '資料欄位格式未填寫正確，請重新輸入！';
+    err.isOperational = true;
   }
-
   handleAppMainErrorResponse(process.env.NODE_ENV, err, res);
 });
 

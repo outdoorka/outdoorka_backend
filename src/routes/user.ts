@@ -1,5 +1,5 @@
 import express from 'express';
-import { userSampleController } from '../controllers';
+import { userController } from '../controllers';
 import { handleErrorAsync } from '../services/handleResponse';
 
 const router = express.Router();
@@ -22,7 +22,7 @@ router.get(
     }
   */
 
-  handleErrorAsync(userSampleController.getUserList)
+  handleErrorAsync(userController.getUserList)
 );
 
 router.get(
@@ -43,7 +43,31 @@ router.get(
       }
     }
   */
-  handleErrorAsync(userSampleController.getUser)
+  handleErrorAsync(userController.getUser)
+);
+router.post(
+  '/',
+  /**
+   * #swagger.tags = ['User']
+   * #swagger.description = 'Create a new User'
+   */
+  /* #swagger.responses[200] = {
+      description: 'New User created',
+      schema: {
+        "data": {
+          "_id": "661f4919e7a934d777e3cf1f",
+          "name": "XXX",
+          "nickName": "XXX",
+          "photo": "https://thispersondoesnotexist.com/,
+          "email": "test@gmail.com",
+          "mobile": "0911-000-000",
+          "gender": "male",
+          "birthday": "1990-01-01"
+        }
+      }
+    }
+  */
+  handleErrorAsync(userController.createUser)
 );
 
 export default router;

@@ -9,7 +9,6 @@ const userSchema = new Schema<IUserModel>(
       index: true,
       unique: true,
       lowercase: true,
-      select: false,
       trim: true
     },
     password: {
