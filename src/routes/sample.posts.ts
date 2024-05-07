@@ -8,7 +8,7 @@ const router = express.Router();
 router.get(
   '/',
   /**
-   * #swagger.tags = ['Post']
+   * #swagger.tags = ['SamplePost']
    * #swagger.description = '取得所有 Posts 文章'
    * #swagger.parameters['timeSort'] = {
         in: 'query',
@@ -25,8 +25,8 @@ router.get(
       description: '取得所有文章',
       schema: {
         "data": [{
-          "_id": "661f4919e7a934d777e3cf1f",
-          "user": "661f4919e7a934d77",
+          "_id": "xxxxxxxxxxxxxxxxxxxx",
+          "user": "xxxxxxxxxxxxx",
           "title": "title",
           "content": "content",
           "tag": [
@@ -48,14 +48,14 @@ router.get(
 router.post(
   '/',
   /**
-   * #swagger.tags = ['Post']
+   * #swagger.tags = ['SamplePost']
    * #swagger.description = '新增 Post 文章'
       #swagger.parameters['post'] = {
         in: 'body',
         description: '新增文章',
         required: true,
         schema: {
-          $user: '662a1a9ce3a68306b1ccac02',
+          $user: 'xxxxxxxxxxxxxxxxxxxx',
           $title: 'title',
           $content: 'content',
           $tag: ['教學'],
@@ -74,7 +74,7 @@ router.post(
 router.patch(
   '/:id',
   /**
-   * #swagger.tags = ['Post']
+   * #swagger.tags = ['SamplePost']
    * #swagger.description = '修改 Post 文章'
       #swagger.parameters['patch'] = {
         in: 'body',
@@ -96,7 +96,7 @@ router.patch(
 router.delete(
   '/:id',
   /**
-   * #swagger.tags = ['Post']
+   * #swagger.tags = ['SamplePost']
    * #swagger.description = '刪除 Post 文章'
       #swagger.security = [{
         "JWT": []

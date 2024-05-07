@@ -3,7 +3,7 @@
 ## API
 
 ```http
-https://
+https://outdoorka-backend.onrender.com/api-docs
 ```
 
 ### 參考 `example.env` 建立 `config.env` 檔

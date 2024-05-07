@@ -7,14 +7,14 @@ const router = express.Router();
 router.get(
   '/',
   /**
-   * #swagger.tags = ['User']
+   * #swagger.tags = ['SampleUser']
    * #swagger.description = '取得所有User資料'
    */
   /* #swagger.responses[200] = {
       description: '取得所有User資料',
       schema: {
         "data": [{
-          "_id": "661f4919e7a934d777e3cf1f",
+          "_id": "xxxxxxxxxxxxxxxxxxxx",
           "name": "XXX",
           "photo": "https://thispersondoesnotexist.com/"
         }]
@@ -28,7 +28,7 @@ router.get(
 router.get(
   '/:id',
   /**
-   * #swagger.tags = ['User']
+   * #swagger.tags = ['SampleUser']
    * #swagger.description = '取得User資料'
    */
   /**
@@ -36,7 +36,7 @@ router.get(
       description: '取得User資料',
       schema: {
         "data": {
-          "_id": "661f4919e7a934d777e3cf1f",
+          "_id": "xxxxxxxxxxxxxxxxxxxx",
           "name": "XXX",
           "photo": "https://thispersondoesnotexist.com/"
         }
