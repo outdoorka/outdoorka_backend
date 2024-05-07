@@ -84,5 +84,29 @@ router.delete(
   */
   handleErrorAsync(userController.deleteUser)
 );
+router.patch(
+  '/:id',
+  /**
+   * #swagger.tags = ['User']
+   * #swagger.description = 'Update User'
+   */
+  /* #swagger.responses[200] = {
+      description: 'User updated',
+      schema: {
+        "data": {
+          "_id": "661f4919e7a934d777e3cf1f",
+          "name": "XXX",
+          "nickName": "XXX",
+          "photo": "https://thispersondoesnotexist.com/,
+          "email": "test@gmail.com",
+          "mobile": "0911-000-000",
+          "gender": "male",
+          "birthday": "1990-01-01"
+        }
+      }
+);
+*/
+  handleErrorAsync(userController.updateUser)
+);
 
 export default router;

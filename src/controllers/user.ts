@@ -56,5 +56,29 @@ export const userController = {
 
     await UserModel.findByIdAndDelete(_id);
     handleResponse(res, [], '刪除成功');
+  },
+  async updateUser(req: Request, res: Response, next: NextFunction) {
+    const _id = req.params.id;
+    const updateData = req.body;
+
+    // Define the fields that can be updated
+    const allowedUpdates = ['name', 'nickName', 'mobile', 'photoUrl', 'gender', 'birthday'];
+
+    // Filter the updateData object to only include allowed fields
+    const filteredUpdateData = Object.keys(updateData)
+      .filter((key) => allowedUpdates.includes(key))
+      .reduce<Record<string, any>>((obj, key) => {
+        obj[key] = updateData[key];
+        return obj;
+      }, {});
+
+    const result = await UserModel.findByIdAndUpdate(_id, filteredUpdateData, {
+      new: true
+    });
+    if (!result) {
+      handleAppError(400, '找不到使用者', next);
+      return;
+    }
+    handleResponse(res, result, '更新成功');
   }
 };
