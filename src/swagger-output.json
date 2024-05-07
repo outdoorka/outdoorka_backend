@@ -26,12 +26,20 @@
     "application/json"
   ],
   "paths": {
-    "/api/sample/user/": {
+    "${USER_BASE_URL}/users/": {
       "get": {
         "tags": [
           "User"
         ],
         "description": "取得所有User資料",
+        "parameters": [
+          {
+            "name": "USER_BASE_URL",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "取得所有User資料",
@@ -65,15 +73,40 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Create a new User",
+        "parameters": [
+          {
+            "name": "USER_BASE_URL",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
       }
     },
-    "/api/sample/user/{id}": {
+    "${USER_BASE_URL}/users/{id}": {
       "get": {
         "tags": [
           "User"
         ],
         "description": "取得User資料",
         "parameters": [
+          {
+            "name": "USER_BASE_URL",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "id",
             "in": "path",
@@ -103,6 +136,44 @@
                       "example": "https://thispersondoesnotexist.com/"
                     }
                   }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "description": "Delete User",
+        "parameters": [
+          {
+            "name": "USER_BASE_URL",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
                 }
               },
               "xml": {
