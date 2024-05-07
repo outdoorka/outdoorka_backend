@@ -3,7 +3,7 @@
 ## API
 
 ```http
-https://
+https://outdoorka-backend.onrender.com/api-docs
 ```
 
 ### 參考 `example.env` 建立 `config.env` 檔
@@ -36,7 +36,7 @@ pnpm run dev
 pnpm run lint
 ```
 
-### Swagger
+### Swagger Autogen(Swagger 2.0)
 
 SwaggerUI ： <http://localhost:3006/api-docs>
 

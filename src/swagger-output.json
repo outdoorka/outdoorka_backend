@@ -12,11 +12,11 @@
     "https"
   ],
   "securityDefinitions": {
-    "JWT": {
+    "bearerAuth": {
       "type": "apiKey",
       "in": "header",
       "name": "Authorization",
-      "description": "請加上 Bearer Token 以取得授權"
+      "description": "請加上 Bearer \"Token\" 以取得授權"
     }
   },
   "consumes": [
