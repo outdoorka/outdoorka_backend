@@ -35,6 +35,7 @@ const userSchema = new Schema<IUserModel>(
     },
     mobile: {
       type: String,
+      unique: true,
       default: '',
       trim: true
     },
