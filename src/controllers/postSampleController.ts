@@ -5,6 +5,7 @@ import { isString } from '../utils/helpers';
 import type { NextFunction, Request, Response } from 'express';
 import type { IPostModel } from '../types/dto/sample.post';
 import type { FilterQuery } from 'mongoose';
+import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
 
 export const postSampleController = {
   // 取得全部文章
@@ -48,7 +49,12 @@ export const postSampleController = {
       return;
     }
 
-    handleAppError(400, '請確認欄位是否填寫完整', next);
+    handleAppError(
+      400,
+      status400Codes[status400Codes.REQUIRED_FIELD],
+      status400Codes.REQUIRED_FIELD,
+      next
+    );
   },
 
   // 更新文章
@@ -68,7 +74,12 @@ export const postSampleController = {
       });
 
       if (!result) {
-        handleAppError(400, '更新失敗，找不到文章', next);
+        handleAppError(
+          404,
+          status404Codes[status404Codes.NOT_FOUND_USER],
+          status404Codes.NOT_FOUND_USER,
+          next
+        );
         return;
       }
 
@@ -76,7 +87,12 @@ export const postSampleController = {
       return;
     }
 
-    handleAppError(400, '請確認欄位是否填寫完整', next);
+    handleAppError(
+      400,
+      status400Codes[status400Codes.REQUIRED_FIELD],
+      status400Codes.REQUIRED_FIELD,
+      next
+    );
   },
 
   // 刪除文章
@@ -85,7 +101,12 @@ export const postSampleController = {
     const checkId = await PostSample.findById(_id);
 
     if (!checkId) {
-      handleAppError(404, '找不到此文章', next);
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_USER],
+        status404Codes.NOT_FOUND_USER,
+        next
+      );
       return;
     }
 

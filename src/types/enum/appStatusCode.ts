@@ -49,6 +49,13 @@ export enum status403Codes {
 }
 
 /**
+ * @description 404 用戶端錯誤代碼
+ */
+export enum status404Codes {
+  'NOT_FOUND_USER' = '找不到使用者' as any
+}
+
+/**
  * @description 405 用戶端錯誤代碼
  */
 export enum status405Codes {
@@ -83,3 +90,13 @@ export enum status500Codes {
   'UPDATE_FAILED' = '編輯失敗' as any,
   'INVALID_PUBLISH' = '發佈異常' as any
 }
+
+export type StatusCodeEnum =
+  | status400Codes
+  | status401Codes
+  | status403Codes
+  | status404Codes
+  | status405Codes
+  | status409Codes
+  | status422Codes
+  | status500Codes;
