@@ -8,6 +8,7 @@ import mongoDbConnection from './connections/mongoose';
 import { handleAppMainErrorResponse } from './services/handleResponse';
 import { routeNotFound } from './middleware/routeNotFound';
 import { config } from './config';
+import logtail from './utils/logtail';
 
 // types
 import type { Request, Response, NextFunction } from 'express';
@@ -21,11 +22,12 @@ import swaggerFile from './swagger-output.json';
 import userRouter from './routes/user';
 import postsSampleRouter from './routes/sample.posts';
 
-const USER_BASE_URL = '/api/v1';
+// const USER_BASE_URL = '/api/v1';
 // const ORGANIZER_BASE_URL = '/api/v1/organizer';
 
 // Validate Config
 config.validateConfig();
+logtail.info('Express Server Init');
 // MongoDB Connection
 mongoDbConnection();
 
@@ -49,7 +51,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route
-app.use(`${USER_BASE_URL}/users`, userRouter);
+// swagger api 文件不援使用帶變數的方式
+app.use('/api/v1/users', userRouter);
 app.use('/api/sample/post', postsSampleRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 

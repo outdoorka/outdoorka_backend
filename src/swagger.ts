@@ -2,7 +2,7 @@ import swaggerAutogen from 'swagger-autogen';
 import dotenv from 'dotenv';
 dotenv.config({ path: './config.env' });
 
-const APP_URL = process.env.APP_URL || 'http://localhost:3006';
+const APP_URL = process.env.APP_URL || 'localhost:3006';
 console.log('host : ', APP_URL);
 
 const doc = {

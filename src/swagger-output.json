@@ -5,7 +5,7 @@
     "title": "OUTDOORKA API",
     "description": "OUTDOORKA API Documentation"
   },
-  "host": "http://localhost:3006",
+  "host": "localhost:3006",
   "basePath": "/",
   "schemes": [
     "http",
@@ -26,20 +26,12 @@
     "application/json"
   ],
   "paths": {
-    "${USER_BASE_URL}/users/": {
+    "/api/v1/users/": {
       "get": {
         "tags": [
           "User"
         ],
         "description": "取得所有User資料",
-        "parameters": [
-          {
-            "name": "USER_BASE_URL",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "取得所有User資料",
@@ -53,15 +45,39 @@
                     "properties": {
                       "_id": {
                         "type": "string",
-                        "example": "661f4919e7a934d777e3cf1f"
+                        "example": "xxxxxxxxxxxxxxxxxx"
                       },
                       "name": {
                         "type": "string",
                         "example": "XXX"
                       },
+                      "nickName": {
+                        "type": "string",
+                        "example": "nickName"
+                      },
                       "photo": {
                         "type": "string",
                         "example": "https://thispersondoesnotexist.com/"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "xxxxxx@gmail.com"
+                      },
+                      "isActive": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "mobile": {
+                        "type": "string",
+                        "example": "0911000000"
+                      },
+                      "gender": {
+                        "type": "string",
+                        "example": "male"
+                      },
+                      "birthday": {
+                        "type": "string",
+                        "example": "1990-01-01"
                       }
                     }
                   }
@@ -81,32 +97,118 @@
         "description": "Create a new User",
         "parameters": [
           {
-            "name": "USER_BASE_URL",
-            "in": "path",
+            "name": "post",
+            "in": "body",
+            "description": "會員註冊",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "name"
+                },
+                "nickName": {
+                  "type": "string",
+                  "example": "nickName"
+                },
+                "photo": {
+                  "type": "string",
+                  "example": "https://thispersondoesnotexist.com/"
+                },
+                "mobile": {
+                  "type": "string",
+                  "example": "0911000000"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "email@gmail.com"
+                },
+                "gender": {
+                  "type": "string",
+                  "example": "male"
+                },
+                "birthday": {
+                  "type": "string",
+                  "example": "1990-01-01"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                }
+              },
+              "required": [
+                "name",
+                "nickName",
+                "photo",
+                "mobile",
+                "email",
+                "gender",
+                "birthday",
+                "password"
+              ]
+            }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "New User created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "nickName": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "test@gmail.com"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "birthday": {
+                      "type": "string",
+                      "example": "1990-01-01"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
     },
-    "${USER_BASE_URL}/users/{id}": {
+    "/api/v1/users/{id}": {
       "get": {
         "tags": [
           "User"
         ],
         "description": "取得User資料",
         "parameters": [
-          {
-            "name": "USER_BASE_URL",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "id",
             "in": "path",
@@ -125,15 +227,39 @@
                   "properties": {
                     "_id": {
                       "type": "string",
-                      "example": "661f4919e7a934d777e3cf1f"
+                      "example": "xxxxxxxxxxxxxxxxxx"
                     },
                     "name": {
                       "type": "string",
                       "example": "XXX"
                     },
+                    "nickName": {
+                      "type": "string",
+                      "example": "nickName"
+                    },
                     "photo": {
                       "type": "string",
                       "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "birthday": {
+                      "type": "string",
+                      "example": "1990-01-01"
                     }
                   }
                 }
@@ -151,12 +277,6 @@
         ],
         "description": "Delete User",
         "parameters": [
-          {
-            "name": "USER_BASE_URL",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "id",
             "in": "path",
@@ -182,12 +302,123 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "description": "Update User",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "description": "會員修改資料",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "name"
+                },
+                "nickName": {
+                  "type": "string",
+                  "example": "nickName"
+                },
+                "photo": {
+                  "type": "string",
+                  "example": "https://thispersondoesnotexist.com/"
+                },
+                "mobile": {
+                  "type": "string",
+                  "example": "0911000000"
+                },
+                "gender": {
+                  "type": "string",
+                  "example": "male"
+                },
+                "birthday": {
+                  "type": "string",
+                  "example": "1990-01-01"
+                }
+              },
+              "required": [
+                "name",
+                "nickName",
+                "photo",
+                "mobile",
+                "gender",
+                "birthday"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得User資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "nickName": {
+                      "type": "string",
+                      "example": "nickName"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "birthday": {
+                      "type": "string",
+                      "example": "1990-01-01"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/sample/post/": {
       "get": {
         "tags": [
-          "Post"
+          "SamplePost"
         ],
         "description": "取得所有 Posts 文章",
         "parameters": [
@@ -219,11 +450,11 @@
                     "properties": {
                       "_id": {
                         "type": "string",
-                        "example": "661f4919e7a934d777e3cf1f"
+                        "example": "xxxxxxxxxxxxxxxxxxxx"
                       },
                       "user": {
                         "type": "string",
-                        "example": "661f4919e7a934d77"
+                        "example": "xxxxxxxxxxxxx"
                       },
                       "title": {
                         "type": "string",
@@ -279,7 +510,7 @@
       },
       "post": {
         "tags": [
-          "Post"
+          "SamplePost"
         ],
         "description": "新增 Post 文章",
         "parameters": [
@@ -293,7 +524,7 @@
               "properties": {
                 "user": {
                   "type": "string",
-                  "example": "662a1a9ce3a68306b1ccac02"
+                  "example": "xxxxxxxxxxxxxxxxxxxx"
                 },
                 "title": {
                   "type": "string",
@@ -345,7 +576,7 @@
     "/api/sample/post/{id}": {
       "patch": {
         "tags": [
-          "Post"
+          "SamplePost"
         ],
         "description": "修改 Post 文章",
         "parameters": [
@@ -392,7 +623,7 @@
       },
       "delete": {
         "tags": [
-          "Post"
+          "SamplePost"
         ],
         "description": "刪除 Post 文章",
         "parameters": [

@@ -12,6 +12,7 @@ https://outdoorka-backend.onrender.com/api-docs
 PORT=
 DATABASE_URL=
 DATABASE_PASSWORD=
+LOG_TOKEN=
 JWT_EXPIRES_DAY=
 JWT_SECRET=
 ```
@@ -56,6 +57,7 @@ pnpm run swagger
 - prettier
 - Husky
 - SwaggerUI
+- Pino Logging
 
 ### File Structure
 

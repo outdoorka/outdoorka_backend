@@ -8,6 +8,7 @@ dotenv.config({ path: './config.env' });
 class Config {
   public PORT: string | undefined;
   public NODE_ENV: string | undefined;
+  public LOG_TOKEN: string | undefined;
   public APP_URL: string | undefined;
   public DATABASE_URL: string | undefined;
   public DATABASE_PASSWORD: string | undefined;
@@ -17,6 +18,7 @@ class Config {
   constructor() {
     this.PORT = process.env.PORT || '3006';
     this.NODE_ENV = process.env.NODE_ENV || 'production';
+    this.LOG_TOKEN = process.env.LOG_TOKEN || '';
     this.APP_URL = process.env.APP_URL || 'http://localhost:3006';
     this.DATABASE_URL = process.env.DATABASE_URL || '';
     this.DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || '';
