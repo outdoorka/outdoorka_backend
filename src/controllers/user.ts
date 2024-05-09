@@ -33,7 +33,6 @@ export const userController = {
       email: data.email,
       password: data.password,
       name: data.name,
-      nickName: data.nickName,
       mobile: data.mobile,
       photo: data.photo,
       gender: data.gender,
@@ -62,7 +61,7 @@ export const userController = {
     const updateData = req.body;
 
     // Define the fields that can be updated
-    const allowedUpdates = ['name', 'nickName', 'mobile', 'photoUrl', 'gender', 'birthday'];
+    const allowedUpdates = ['name', 'mobile', 'photoUrl', 'gender', 'birthday'];
 
     // Filter the updateData object to only include allowed fields
     const filteredUpdateData = Object.keys(updateData)
