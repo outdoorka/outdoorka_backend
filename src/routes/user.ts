@@ -14,9 +14,15 @@ router.get(
       description: '取得所有User資料',
       schema: {
         "data": [{
-          "_id": "661f4919e7a934d777e3cf1f",
+          "_id": "xxxxxxxxxxxxxxxxxx",
           "name": "XXX",
-          "photo": "https://thispersondoesnotexist.com/"
+          "nickName": "nickName",
+          "photo": "https://thispersondoesnotexist.com/",
+          "email": "xxxxxx@gmail.com",
+          "isActive": true,
+          "mobile": "0911000000",
+          "gender": "male",
+          "birthday": "1990-01-01"
         }]
       }
     }
@@ -24,7 +30,6 @@ router.get(
 
   handleErrorAsync(userController.getUserList)
 );
-
 router.get(
   '/:id',
   /**
@@ -36,9 +41,15 @@ router.get(
       description: '取得User資料',
       schema: {
         "data": {
-          "_id": "661f4919e7a934d777e3cf1f",
+          "_id": "xxxxxxxxxxxxxxxxxx",
           "name": "XXX",
-          "photo": "https://thispersondoesnotexist.com/"
+          "nickName": "nickName",
+          "photo": "https://thispersondoesnotexist.com/",
+          "email": "xxxxxx@gmail.com",
+          "isActive": true,
+          "mobile": "0911000000",
+          "gender": "male",
+          "birthday": "1990-01-01"
         }
       }
     }
@@ -51,16 +62,32 @@ router.post(
    * #swagger.tags = ['User']
    * #swagger.description = 'Create a new User'
    */
-  /* #swagger.responses[200] = {
+  /*
+    #swagger.parameters['post'] = {
+      in: 'body',
+      description: '會員註冊',
+      required: true,
+      schema: {
+        $name: 'name',
+        $nickName: 'nickName',
+        $photo: 'https://thispersondoesnotexist.com/',
+        $mobile: '0911000000',
+        $email: 'email@gmail.com',
+        $gender: 'male',
+        $birthday: '1990-01-01',
+        $password: 'password'
+      }
+    }
+    #swagger.responses[200] = {
       description: 'New User created',
       schema: {
         "data": {
-          "_id": "661f4919e7a934d777e3cf1f",
+          "_id": "xxxxxxxxxxxxxxxxxx",
           "name": "XXX",
           "nickName": "XXX",
-          "photo": "https://thispersondoesnotexist.com/,
+          "photo": "https://thispersondoesnotexist.com/",
           "email": "test@gmail.com",
-          "mobile": "0911-000-000",
+          "mobile": "0911000000",
           "gender": "male",
           "birthday": "1990-01-01"
         }
@@ -90,22 +117,37 @@ router.patch(
    * #swagger.tags = ['User']
    * #swagger.description = 'Update User'
    */
-  /* #swagger.responses[200] = {
-      description: 'User updated',
+  /*
+    #swagger.parameters['patch'] = {
+      in: 'body',
+      description: '會員修改資料',
+      required: true,
+      schema: {
+        $name: 'name',
+        $nickName: 'nickName',
+        $photo: 'https://thispersondoesnotexist.com/',
+        $mobile: '0911000000',
+        $gender: 'male',
+        $birthday: '1990-01-01'
+      }
+    }
+    #swagger.responses[200] = {
+      description: '取得User資料',
       schema: {
         "data": {
-          "_id": "661f4919e7a934d777e3cf1f",
+          "_id": "xxxxxxxxxxxxxxxxxx",
           "name": "XXX",
-          "nickName": "XXX",
-          "photo": "https://thispersondoesnotexist.com/,
-          "email": "test@gmail.com",
-          "mobile": "0911-000-000",
+          "nickName": "nickName",
+          "photo": "https://thispersondoesnotexist.com/",
+          "email": "xxxxxx@gmail.com",
+          "isActive": true,
+          "mobile": "0911000000",
           "gender": "male",
           "birthday": "1990-01-01"
         }
       }
-);
-*/
+    }
+  */
   handleErrorAsync(userController.updateUser)
 );
 

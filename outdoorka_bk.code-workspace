@@ -5,6 +5,15 @@
     }
   ],
   "settings": {
-    "cSpell.words": ["Autogen", "linebreak", "OUTDOORKA", "parens", "REQEST"]
+    "cSpell.words": [
+      "Autogen",
+      "linebreak",
+      "logtail",
+      "OUTDOORKA",
+      "parens",
+      "pino",
+      "preinstall",
+      "REQEST"
+    ]
   }
 }
