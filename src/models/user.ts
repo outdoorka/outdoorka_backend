@@ -27,16 +27,9 @@ const userSchema = new Schema<IUserModel>(
       trim: true,
       minlength: 2
     },
-    nickName: {
-      type: String,
-      required: false,
-      trim: true,
-      minlength: 2
-    },
     mobile: {
       type: String,
-      unique: true,
-      default: '',
+      required: [true, 'Mobile is required'],
       trim: true
     },
     photo: {
