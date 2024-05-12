@@ -16,7 +16,6 @@ router.get(
         "data": [{
           "_id": "xxxxxxxxxxxxxxxxxx",
           "name": "XXX",
-          "nickName": "nickName",
           "photo": "https://thispersondoesnotexist.com/",
           "email": "xxxxxx@gmail.com",
           "isActive": true,
@@ -43,7 +42,6 @@ router.get(
         "data": {
           "_id": "xxxxxxxxxxxxxxxxxx",
           "name": "XXX",
-          "nickName": "nickName",
           "photo": "https://thispersondoesnotexist.com/",
           "email": "xxxxxx@gmail.com",
           "isActive": true,
@@ -69,7 +67,6 @@ router.post(
       required: true,
       schema: {
         $name: 'name',
-        $nickName: 'nickName',
         $photo: 'https://thispersondoesnotexist.com/',
         $mobile: '0911000000',
         $email: 'email@gmail.com',
@@ -84,7 +81,6 @@ router.post(
         "data": {
           "_id": "xxxxxxxxxxxxxxxxxx",
           "name": "XXX",
-          "nickName": "XXX",
           "photo": "https://thispersondoesnotexist.com/",
           "email": "test@gmail.com",
           "mobile": "0911000000",
@@ -124,7 +120,6 @@ router.patch(
       required: true,
       schema: {
         $name: 'name',
-        $nickName: 'nickName',
         $photo: 'https://thispersondoesnotexist.com/',
         $mobile: '0911000000',
         $gender: 'male',
@@ -137,7 +132,6 @@ router.patch(
         "data": {
           "_id": "xxxxxxxxxxxxxxxxxx",
           "name": "XXX",
-          "nickName": "nickName",
           "photo": "https://thispersondoesnotexist.com/",
           "email": "xxxxxx@gmail.com",
           "isActive": true,
@@ -149,6 +143,75 @@ router.patch(
     }
   */
   handleErrorAsync(userController.updateUser)
+);
+router.patch(
+  '/:id/email',
+  /**
+   * #swagger.tags = ['User']
+   * #swagger.description = 'Update User Email'
+   */
+  /*
+    #swagger.parameters['patch'] = {
+      in: 'body',
+      description: '修改會員的 Email 資料',
+      required: true,
+      schema: {
+        $email: 'email@gmail.com',
+        $password: 'xxxxxxx'
+      }
+    }
+    #swagger.responses[200] = {
+      description: 'User資料',
+      schema: {
+        "data": {
+          "_id": "xxxxxxxxxxxxxxxxxx",
+          "name": "XXX",
+          "photo": "https://thispersondoesnotexist.com/",
+          "email": "xxxxxx@gmail.com",
+          "isActive": true,
+          "mobile": "0911000000",
+          "gender": "male",
+          "birthday": "1990-01-01"
+        }
+      }
+    }
+  */
+  handleErrorAsync(userController.updateUserEmail)
+);
+router.patch(
+  '/:id/password',
+  /**
+   * #swagger.tags = ['User']
+   * #swagger.description = 'Update User 密碼'
+   */
+  /*
+    #swagger.parameters['patch'] = {
+      in: 'body',
+      description: '修改會員的 密碼 資料',
+      required: true,
+      schema: {
+        $password: 'xxxxxxx',
+        $newPassword: 'xxxxxxx',
+        $confirmPassword: 'xxxxxxx'
+      }
+    }
+    #swagger.responses[200] = {
+      description: 'User資料',
+      schema: {
+        "data": {
+          "_id": "xxxxxxxxxxxxxxxxxx",
+          "name": "XXX",
+          "photo": "https://thispersondoesnotexist.com/",
+          "email": "xxxxxx@gmail.com",
+          "isActive": true,
+          "mobile": "0911000000",
+          "gender": "male",
+          "birthday": "1990-01-01"
+        }
+      }
+    }
+  */
+  handleErrorAsync(userController.updateUserPassword)
 );
 
 export default router;

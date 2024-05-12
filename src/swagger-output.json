@@ -51,10 +51,6 @@
                         "type": "string",
                         "example": "XXX"
                       },
-                      "nickName": {
-                        "type": "string",
-                        "example": "nickName"
-                      },
                       "photo": {
                         "type": "string",
                         "example": "https://thispersondoesnotexist.com/"
@@ -108,10 +104,6 @@
                   "type": "string",
                   "example": "name"
                 },
-                "nickName": {
-                  "type": "string",
-                  "example": "nickName"
-                },
                 "photo": {
                   "type": "string",
                   "example": "https://thispersondoesnotexist.com/"
@@ -139,7 +131,6 @@
               },
               "required": [
                 "name",
-                "nickName",
                 "photo",
                 "mobile",
                 "email",
@@ -164,10 +155,6 @@
                       "example": "xxxxxxxxxxxxxxxxxx"
                     },
                     "name": {
-                      "type": "string",
-                      "example": "XXX"
-                    },
-                    "nickName": {
                       "type": "string",
                       "example": "XXX"
                     },
@@ -232,10 +219,6 @@
                     "name": {
                       "type": "string",
                       "example": "XXX"
-                    },
-                    "nickName": {
-                      "type": "string",
-                      "example": "nickName"
                     },
                     "photo": {
                       "type": "string",
@@ -327,10 +310,6 @@
                   "type": "string",
                   "example": "name"
                 },
-                "nickName": {
-                  "type": "string",
-                  "example": "nickName"
-                },
                 "photo": {
                   "type": "string",
                   "example": "https://thispersondoesnotexist.com/"
@@ -350,7 +329,6 @@
               },
               "required": [
                 "name",
-                "nickName",
                 "photo",
                 "mobile",
                 "gender",
@@ -376,9 +354,188 @@
                       "type": "string",
                       "example": "XXX"
                     },
-                    "nickName": {
+                    "photo": {
                       "type": "string",
-                      "example": "nickName"
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "birthday": {
+                      "type": "string",
+                      "example": "1990-01-01"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}/email": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "description": "Update User Email",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "description": "修改會員的 Email 資料",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "xxxxxxx"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "birthday": {
+                      "type": "string",
+                      "example": "1990-01-01"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}/password": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "description": "Update User 密碼",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "description": "修改會員的 密碼 資料",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": "xxxxxxx"
+                },
+                "newPassword": {
+                  "type": "string",
+                  "example": "xxxxxxx"
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "xxxxxxx"
+                }
+              },
+              "required": [
+                "password",
+                "newPassword",
+                "confirmPassword"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
                     },
                     "photo": {
                       "type": "string",
