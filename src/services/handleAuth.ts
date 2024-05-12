@@ -1,13 +1,11 @@
 import jwt from 'jsonwebtoken';
+import { config } from '../config';
 import { handleResponse } from '../services/handleResponse';
 import { AuthModel } from '../models/authModel';
 
-// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-const ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_TOKEN || '';
-// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_TOKEN || '';
-// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-const REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '';
+const ACCESS_TOKEN_SECRET = config.JWT_ACCESS_TOKEN;
+const REFRESH_TOKEN_SECRET = config.JWT_REFRESH_TOKEN;
+const REFRESH_TOKEN_EXPIRES_IN = config.REFRESH_TOKEN_EXPIRES_IN;
 
 const signAccessToken = (id: any) =>
   jwt.sign({ id }, ACCESS_TOKEN_SECRET, {
