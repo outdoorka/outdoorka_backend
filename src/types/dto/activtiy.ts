@@ -10,7 +10,8 @@ export interface IActivityModel extends Document {
   address: string;
   location: string;
   region: Region;
-  activityDetails: string;
+  activityDetail: string;
+  activityNotice: string;
   activityTags: ActivityTag[];
   activityLinks: string[];
   activityImageUrls: string[];

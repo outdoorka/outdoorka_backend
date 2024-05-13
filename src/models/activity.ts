@@ -12,7 +12,8 @@ const activitySchema = new Schema(
     city: { type: String, enum: Object.values(City), required: true },
     address: { type: String, required: true, trim: true, maxlength: 100 },
     location: { type: String, required: true, trim: true, maxlength: 100 },
-    activityDetail: { type: String, required: true, maxlength: 1000 }, // activityNote
+    activityDetail: { type: String, required: true, maxlength: 1000 },
+    activityNotice: { type: String, required: true, maxlength: 200 },
     activityTags: [{ type: String, enum: Object.values(ActivityTag), required: true }],
     activityLinks: [{ type: String, trim: true }],
     activityImageUrls: [{ type: String, required: true, trim: true }],
