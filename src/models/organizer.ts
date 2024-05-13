@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
-import type { IUserModel } from '../types/dto/user';
-import { Gender } from '../types/enum/user';
-const userSchema = new Schema<IUserModel>(
+import type { IOrganizerModel } from '../types/dto/organizer';
+
+const organizerSchema = new Schema<IOrganizerModel>(
   {
     email: {
       type: String,
@@ -32,23 +32,26 @@ const userSchema = new Schema<IUserModel>(
       required: [true, 'Mobile is required'],
       trim: true
     },
+    phone: {
+      type: String,
+      trim: true
+    },
     photo: {
       type: String,
       default: '',
-      trim: true,
-      required: false
+      trim: true
     },
-    gender: {
+    profileDetail: {
       type: String,
-      enum: Object.values(Gender),
-      required: false
+      default: '',
+      trim: true
     },
-    birthday: {
-      type: Date,
-      required: false
+    socialMediaUrls: {
+      fbUrl: { type: String },
+      igUrl: { type: String }
     }
   },
   { versionKey: false }
 );
 
-export const UserModel = model('User', userSchema);
+export const OrganizerModel = model('Organizer', organizerSchema);

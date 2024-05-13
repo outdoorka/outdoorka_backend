@@ -5,7 +5,7 @@
     "title": "OUTDOORKA API",
     "description": "OUTDOORKA API Documentation"
   },
-  "host": "localhost:3006",
+  "host": "http://localhost:3006",
   "basePath": "/",
   "schemes": [
     "http",

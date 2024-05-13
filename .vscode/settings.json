@@ -31,5 +31,8 @@
   },
   "[typescript]": {
     "editor.formatOnSave": true
-  }
+  },
+  "cSpell.words": [
+    "maxlength"
+  ]
 }
