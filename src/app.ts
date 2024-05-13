@@ -20,7 +20,6 @@ import swaggerFile from './swagger-output.json';
 
 // router
 import userRouter from './routes/user';
-import postsSampleRouter from './routes/sample.posts';
 import authRouter from './routes/auth';
 
 // const USER_BASE_URL = '/api/v1';
@@ -54,7 +53,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Route
 // swagger api 文件不援使用帶變數的方式
 app.use('/api/v1/users', userRouter);
-app.use('/api/sample/post', postsSampleRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use('/api/v1', authRouter);
 
