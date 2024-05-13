@@ -1,11 +1,15 @@
 import { Schema, model } from 'mongoose';
+import bcrypt from 'bcrypt';
+import validator from 'validator';
 import type { IUserModel } from '../types/dto/user';
 import { Gender } from '../types/enum/user';
+
 const userSchema = new Schema<IUserModel>(
   {
     email: {
       type: String,
       required: [true, 'Email is required'],
+      validate: [validator.isEmail, 'Invalid email format'],
       index: true,
       unique: true,
       lowercase: true,
@@ -50,5 +54,10 @@ const userSchema = new Schema<IUserModel>(
   },
   { versionKey: false }
 );
+
+userSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
 
 export const UserModel = model('User', userSchema);

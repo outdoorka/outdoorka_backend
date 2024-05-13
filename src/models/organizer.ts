@@ -1,4 +1,6 @@
 import { Schema, model } from 'mongoose';
+import bcrypt from 'bcrypt';
+import validator from 'validator';
 import type { IOrganizerModel } from '../types/dto/organizer';
 
 const organizerSchema = new Schema<IOrganizerModel>(
@@ -6,6 +8,7 @@ const organizerSchema = new Schema<IOrganizerModel>(
     email: {
       type: String,
       required: [true, 'Email is required'],
+      validate: [validator.isEmail, 'Invalid email format'],
       index: true,
       unique: true,
       lowercase: true,
@@ -53,5 +56,10 @@ const organizerSchema = new Schema<IOrganizerModel>(
   },
   { versionKey: false }
 );
+
+organizerSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
 
 export const OrganizerModel = model('Organizer', organizerSchema);
