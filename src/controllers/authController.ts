@@ -1,13 +1,13 @@
 import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { AuthModel } from '../models/authModel';
+import { UserModel } from '../models/user';
 import { generatorTokenAndSend } from '../services/handleAuth';
 
 export const authController = {
   async authLogin(req: Request, res: Response) {
     const { email, password } = req.body;
 
-    const user = await AuthModel.findOne({ email }).select('+password');
+    const user = await UserModel.findOne({ email }).select('+password');
 
     if (!user || !user.password) {
       return res.status(401).json({ message: '用戶不存在' });
