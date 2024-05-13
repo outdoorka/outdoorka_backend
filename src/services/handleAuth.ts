@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
 import { handleResponse } from '../services/handleResponse';
-import { AuthModel } from '../models/authModel';
+import { UserModel } from '../models/user';
 
 const ACCESS_TOKEN_SECRET = config.JWT_ACCESS_TOKEN;
 const REFRESH_TOKEN_SECRET = config.JWT_REFRESH_TOKEN;
@@ -64,7 +64,7 @@ const isAuth = async (req: any, res: any) => {
   // Verify Token
   const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET) as jwt.JwtPayload;
 
-  const currentUser = await AuthModel.findById(decoded.id);
+  const currentUser = await UserModel.findById(decoded.id);
 
   if (!currentUser) return res.status(401).json({ message: '帳號未登入，請先登入' });
   req.user = currentUser;
