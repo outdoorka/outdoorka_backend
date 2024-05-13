@@ -4,6 +4,8 @@ import validator from 'validator';
 import type { IUserModel } from '../types/dto/user';
 import { Gender } from '../types/enum/user';
 
+const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+
 const userSchema = new Schema<IUserModel>(
   {
     email: {
@@ -18,6 +20,11 @@ const userSchema = new Schema<IUserModel>(
     password: {
       type: String,
       required: [true, 'Password is required'],
+      validate: {
+        validator: (value: string) => alphanumericRegex.test(value) && value.length >= 8,
+        message:
+          'Password must be at least 8 characters long and contain only English letters and numbers'
+      },
       select: false,
       minlength: 8
     },
