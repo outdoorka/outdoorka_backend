@@ -3,7 +3,7 @@ import { UserModel } from '../models';
 import validator from 'validator';
 
 import type { NextFunction, Request, Response } from 'express';
-import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
+import { status400Codes, status404Codes, status409Codes } from '../types/enum/appStatusCode';
 
 export const userController = {
   async getUserList(req: Request, res: Response): Promise<void> {
@@ -67,7 +67,16 @@ export const userController = {
       );
       return;
     }
-
+    const checkEmail = await UserModel.exists({ email: data.email.trim() });
+    if (checkEmail) {
+      handleAppError(
+        409,
+        status409Codes[status409Codes.ALREADY_EXISTS],
+        status409Codes.ALREADY_EXISTS,
+        next
+      );
+      return;
+    }
     const userData = await UserModel.create({
       email: data.email,
       password: data.password,
