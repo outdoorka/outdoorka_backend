@@ -26,9 +26,9 @@ class Config {
     this.DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || '';
     this.JWT_EXPIRES_DAYS = process.env.JWT_EXPIRES_DAYS || '7d';
 
-    this.JWT_ACCESS_TOKEN = process.env.JWT_ACCESS_TOKEN || '';
-    this.JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN || '';
-    this.REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '3';
+    this.JWT_ACCESS_TOKEN = process.env.JWT_ACCESS_TOKEN || 'test';
+    this.JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN || 'test';
+    this.REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '7d';
   }
 
   /**

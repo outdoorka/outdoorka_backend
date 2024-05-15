@@ -4,20 +4,26 @@ import { handleResponse } from '../services/handleResponse';
 import { UserModel } from '../models/user';
 
 const ACCESS_TOKEN_SECRET = config.JWT_ACCESS_TOKEN;
+const ACCESS_TOKEN_EXPIRES_IN = config.JWT_EXPIRES_DAYS;
 const REFRESH_TOKEN_SECRET = config.JWT_REFRESH_TOKEN;
 const REFRESH_TOKEN_EXPIRES_IN = config.REFRESH_TOKEN_EXPIRES_IN;
 
-const signAccessToken = (id: any) =>
-  jwt.sign({ id }, ACCESS_TOKEN_SECRET, {
-    expiresIn: '1h'
-  });
+const signAccessToken = (userId: any) => {
+  try {
+    const accessToken = jwt.sign({ userId }, ACCESS_TOKEN_SECRET, {
+      expiresIn: ACCESS_TOKEN_EXPIRES_IN
+    });
+    return accessToken;
+  } catch (error) {
+    console.error('Error generating token:', error);
+    return null;
+  }
+};
 
 // 產生 Token 並回傳
 const generatorTokenAndSend = (user: any, res: any) => {
   const token = signAccessToken(user._id);
   const refreshToken = signRefreshToken(user._id);
-  user.password = undefined;
-
   const responseData = {
     user: {
       id: user._id,
@@ -35,18 +41,15 @@ const generatorTokenAndSend = (user: any, res: any) => {
 };
 
 const signRefreshToken = (userId: string) => {
-  // 單獨的密鑰用於簽署 refresh token
-  const refreshTokenSecret = REFRESH_TOKEN_SECRET ?? '';
-
-  // refresh token 在一段時間後過期
-  const refreshTokenExpiresIn = REFRESH_TOKEN_EXPIRES_IN ?? '7'; // 7 天
-
-  // 生成 refresh token
-  const refreshToken = jwt.sign({ userId }, refreshTokenSecret, {
-    expiresIn: refreshTokenExpiresIn
-  });
-
-  return refreshToken;
+  try {
+    const refreshToken = jwt.sign({ userId }, REFRESH_TOKEN_SECRET, {
+      expiresIn: REFRESH_TOKEN_EXPIRES_IN
+    });
+    return refreshToken;
+  } catch (error) {
+    console.error('Error generating refresh token:', error);
+    return null;
+  }
 };
 
 // 驗證 Token
