@@ -1,12 +1,9 @@
 import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
-import type { IUserModel } from '../types/dto/user';
-import { Gender } from '../types/enum/user';
+import type { IOrganizerModel } from '../types/dto/organizer';
 
-const alphanumericRegex = /^[a-zA-Z0-9]+$/;
-
-const userSchema = new Schema<IUserModel>(
+const organizerSchema = new Schema<IOrganizerModel>(
   {
     email: {
       type: String,
@@ -20,11 +17,6 @@ const userSchema = new Schema<IUserModel>(
     password: {
       type: String,
       required: [true, 'Password is required'],
-      validate: {
-        validator: (value: string) => alphanumericRegex.test(value) && value.length >= 8,
-        message:
-          'Password must be at least 8 characters long and contain only English letters and numbers'
-      },
       select: false,
       minlength: 8
     },
@@ -43,28 +35,31 @@ const userSchema = new Schema<IUserModel>(
       required: [true, 'Mobile is required'],
       trim: true
     },
+    phone: {
+      type: String,
+      trim: true
+    },
     photo: {
       type: String,
       default: '',
-      trim: true,
-      required: false
+      trim: true
     },
-    gender: {
+    profileDetail: {
       type: String,
-      enum: Object.values(Gender),
-      required: false
+      default: '',
+      trim: true
     },
-    birthday: {
-      type: Date,
-      required: false
+    socialMediaUrls: {
+      fbUrl: { type: String },
+      igUrl: { type: String }
     }
   },
   { versionKey: false }
 );
 
-userSchema.pre('save', async function (next) {
+organizerSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 
-export const UserModel = model('User', userSchema);
+export const OrganizerModel = model('Organizer', organizerSchema);

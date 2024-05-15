@@ -5,7 +5,7 @@
     "title": "OUTDOORKA API",
     "description": "OUTDOORKA API Documentation"
   },
-  "host": "localhost:3006",
+  "host": "http://localhost:3006",
   "basePath": "/",
   "schemes": [
     "http",
@@ -50,10 +50,6 @@
                       "name": {
                         "type": "string",
                         "example": "XXX"
-                      },
-                      "nickName": {
-                        "type": "string",
-                        "example": "nickName"
                       },
                       "photo": {
                         "type": "string",
@@ -108,10 +104,6 @@
                   "type": "string",
                   "example": "name"
                 },
-                "nickName": {
-                  "type": "string",
-                  "example": "nickName"
-                },
                 "photo": {
                   "type": "string",
                   "example": "https://thispersondoesnotexist.com/"
@@ -139,7 +131,6 @@
               },
               "required": [
                 "name",
-                "nickName",
                 "photo",
                 "mobile",
                 "email",
@@ -164,10 +155,6 @@
                       "example": "xxxxxxxxxxxxxxxxxx"
                     },
                     "name": {
-                      "type": "string",
-                      "example": "XXX"
-                    },
-                    "nickName": {
                       "type": "string",
                       "example": "XXX"
                     },
@@ -232,10 +219,6 @@
                     "name": {
                       "type": "string",
                       "example": "XXX"
-                    },
-                    "nickName": {
-                      "type": "string",
-                      "example": "nickName"
                     },
                     "photo": {
                       "type": "string",
@@ -327,10 +310,6 @@
                   "type": "string",
                   "example": "name"
                 },
-                "nickName": {
-                  "type": "string",
-                  "example": "nickName"
-                },
                 "photo": {
                   "type": "string",
                   "example": "https://thispersondoesnotexist.com/"
@@ -350,7 +329,6 @@
               },
               "required": [
                 "name",
-                "nickName",
                 "photo",
                 "mobile",
                 "gender",
@@ -375,10 +353,6 @@
                     "name": {
                       "type": "string",
                       "example": "XXX"
-                    },
-                    "nickName": {
-                      "type": "string",
-                      "example": "nickName"
                     },
                     "photo": {
                       "type": "string",
@@ -415,170 +389,12 @@
         }
       }
     },
-    "/api/sample/post/": {
-      "get": {
-        "tags": [
-          "SamplePost"
-        ],
-        "description": "取得所有 Posts 文章",
-        "parameters": [
-          {
-            "name": "timeSort",
-            "in": "query",
-            "description": "排序 asc, desc",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "content",
-            "in": "query",
-            "description": "搜尋內容",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "取得所有文章",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string",
-                        "example": "xxxxxxxxxxxxxxxxxxxx"
-                      },
-                      "user": {
-                        "type": "string",
-                        "example": "xxxxxxxxxxxxx"
-                      },
-                      "title": {
-                        "type": "string",
-                        "example": "title"
-                      },
-                      "content": {
-                        "type": "string",
-                        "example": "content"
-                      },
-                      "tag": {
-                        "type": "array",
-                        "example": [
-                          "教學"
-                        ],
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "image": {
-                        "type": "string",
-                        "example": "https://placehold.co/600x400"
-                      },
-                      "likes": {
-                        "type": "number",
-                        "example": 0
-                      },
-                      "comments": {
-                        "type": "number",
-                        "example": 0
-                      },
-                      "isPublic": {
-                        "type": "boolean",
-                        "example": true
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "example": "2024-04-17T03:59:21.350Z"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "example": "2024-04-24T16:18:34.032Z"
-                      }
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "SamplePost"
-        ],
-        "description": "新增 Post 文章",
-        "parameters": [
-          {
-            "name": "post",
-            "in": "body",
-            "description": "新增文章",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "user": {
-                  "type": "string",
-                  "example": "xxxxxxxxxxxxxxxxxxxx"
-                },
-                "title": {
-                  "type": "string",
-                  "example": "title"
-                },
-                "content": {
-                  "type": "string",
-                  "example": "content"
-                },
-                "tag": {
-                  "type": "array",
-                  "example": [
-                    "教學"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "image": {
-                  "type": "string",
-                  "example": "https://placehold.co/600x400"
-                },
-                "isPublic": {
-                  "type": "boolean",
-                  "example": true
-                }
-              },
-              "required": [
-                "user",
-                "title",
-                "content",
-                "tag"
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/sample/post/{id}": {
+    "/api/v1/users/{id}/email": {
       "patch": {
         "tags": [
-          "SamplePost"
+          "User"
         ],
-        "description": "修改 Post 文章",
+        "description": "Update User Email",
         "parameters": [
           {
             "name": "id",
@@ -589,61 +405,191 @@
           {
             "name": "patch",
             "in": "body",
-            "description": "修改文章",
+            "description": "修改會員的 Email 資料",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "title": {
+                "email": {
                   "type": "string",
-                  "example": "title"
+                  "example": "email@gmail.com"
                 },
-                "content": {
+                "password": {
                   "type": "string",
-                  "example": "content"
+                  "example": "xxxxxxx"
                 }
               },
               "required": [
-                "title",
-                "content"
+                "email",
+                "password"
               ]
             }
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "User資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "birthday": {
+                      "type": "string",
+                      "example": "1990-01-01"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      },
-      "delete": {
+        }
+      }
+    },
+    "/api/v1/users/{id}/password": {
+      "patch": {
         "tags": [
-          "SamplePost"
+          "User"
         ],
-        "description": "刪除 Post 文章",
+        "description": "Update User 密碼",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "description": "修改會員的 密碼 資料",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "type": "string",
+                  "example": "xxxxxxx"
+                },
+                "newPassword": {
+                  "type": "string",
+                  "example": "xxxxxxx"
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "example": "xxxxxxx"
+                }
+              },
+              "required": [
+                "password",
+                "newPassword",
+                "confirmPassword"
+              ]
+            }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "User資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "birthday": {
+                      "type": "string",
+                      "example": "1990-01-01"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/login": {
+      "post": {
+        "description": "",
         "responses": {
           "default": {
             "description": ""
           }
-        },
-        "security": [
-          {
-            "JWT": []
+        }
+      }
+    },
+    "/api/v1/refresh-token": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
-        ]
+        }
       }
     }
   }

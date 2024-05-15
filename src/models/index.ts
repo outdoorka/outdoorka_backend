@@ -1,2 +1,3 @@
 export * from './user';
-export * from './postSampleModel';
+export * from './activity';
+export * from './organizer';

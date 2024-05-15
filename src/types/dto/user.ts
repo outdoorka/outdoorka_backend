@@ -5,7 +5,6 @@ export interface IUserModel extends Document {
   password: string;
   isActive: boolean;
   name: string;
-  nickName: string;
   mobile: string;
   photo: string;
   gender: string;
