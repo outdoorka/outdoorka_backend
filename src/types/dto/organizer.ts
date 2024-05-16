@@ -1,18 +1,18 @@
-import type { Document } from 'mongoose';
+import type { Document, SchemaTimestampsConfig } from 'mongoose';
 import type { ActivityTag } from '../enum/activity';
 
-export interface IOrganizerModel extends Document {
+export interface IOrganizerModel extends Document, SchemaTimestampsConfig {
   email: string;
   password: string;
   isActive: boolean;
-  name: string;
+  username: string;
+  nickName: string;
   mobile: string;
   phone: string;
   photo: string;
   profileDetail: string;
-  organizerCreatedAt: Date;
   profileTags: ActivityTag[];
-  activate: boolean;
+  area: string;
   socialMediaUrls: {
     fbUrl: string;
     igUrl: string;

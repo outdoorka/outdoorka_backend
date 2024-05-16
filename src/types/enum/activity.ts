@@ -37,9 +37,9 @@ export enum City {
 export enum ActivityTag {
   Camping = '露營',
   Climbing = '攀岩',
-  Hiking = '南部',
+  Hiking = '登山',
   Sports = '球類',
-  surfing = '衝浪',
+  Surfing = '衝浪',
   Excursion = '郊遊',
   Trip = '旅行'
 }
