@@ -1,9 +1,10 @@
-import { Schema, model } from 'mongoose';
+import { type Model, Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
 import type { IOrganizerModel } from '../types/dto/organizer';
+import { ActivityTag } from '../types/enum/activity';
 
-const organizerSchema = new Schema<IOrganizerModel>(
+const organizerSchema = new Schema<IOrganizerModel, Model<IOrganizerModel>>(
   {
     email: {
       type: String,
@@ -22,11 +23,17 @@ const organizerSchema = new Schema<IOrganizerModel>(
     },
     isActive: {
       type: Boolean,
-      default: true
+      default: false
     },
-    name: {
+    username: {
       type: String,
       required: [true, 'Name is required'],
+      trim: true,
+      minlength: 2
+    },
+    nickName: {
+      type: String,
+      required: [true, 'NickName is required'],
       trim: true,
       minlength: 2
     },
@@ -49,12 +56,22 @@ const organizerSchema = new Schema<IOrganizerModel>(
       default: '',
       trim: true
     },
+    profileTags: {
+      type: [String],
+      default: [],
+      enum: Object.keys(ActivityTag)
+    },
+    area: {
+      type: String,
+      default: '',
+      trim: true
+    },
     socialMediaUrls: {
       fbUrl: { type: String },
       igUrl: { type: String }
     }
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 organizerSchema.pre('save', async function (next) {

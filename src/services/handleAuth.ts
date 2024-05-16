@@ -73,4 +73,27 @@ const isAuth = async (req: any, res: any) => {
   req.user = currentUser;
 };
 
-export { signAccessToken, generatorTokenAndSend, isAuth };
+// 產生主揪 Token 並回傳
+const generatorOrganizerTokenAndSend = (organizer: any, res: any) => {
+  const token = signAccessToken(organizer._id);
+  const refreshToken = signRefreshToken(organizer._id);
+  const responseData = {
+    organizer: {
+      _id: organizer._id,
+      username: organizer.username,
+      nickName: organizer.nickName,
+      photo: organizer.photo,
+      email: organizer.email,
+      mobile: organizer.mobile
+    },
+    token: {
+      access_token: token,
+      expires_in: parseInt(REFRESH_TOKEN_EXPIRES_IN) * 24 * 60 * 60,
+      refresh_token: refreshToken
+    }
+  };
+
+  handleResponse(res, responseData, '登入成功');
+};
+
+export { signAccessToken, generatorTokenAndSend, generatorOrganizerTokenAndSend, isAuth };
