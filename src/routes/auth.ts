@@ -1,7 +1,7 @@
 import express from 'express';
 import { authController, organizerAuthController } from '../controllers';
 import { validateBody } from '../middleware/validationMiddleware';
-import { organizerLoginSchema, organizerRegistrationSchema } from '../validate/organizerSchemas';
+import { ogLoginSchema, ogRegistrationSchema } from '../validate/organizerSchemas';
 import { authLoginSchema, authRegistrationSchema } from '../validate/authSchemas';
 import { handleErrorAsync } from '../services/handleResponse';
 
@@ -10,6 +10,7 @@ const router = express.Router();
 // 會員註冊
 router.post(
   '/register',
+  validateBody(authRegistrationSchema),
   /**
    * #swagger.tags = ['User Auth']
    * #swagger.description = '會員註冊'
@@ -44,12 +45,12 @@ router.post(
       }
     }
   */
-  validateBody(authRegistrationSchema),
   handleErrorAsync(authController.authRegister)
 );
 // 會員登入
 router.post(
   '/login',
+  validateBody(authLoginSchema),
   /**
    * #swagger.tags = ['User Auth']
    * #swagger.description = '會員登入'
@@ -83,7 +84,6 @@ router.post(
       }
     }
   */
-  validateBody(authLoginSchema),
   handleErrorAsync(authController.authLogin)
 );
 // 會員 refresh token
@@ -92,6 +92,7 @@ router.post('/refresh-token', handleErrorAsync(authController.generateAccessToke
 // 主揪註冊
 router.post(
   '/organizer/register',
+  validateBody(ogRegistrationSchema),
   /**
    * #swagger.tags = ['Organizer Auth']
    * #swagger.description = '主揪註冊'
@@ -133,12 +134,12 @@ router.post(
       }
     }
   */
-  validateBody(organizerRegistrationSchema),
   handleErrorAsync(organizerAuthController.authRegister)
 );
 // 主揪登入
 router.post(
   '/organizer/login',
+  validateBody(ogLoginSchema),
   /**
    * #swagger.tags = ['Organizer Auth']
    * #swagger.description = '主揪登入'
@@ -175,7 +176,6 @@ router.post(
       }
     }
   */
-  validateBody(organizerLoginSchema),
   handleErrorAsync(organizerAuthController.authLogin)
 );
 

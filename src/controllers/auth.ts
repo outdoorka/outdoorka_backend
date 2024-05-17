@@ -4,10 +4,15 @@ import { UserModel } from '../models/user';
 import { generatorTokenAndSend } from '../services/handleAuth';
 import { handleAppError, handleResponse } from '../services/handleResponse';
 import { status400Codes, status404Codes, status409Codes } from '../types/enum/appStatusCode';
+import type { AuthLoginInput, AuthRegisterInput } from '../validate/authSchemas';
 
 export const authController = {
   // 會員註冊
-  async authRegister(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async authRegister(
+    req: Request<{}, {}, AuthRegisterInput>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const data = req.body;
 
     const checkAccount = await UserModel.find({
@@ -49,7 +54,11 @@ export const authController = {
     handleResponse(res, responseData, '註冊成功');
   },
   // 會員登入
-  async authLogin(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async authLogin(
+    req: Request<{}, {}, AuthLoginInput>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const { email, password } = req.body;
 
     const user = await UserModel.findOne({ email }).select('+password');
