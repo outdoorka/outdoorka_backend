@@ -36,7 +36,8 @@ const userSchema = new Schema<IUserModel>(
       type: String,
       required: [true, 'Name is required'],
       trim: true,
-      minlength: 2
+      minlength: 2,
+      maxlength: 20
     },
     mobile: {
       type: String,
@@ -59,7 +60,7 @@ const userSchema = new Schema<IUserModel>(
       required: false
     }
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 userSchema.pre('save', async function (next) {
