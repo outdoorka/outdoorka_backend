@@ -2,6 +2,12 @@ import express from 'express';
 import { userController } from '../controllers';
 import { handleErrorAsync } from '../services/handleResponse';
 import { isAuth } from '../services/handleAuth';
+import { validateBody } from '../middleware/validationMiddleware';
+import {
+  userUpdateEmailSchema,
+  userUpdatePwdSchema,
+  userUpdateSchema
+} from '../validate/userSchemas';
 
 const router = express.Router();
 
@@ -29,7 +35,6 @@ router.get(
       }
     }
   */
-
   handleErrorAsync(userController.getUserList)
 );
 router.get(
@@ -79,6 +84,7 @@ router.delete(
 router.patch(
   '/',
   isAuth,
+  validateBody(userUpdateSchema),
   /**
    * #swagger.tags = ['User']
    * #swagger.security = [{ "bearerAuth": [] }]
@@ -118,6 +124,7 @@ router.patch(
 router.patch(
   '/email',
   isAuth,
+  validateBody(userUpdateEmailSchema),
   /**
    * #swagger.tags = ['User']
    * #swagger.security = [{ "bearerAuth": [] }]
@@ -154,6 +161,7 @@ router.patch(
 router.patch(
   '/password',
   isAuth,
+  validateBody(userUpdatePwdSchema),
   /**
    * #swagger.tags = ['User']
    * #swagger.security = [{ "bearerAuth": [] }]

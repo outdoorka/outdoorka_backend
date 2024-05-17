@@ -4,10 +4,15 @@ import { OrganizerModel } from '../../models/organizer';
 import { generatorOrganizerTokenAndSend } from '../../services/handleAuth';
 import { handleAppError, handleResponse } from '../../services/handleResponse';
 import { status400Codes, status404Codes, status409Codes } from '../../types/enum/appStatusCode';
+import type { OgAuthRegisterInput, OgLoginInput } from '../../validate/organizerSchemas';
 
 export const organizerAuthController = {
   // 主揪登入
-  async authLogin(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async authLogin(
+    req: Request<{}, {}, OgLoginInput>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const { email, password } = req.body;
 
     const organizer = await OrganizerModel.findOne({ email }).select('+password');
@@ -37,7 +42,7 @@ export const organizerAuthController = {
     generatorOrganizerTokenAndSend(organizer, res);
   },
   // 主揪註冊
-  async authRegister(req: Request, res: Response, next: NextFunction) {
+  async authRegister(req: Request<{}, {}, OgAuthRegisterInput>, res: Response, next: NextFunction) {
     const data = req.body;
 
     const checkAccount = await OrganizerModel.find({

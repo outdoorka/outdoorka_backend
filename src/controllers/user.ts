@@ -3,9 +3,15 @@ import { handleResponse, handleAppError } from '../services/handleResponse';
 import { UserModel } from '../models';
 import validator from 'validator';
 
-import type { NextFunction, Request, Response } from 'express';
 import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
+import type { ExtendRecord } from '../types/extends';
+import type { NextFunction, Request, Response } from 'express';
 import { type JwtPayloadRequest } from '../types/dto/user';
+import type {
+  UserUpdateEmailInput,
+  UserUpdateInput,
+  UserUpdatePwdInput
+} from '../validate/userSchemas';
 
 export const userController = {
   async getUserList(req: Request, res: Response): Promise<void> {
@@ -45,7 +51,11 @@ export const userController = {
     await UserModel.findByIdAndDelete(_id);
     handleResponse(res, [], '刪除成功');
   },
-  async updateUser(req: Request, res: Response, next: NextFunction) {
+  async updateUser(
+    req: Request<{}, {}, ExtendRecord<UserUpdateInput>>,
+    res: Response,
+    next: NextFunction
+  ) {
     const _id = (req as JwtPayloadRequest).user._id;
     const updateData = req.body;
 
@@ -74,7 +84,11 @@ export const userController = {
     }
     handleResponse(res, result, '更新成功');
   },
-  async updateUserEmail(req: Request, res: Response, next: NextFunction) {
+  async updateUserEmail(
+    req: Request<{}, {}, ExtendRecord<UserUpdateEmailInput>>,
+    res: Response,
+    next: NextFunction
+  ) {
     const _id = (req as JwtPayloadRequest).user._id;
     const updateData = req.body;
 
@@ -141,7 +155,11 @@ export const userController = {
 
     handleResponse(res, result, '更新成功');
   },
-  async updateUserPassword(req: Request, res: Response, next: NextFunction) {
+  async updateUserPassword(
+    req: Request<{}, {}, UserUpdatePwdInput>,
+    res: Response,
+    next: NextFunction
+  ) {
     const _id = (req as JwtPayloadRequest).user._id;
     const updateData = req.body;
 

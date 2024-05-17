@@ -7,7 +7,11 @@ import { status422Codes, status500Codes } from '../types/enum/appStatusCode';
 export function validateBody<T extends AnyZodObject>(schema: T) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await schema.parseAsync(req.body);
+      await schema.parseAsync({
+        body: req.body,
+        query: req.query,
+        params: req.params
+      });
       next();
     } catch (error) {
       if (error instanceof ZodError) {
