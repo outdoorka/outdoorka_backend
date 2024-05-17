@@ -3,32 +3,41 @@ import bcrypt from 'bcrypt';
 import { OrganizerModel } from '../../models/organizer';
 import { generatorOrganizerTokenAndSend } from '../../services/handleAuth';
 import { handleAppError, handleResponse } from '../../services/handleResponse';
-import { status404Codes, status409Codes } from '../../types/enum/appStatusCode';
+import { status400Codes, status404Codes, status409Codes } from '../../types/enum/appStatusCode';
 
 export const organizerAuthController = {
-  async authLogin(req: Request, res: Response) {
+  // 主揪登入
+  async authLogin(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { email, password } = req.body;
 
     const organizer = await OrganizerModel.findOne({ email }).select('+password');
 
     if (!organizer?.password) {
-      return res.status(401).json({ message: '主揪不存在' });
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_USER],
+        status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
     }
 
     const isPasswordValid = await bcrypt.compare(password, organizer.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: '主揪名稱或密碼不正確' });
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_CREDENTIALS],
+        status400Codes.INVALID_CREDENTIALS,
+        next
+      );
+      return;
     }
 
     generatorOrganizerTokenAndSend(organizer, res);
   },
-
-  async authRegister(
-    req: Request<unknown, { username: string }>,
-    res: Response,
-    next: NextFunction
-  ) {
+  // 主揪註冊
+  async authRegister(req: Request, res: Response, next: NextFunction) {
     const data = req.body;
 
     const checkAccount = await OrganizerModel.find({

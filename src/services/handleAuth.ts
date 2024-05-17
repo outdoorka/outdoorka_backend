@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
-import { handleResponse } from '../services/handleResponse';
+import { handleAppError, handleResponse } from '../services/handleResponse';
 import { UserModel } from '../models/user';
+import type { NextFunction, Request, Response } from 'express';
+import { status401Codes } from '../types/enum/appStatusCode';
+import { type JwtPayloadRequest } from '../types/dto/user';
 
 const ACCESS_TOKEN_SECRET = config.JWT_ACCESS_TOKEN;
 const ACCESS_TOKEN_EXPIRES_IN = config.JWT_EXPIRES_DAYS;
@@ -20,13 +23,25 @@ const signAccessToken = (userId: any) => {
   }
 };
 
+const signRefreshToken = (userId: string) => {
+  try {
+    const refreshToken = jwt.sign({ userId }, REFRESH_TOKEN_SECRET, {
+      expiresIn: REFRESH_TOKEN_EXPIRES_IN
+    });
+    return refreshToken;
+  } catch (error) {
+    console.error('Error generating refresh token:', error);
+    return null;
+  }
+};
+
 // 產生 Token 並回傳
 const generatorTokenAndSend = (user: any, res: any) => {
   const token = signAccessToken(user._id);
   const refreshToken = signRefreshToken(user._id);
   const responseData = {
     user: {
-      id: user._id,
+      _id: user._id,
       name: user.name,
       email: user.email
     },
@@ -40,20 +55,8 @@ const generatorTokenAndSend = (user: any, res: any) => {
   handleResponse(res, responseData, '登入成功');
 };
 
-const signRefreshToken = (userId: string) => {
-  try {
-    const refreshToken = jwt.sign({ userId }, REFRESH_TOKEN_SECRET, {
-      expiresIn: REFRESH_TOKEN_EXPIRES_IN
-    });
-    return refreshToken;
-  } catch (error) {
-    console.error('Error generating refresh token:', error);
-    return null;
-  }
-};
-
 // 驗證 Token
-const isAuth = async (req: any, res: any) => {
+const isAuth = async (req: Request, res: Response, next: NextFunction) => {
   let token;
   const { authorization } = req.headers;
 
@@ -62,15 +65,32 @@ const isAuth = async (req: any, res: any) => {
     token = authorization.split(' ')[1];
   }
 
-  if (!token) return res.status(401).json({ message: '帳號未登入，請先登入' });
+  if (!token) {
+    handleAppError(
+      401,
+      status401Codes[status401Codes.UNAUTHORIZED],
+      status401Codes.UNAUTHORIZED,
+      next
+    );
+    return;
+  }
 
   // Verify Token
   const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET) as jwt.JwtPayload;
+  const currentUser = await UserModel.findById(decoded.userId);
 
-  const currentUser = await UserModel.findById(decoded.id);
+  if (!currentUser || !currentUser._id) {
+    handleAppError(
+      401,
+      status401Codes[status401Codes.INVALID_TOKEN],
+      status401Codes.INVALID_TOKEN,
+      next
+    );
+    return;
+  }
 
-  if (!currentUser) return res.status(401).json({ message: '帳號未登入，請先登入' });
-  req.user = currentUser;
+  (req as JwtPayloadRequest).user = currentUser;
+  next();
 };
 
 // 產生主揪 Token 並回傳
