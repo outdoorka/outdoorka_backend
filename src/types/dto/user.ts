@@ -1,6 +1,8 @@
-import type { Document } from 'mongoose';
+import type { Document, SchemaTimestampsConfig } from 'mongoose';
+import type { Request } from 'express';
+import type { JwtPayload } from 'jsonwebtoken';
 
-export interface IUserModel extends Document {
+export interface IUserModel extends Document, SchemaTimestampsConfig {
   email: string;
   password: string;
   isActive: boolean;
@@ -9,4 +11,8 @@ export interface IUserModel extends Document {
   photo: string;
   gender: string;
   birthday: Date;
+}
+
+export interface JwtPayloadRequest extends Request {
+  user: JwtPayload;
 }

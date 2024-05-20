@@ -5,7 +5,7 @@
     "title": "OUTDOORKA API",
     "description": "OUTDOORKA API Documentation"
   },
-  "host": "http://localhost:3006",
+  "host": "localhost:3006",
   "basePath": "/",
   "schemes": [
     "http",
@@ -26,12 +26,19 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/users/": {
+    "/api/v1/users/all": {
       "get": {
         "tags": [
           "User"
         ],
         "description": "取得所有User資料",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "取得所有User資料",
@@ -84,112 +91,15 @@
               }
             }
           }
-        }
-      },
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "description": "Create a new User",
-        "parameters": [
+        },
+        "security": [
           {
-            "name": "post",
-            "in": "body",
-            "description": "會員註冊",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "name"
-                },
-                "photo": {
-                  "type": "string",
-                  "example": "https://thispersondoesnotexist.com/"
-                },
-                "mobile": {
-                  "type": "string",
-                  "example": "0911000000"
-                },
-                "email": {
-                  "type": "string",
-                  "example": "email@gmail.com"
-                },
-                "gender": {
-                  "type": "string",
-                  "example": "male"
-                },
-                "birthday": {
-                  "type": "string",
-                  "example": "1990-01-01"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "password"
-                }
-              },
-              "required": [
-                "name",
-                "photo",
-                "mobile",
-                "email",
-                "gender",
-                "birthday",
-                "password"
-              ]
-            }
+            "bearerAuth": []
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "New User created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string",
-                      "example": "xxxxxxxxxxxxxxxxxx"
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "XXX"
-                    },
-                    "photo": {
-                      "type": "string",
-                      "example": "https://thispersondoesnotexist.com/"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "test@gmail.com"
-                    },
-                    "mobile": {
-                      "type": "string",
-                      "example": "0911000000"
-                    },
-                    "gender": {
-                      "type": "string",
-                      "example": "male"
-                    },
-                    "birthday": {
-                      "type": "string",
-                      "example": "1990-01-01"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        }
+        ]
       }
     },
-    "/api/v1/users/{id}": {
+    "/api/v1/users/": {
       "get": {
         "tags": [
           "User"
@@ -197,9 +107,8 @@
         "description": "取得User資料",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -252,7 +161,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -261,9 +175,8 @@
         "description": "Delete User",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -284,7 +197,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "patch": {
         "tags": [
@@ -293,9 +211,8 @@
         "description": "Update User",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -386,10 +303,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/users/{id}/email": {
+    "/api/v1/users/email": {
       "patch": {
         "tags": [
           "User"
@@ -397,9 +319,8 @@
         "description": "Update User Email",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -475,10 +396,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "/api/v1/users/{id}/password": {
+    "/api/v1/users/password": {
       "patch": {
         "tags": [
           "User"
@@ -486,9 +412,8 @@
         "description": "Update User 密碼",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -569,15 +494,203 @@
               }
             }
           }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/register": {
+      "post": {
+        "tags": [
+          "User Auth"
+        ],
+        "description": "會員註冊",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "註冊",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "name"
+                },
+                "photo": {
+                  "type": "string",
+                  "example": "https://thispersondoesnotexist.com/"
+                },
+                "mobile": {
+                  "type": "string",
+                  "example": "0911000000"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "email@gmail.com"
+                },
+                "gender": {
+                  "type": "string",
+                  "example": "male"
+                },
+                "birthday": {
+                  "type": "string",
+                  "example": "1990-01-01"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                }
+              },
+              "required": [
+                "name",
+                "photo",
+                "mobile",
+                "email",
+                "gender",
+                "birthday",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "註冊成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "test@gmail.com"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": "male"
+                    },
+                    "birthday": {
+                      "type": "string",
+                      "example": "1990-01-01"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
         }
       }
     },
     "/api/v1/login": {
       "post": {
-        "description": "",
+        "tags": [
+          "User Auth"
+        ],
+        "description": "會員登入",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "登入",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "登入成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxxxxxx"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "XXX"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "test@gmail.com"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxx"
+                        },
+                        "expires_in": {
+                          "type": "number",
+                          "example": 604800
+                        },
+                        "refresh_token": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxx"
+                        }
+                      }
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "登入成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
@@ -588,6 +701,253 @@
         "responses": {
           "default": {
             "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/organizer/register": {
+      "post": {
+        "tags": [
+          "Organizer Auth"
+        ],
+        "description": "主揪註冊",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "主揪註冊",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "name"
+                },
+                "nickName": {
+                  "type": "string",
+                  "example": "nickName"
+                },
+                "photo": {
+                  "type": "string",
+                  "example": "https://thispersondoesnotexist.com/"
+                },
+                "mobile": {
+                  "type": "string",
+                  "example": "0911000000"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "email@gmail.com"
+                },
+                "profileDetail": {
+                  "type": "string",
+                  "example": "主揪的詳細資料"
+                },
+                "profileTags": {
+                  "type": "array",
+                  "example": [
+                    "Camping",
+                    "Hiking"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "area": {
+                  "type": "string",
+                  "example": "Taipei"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                }
+              },
+              "required": [
+                "username",
+                "nickName",
+                "photo",
+                "mobile",
+                "email",
+                "profileDetail",
+                "profileTags",
+                "area",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "主揪註冊成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "username": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "nickName": {
+                      "type": "string",
+                      "example": "nickName"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "test@gmail.com"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "profileDetail": {
+                      "type": "string",
+                      "example": "主揪的詳細資料"
+                    },
+                    "profileTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "area": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:50:19.045Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:50:19.045Z"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "註冊成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/organizer/login": {
+      "post": {
+        "tags": [
+          "Organizer Auth"
+        ],
+        "description": "主揪登入",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "登入",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "主揪登入成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "organizer": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxxxxxx"
+                        },
+                        "username": {
+                          "type": "string",
+                          "example": "XXX"
+                        },
+                        "nickName": {
+                          "type": "string",
+                          "example": "nickName"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://thispersondoesnotexist.com/"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "test@gmail.com"
+                        },
+                        "mobile": {
+                          "type": "string",
+                          "example": "0911000000"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxx"
+                        },
+                        "expires_in": {
+                          "type": "number",
+                          "example": 604800
+                        },
+                        "refresh_token": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxx"
+                        }
+                      }
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "登入成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }

@@ -1,13 +1,22 @@
 import express from 'express';
 import { userController } from '../controllers';
 import { handleErrorAsync } from '../services/handleResponse';
+import { isAuth } from '../services/handleAuth';
+import { validateBody } from '../middleware/validationMiddleware';
+import {
+  userUpdateEmailSchema,
+  userUpdatePwdSchema,
+  userUpdateSchema
+} from '../validate/userSchemas';
 
 const router = express.Router();
 
 router.get(
-  '/',
+  '/all',
+  isAuth,
   /**
    * #swagger.tags = ['User']
+   * #swagger.security = [{ "bearerAuth": [] }]
    * #swagger.description = '取得所有User資料'
    */
   /* #swagger.responses[200] = {
@@ -26,13 +35,14 @@ router.get(
       }
     }
   */
-
   handleErrorAsync(userController.getUserList)
 );
 router.get(
-  '/:id',
+  '/',
+  isAuth,
   /**
    * #swagger.tags = ['User']
+   * #swagger.security = [{ "bearerAuth": [] }]
    * #swagger.description = '取得User資料'
    */
   /**
@@ -54,48 +64,12 @@ router.get(
   */
   handleErrorAsync(userController.getUser)
 );
-router.post(
-  '/',
-  /**
-   * #swagger.tags = ['User']
-   * #swagger.description = 'Create a new User'
-   */
-  /*
-    #swagger.parameters['post'] = {
-      in: 'body',
-      description: '會員註冊',
-      required: true,
-      schema: {
-        $name: 'name',
-        $photo: 'https://thispersondoesnotexist.com/',
-        $mobile: '0911000000',
-        $email: 'email@gmail.com',
-        $gender: 'male',
-        $birthday: '1990-01-01',
-        $password: 'password'
-      }
-    }
-    #swagger.responses[200] = {
-      description: 'New User created',
-      schema: {
-        "data": {
-          "_id": "xxxxxxxxxxxxxxxxxx",
-          "name": "XXX",
-          "photo": "https://thispersondoesnotexist.com/",
-          "email": "test@gmail.com",
-          "mobile": "0911000000",
-          "gender": "male",
-          "birthday": "1990-01-01"
-        }
-      }
-    }
-  */
-  handleErrorAsync(userController.createUser)
-);
 router.delete(
-  '/:id',
+  '/',
+  isAuth,
   /**
    * #swagger.tags = ['User']
+   * #swagger.security = [{ "bearerAuth": [] }]
    * #swagger.description = 'Delete User'
    */
   /* #swagger.responses[200] = {
@@ -108,9 +82,12 @@ router.delete(
   handleErrorAsync(userController.deleteUser)
 );
 router.patch(
-  '/:id',
+  '/',
+  isAuth,
+  validateBody(userUpdateSchema),
   /**
    * #swagger.tags = ['User']
+   * #swagger.security = [{ "bearerAuth": [] }]
    * #swagger.description = 'Update User'
    */
   /*
@@ -145,9 +122,12 @@ router.patch(
   handleErrorAsync(userController.updateUser)
 );
 router.patch(
-  '/:id/email',
+  '/email',
+  isAuth,
+  validateBody(userUpdateEmailSchema),
   /**
    * #swagger.tags = ['User']
+   * #swagger.security = [{ "bearerAuth": [] }]
    * #swagger.description = 'Update User Email'
    */
   /*
@@ -179,9 +159,12 @@ router.patch(
   handleErrorAsync(userController.updateUserEmail)
 );
 router.patch(
-  '/:id/password',
+  '/password',
+  isAuth,
+  validateBody(userUpdatePwdSchema),
   /**
    * #swagger.tags = ['User']
+   * #swagger.security = [{ "bearerAuth": [] }]
    * #swagger.description = 'Update User 密碼'
    */
   /*
