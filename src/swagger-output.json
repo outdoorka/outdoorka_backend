@@ -26,6 +26,111 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/admin/authorizeAccess": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "description": "開通主揪",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "開通",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "xxxxxxxxxxxxxxxxx"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "email@gmail.com"
+                }
+              },
+              "required": [
+                "id",
+                "email"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "開通成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "RRRPPP"
+                    },
+                    "nickName": {
+                      "type": "string",
+                      "example": "RR"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "profileDetail": {
+                      "type": "string",
+                      "example": "主揪的詳細資料"
+                    },
+                    "profileTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "area": {
+                      "type": "string",
+                      "example": "Taipei"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:42:19.740Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:42:19.740Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users/all": {
       "get": {
         "tags": [
@@ -485,6 +590,287 @@
                     "birthday": {
                       "type": "string",
                       "example": "1990-01-01"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/organizer/": {
+      "get": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "取得 Organizer",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得 Organizer",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "RRRPPP"
+                    },
+                    "nickName": {
+                      "type": "string",
+                      "example": "RR"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "profileDetail": {
+                      "type": "string",
+                      "example": "主揪的詳細資料"
+                    },
+                    "profileTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "area": {
+                      "type": "string",
+                      "example": "Taipei"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:42:19.740Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:42:19.740Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/organizer/activities": {
+      "post": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "建立活動",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "輸入活動資訊",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "title 最多100個字"
+                },
+                "subtitle": {
+                  "type": "string",
+                  "example": "subtitle 最多100個字"
+                },
+                "price": {
+                  "type": "number",
+                  "example": 600
+                },
+                "totalCapacity": {
+                  "type": "number",
+                  "example": 20
+                },
+                "city": {
+                  "type": "string",
+                  "example": "台北市"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "address 最多100個字"
+                },
+                "location": {
+                  "type": "string",
+                  "example": "location 最多100個字"
+                },
+                "activityDetail": {
+                  "type": "string",
+                  "example": "activityDetail 最多1000個字"
+                },
+                "activityNotice": {
+                  "type": "string",
+                  "example": "activityNotice 最多200個字"
+                },
+                "activityTags": {
+                  "type": "array",
+                  "example": [
+                    "Camping",
+                    "Hiking"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "activityLinks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "name 最多50個字"
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "https://www.google.com/"
+                      }
+                    }
+                  }
+                },
+                "activityImageUrls": {
+                  "type": "array",
+                  "example": [
+                    "https://thispersondoesnotexist.com/"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isPublish": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "activitySignupStartTime": {
+                  "type": "string",
+                  "example": "2024-05-17T06:39:19.740Z"
+                },
+                "activitySignupEndTime": {
+                  "type": "string",
+                  "example": "2024-06-15T06:39:19.740Z"
+                },
+                "activityStartTime": {
+                  "type": "string",
+                  "example": "2024-06-17T00:39:19.740Z"
+                },
+                "activityEndTime": {
+                  "type": "string",
+                  "example": "2024-06-17T06:39:19.740Z"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "開通成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "RRRPPP"
+                    },
+                    "nickName": {
+                      "type": "string",
+                      "example": "RR"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "profileDetail": {
+                      "type": "string",
+                      "example": "主揪的詳細資料"
+                    },
+                    "profileTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "area": {
+                      "type": "string",
+                      "example": "Taipei"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:42:19.740Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:42:19.740Z"
                     }
                   }
                 }

@@ -94,10 +94,8 @@ router.post(
   '/organizer/register',
   validateBody(ogRegistrationSchema),
   /**
-   * #swagger.tags = ['Organizer Auth']
-   * #swagger.description = '主揪註冊'
-   */
-  /*
+    #swagger.tags = ['Organizer Auth']
+    #swagger.description = '主揪註冊'
     #swagger.parameters['post'] = {
       in: 'body',
       description: '主揪註冊',
@@ -141,10 +139,8 @@ router.post(
   '/organizer/login',
   validateBody(ogLoginSchema),
   /**
-   * #swagger.tags = ['Organizer Auth']
-   * #swagger.description = '主揪登入'
-   */
-  /*
+    #swagger.tags = ['Organizer Auth']
+    #swagger.description = '主揪登入'
     #swagger.parameters['post'] = {
       in: 'body',
       description: '登入',

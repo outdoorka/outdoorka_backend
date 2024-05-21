@@ -1,7 +1,7 @@
-import type { Document, Types } from 'mongoose';
+import type { Document, SchemaTimestampsConfig, Types } from 'mongoose';
 import type { Region, City, ActivityTag } from '../enum/activity';
 
-export interface IActivityModel extends Document {
+export interface IActivityModel extends Document, SchemaTimestampsConfig {
   organizerId: Types.ObjectId;
   title: string;
   subtitle: string;
@@ -13,7 +13,7 @@ export interface IActivityModel extends Document {
   activityDetail: string;
   activityNotice: string;
   activityTags: ActivityTag[];
-  activityLinks: string[];
+  activityLinks: IActivityLink[];
   activityImageUrls: string[];
   price: number;
   isPublish: boolean;
@@ -21,7 +21,10 @@ export interface IActivityModel extends Document {
   activitySignupEndTime: Date;
   activityStartTime: Date;
   activityEndTime: Date;
-  activityUpdatedAt: Date;
-  activityCreatedAt: Date;
   likers: Types.ObjectId[];
+}
+
+export interface IActivityLink {
+  name: string;
+  url: string;
 }
