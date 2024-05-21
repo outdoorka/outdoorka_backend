@@ -24,7 +24,8 @@ const activitySchema = new Schema(
     activityEndTime: { type: Date, required: true },
     activityUpdatedAt: { type: Date, required: true },
     activityCreatedAt: { type: Date, required: true },
-    likers: [{ type: Types.ObjectId, required: true, ref: 'User' }]
+    likers: [{ type: Types.ObjectId, required: true, ref: 'User' }],
+    bookedCapacity: { type: Number, required: true }
   },
   { versionKey: false }
 );

@@ -21,7 +21,7 @@ import swaggerFile from './swagger-output.json';
 // router
 import userRouter from './routes/user';
 import authRouter from './routes/auth';
-
+import activityRouter from './routes/activity';
 // const USER_BASE_URL = '/api/v1';
 // const ORGANIZER_BASE_URL = '/api/v1/organizer';
 
@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/users', userRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use('/api/v1', authRouter);
-
+app.use('/api/v1/activities', activityRouter);
 // catch 404
 app.use(routeNotFound);
 
