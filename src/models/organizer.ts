@@ -25,7 +25,7 @@ const organizerSchema = new Schema<IOrganizerModel, Model<IOrganizerModel>>(
       type: Boolean,
       default: false
     },
-    username: {
+    name: {
       type: String,
       required: [true, 'Name is required'],
       trim: true,

@@ -720,7 +720,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "username": {
+                "name": {
                   "type": "string",
                   "example": "name"
                 },
@@ -764,7 +764,7 @@
                 }
               },
               "required": [
-                "username",
+                "name",
                 "nickName",
                 "photo",
                 "mobile",
@@ -790,7 +790,7 @@
                       "type": "string",
                       "example": "xxxxxxxxxxxxxxxxxx"
                     },
-                    "username": {
+                    "name": {
                       "type": "string",
                       "example": "XXX"
                     },
@@ -898,7 +898,7 @@
                           "type": "string",
                           "example": "xxxxxxxxxxxxxxxxxx"
                         },
-                        "username": {
+                        "name": {
                           "type": "string",
                           "example": "XXX"
                         },

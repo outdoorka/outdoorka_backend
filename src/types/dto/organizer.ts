@@ -5,7 +5,7 @@ export interface IOrganizerModel extends Document, SchemaTimestampsConfig {
   email: string;
   password: string;
   isActive: boolean;
-  username: string;
+  name: string;
   nickName: string;
   mobile: string;
   phone: string;

@@ -103,7 +103,7 @@ router.post(
       description: '主揪註冊',
       required: true,
       schema: {
-        $username: 'name',
+        $name: 'name',
         $nickName: 'nickName',
         $photo: 'https://thispersondoesnotexist.com/',
         $mobile: '0911000000',
@@ -119,7 +119,7 @@ router.post(
       schema: {
         "data": {
           "_id": "xxxxxxxxxxxxxxxxxx",
-          "username": "XXX",
+          "name": "XXX",
           "nickName": 'nickName',
           "photo": "https://thispersondoesnotexist.com/",
           "email": "test@gmail.com",
@@ -160,7 +160,7 @@ router.post(
         "data": {
           "organizer": {
             "_id": "xxxxxxxxxxxxxxxxxx",
-            "username": "XXX",
+            "name": "XXX",
             "nickName": 'nickName',
             "photo": "https://thispersondoesnotexist.com/",
             "email": "test@gmail.com",

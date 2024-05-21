@@ -60,7 +60,7 @@ export const organizerAuthController = {
     }
 
     const userData = await OrganizerModel.create({
-      username: data.username,
+      name: data.name,
       nickName: data.nickName,
       email: data.email,
       mobile: data.mobile,
@@ -68,7 +68,8 @@ export const organizerAuthController = {
       profileTags: data.profileTags,
       area: data.area,
       photo: data.photo,
-      password: data.password
+      password: data.password,
+      isActive: false
     });
 
     if (!userData) {
