@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
-import { handleAppError, handleResponse } from '../services/handleResponse';
+import { handleAppError, handleErrorAsync, handleResponse } from '../services/handleResponse';
 import { UserModel, OrganizerModel } from '../models';
 import type { NextFunction, Request, Response } from 'express';
 import { status400Codes, status401Codes } from '../types/enum/appStatusCode';
@@ -56,7 +56,7 @@ const generatorTokenAndSend = (user: any, res: any) => {
 };
 
 // 驗證 Token
-const isAuth = async (req: Request, res: Response, next: NextFunction) => {
+const isAuth = handleErrorAsync(async (req: Request, res: Response, next: NextFunction) => {
   let token;
   const { authorization } = req.headers;
 
@@ -91,7 +91,7 @@ const isAuth = async (req: Request, res: Response, next: NextFunction) => {
 
   (req as JwtPayloadRequest).user = currentUser;
   next();
-};
+});
 
 // 產生主揪 Token 並回傳
 const generatorOrganizerTokenAndSend = (organizer: any, res: any) => {
@@ -117,7 +117,7 @@ const generatorOrganizerTokenAndSend = (organizer: any, res: any) => {
 };
 
 // 驗證主揪 Token
-const isOgAuth = async (req: Request, res: Response, next: NextFunction) => {
+const isOgAuth = handleErrorAsync(async (req: Request, res: Response, next: NextFunction) => {
   let token;
   const { authorization } = req.headers;
 
@@ -163,6 +163,6 @@ const isOgAuth = async (req: Request, res: Response, next: NextFunction) => {
 
   (req as JwtPayloadRequest).user = currentUser;
   next();
-};
+});
 
 export { signAccessToken, generatorTokenAndSend, generatorOrganizerTokenAndSend, isAuth, isOgAuth };

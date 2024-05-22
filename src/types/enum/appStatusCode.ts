@@ -20,6 +20,7 @@ export enum status400Codes {
    * 錯誤輸入
    */
   'INVALID_VALUE' = '錯誤輸入' as any,
+  'INVALID_FILE' = '錯誤檔案' as any,
   'UNKNOWN_FIELD' = '提供不明查詢參數或內容時使用' as any,
   'INVALID_TIME' = ' 時間設定異常' as any,
   'INVALID_INPUT' = '輸入資料異常' as any,
@@ -90,7 +91,8 @@ export enum status500Codes {
   'CREATE_FAILED' = '建立失敗' as any,
   'FETCH_FAILED' = '活動取得失敗' as any,
   'UPDATE_FAILED' = '編輯失敗' as any,
-  'INVALID_PUBLISH' = '發佈異常' as any
+  'INVALID_PUBLISH' = '發佈異常' as any,
+  'UPLOAD_FAILED' = '上傳失敗' as any
 }
 
 export type StatusCodeEnum =
