@@ -20,8 +20,9 @@ import swaggerFile from './swagger-output.json';
 
 // router
 import userRouter from './routes/user';
+import adminRouter from './routes/admin';
 import authRouter from './routes/auth';
-import activityRouter from './routes/activity';
+
 // const USER_BASE_URL = '/api/v1';
 // const ORGANIZER_BASE_URL = '/api/v1/organizer';
 
@@ -52,10 +53,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Route
 // swagger api 文件不援使用帶變數的方式
+app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use('/api/v1/organizer', organizerRouter);
 app.use('/api/v1', authRouter);
-app.use('/api/v1/activities', activityRouter);
+
 // catch 404
 app.use(routeNotFound);
 

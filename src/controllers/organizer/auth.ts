@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import logtail from '../../utils/logtail';
 import { OrganizerModel } from '../../models/organizer';
 import { generatorOrganizerTokenAndSend } from '../../services/handleAuth';
 import { handleAppError, handleResponse } from '../../services/handleResponse';
@@ -15,7 +16,7 @@ export const organizerAuthController = {
   ): Promise<void> {
     const { email, password } = req.body;
 
-    const organizer = await OrganizerModel.findOne({ email }).select('+password');
+    const organizer = await OrganizerModel.findOne({ email }).select('+password').lean();
 
     if (!organizer?.password) {
       handleAppError(
@@ -30,10 +31,27 @@ export const organizerAuthController = {
     const isPasswordValid = await bcrypt.compare(password, organizer.password);
 
     if (!isPasswordValid) {
+      const attempts = organizer.pwdAttempts + 1;
+      await OrganizerModel.findByIdAndUpdate(organizer._id, {
+        pwdAttempts: attempts
+      });
+
+      logtail.error(`主揪登入密碼錯誤 attempts: ${attempts}`, { email: organizer.email });
+
       handleAppError(
         400,
         status400Codes[status400Codes.INVALID_CREDENTIALS],
         status400Codes.INVALID_CREDENTIALS,
+        next
+      );
+      return;
+    }
+
+    if (organizer.pwdAttempts > 5) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.PASSWORD_ATTEMPTS],
+        status400Codes.PASSWORD_ATTEMPTS,
         next
       );
       return;
@@ -60,7 +78,7 @@ export const organizerAuthController = {
     }
 
     const userData = await OrganizerModel.create({
-      username: data.username,
+      name: data.name,
       nickName: data.nickName,
       email: data.email,
       mobile: data.mobile,
@@ -68,7 +86,8 @@ export const organizerAuthController = {
       profileTags: data.profileTags,
       area: data.area,
       photo: data.photo,
-      password: data.password
+      password: data.password,
+      isActive: false
     });
 
     if (!userData) {
