@@ -1354,7 +1354,7 @@
         }
       }
     },
-    "/api/v1/activities/homelist": {
+    "/api/v1/activity/homelist": {
       "get": {
         "tags": [
           "Activity"

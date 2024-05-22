@@ -17,7 +17,7 @@ router.get(
       required: true,
       schema: {
         type: 'string',
-      },
+      }
     }
   #swagger.responses[200] = {
       description: '取得首頁的熱門活動/最新活動資料',

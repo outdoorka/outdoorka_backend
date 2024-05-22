@@ -9,7 +9,6 @@ export const activityController = {
     const type = req.query.type;
     // const count = req.query.count;
 
-    console.log(type);
     if (!type) {
       handleAppError(
         400,
@@ -20,15 +19,65 @@ export const activityController = {
       return;
     }
 
-    const activities = await ActivityModel.find()
-      .populate({
-        path: 'organizerId',
-        select: 'username photo'
-      })
-      .select(
-        'subtitle region city activityImageUrls activityStartTime activityEndTime bookedCapacity likers organizerId'
+    if (!(type === 'HOT' || type === 'NEW')) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_REQEST],
+        status400Codes.INVALID_REQEST,
+        next
       );
+      return;
+    }
 
+    const activities = await ActivityModel.aggregate([
+      {
+        $lookup: {
+          from: 'organizers', // 關聯的集合名
+          localField: 'organizer', // 原集合中的欄位
+          foreignField: '_id', // 關聯的 _id
+          as: 'organizerInfo' // 關聯查询结果的输出
+        }
+      },
+      {
+        $addFields: {
+          organizer: { $arrayElemAt: ['$organizerInfo', 0] },
+          organizerInfo: 1
+        }
+      },
+      {
+        $project: {
+          subtitle: 1,
+          region: 1,
+          city: 1,
+          activityImageUrls: 1,
+          activityStartTime: 1,
+          activityEndTime: 1,
+          likers: { $size: '$likers' },
+          bookedCapacity: 1,
+          popularity: { $divide: ['$bookedCapacity', '$totalCapacity'] },
+          organizerInfo: '$organizerInfo'
+        }
+      },
+      {
+        $sort: type === 'HOT' ? { popularity: -1 } : { activityStartTime: -1 }
+      },
+      {
+        $limit: 10
+      }
+    ]);
+    // }
+    // if (type === 'NEW') {
+    //   activities = await ActivityModel.find()
+    //     .sort({ activityStartTime: 1 }) // 按活動價格升序排序
+    //     .limit(10)
+    //     .populate({
+    //       path: 'organizer',
+    //       select: 'username photo rating'
+    //     })
+    //     .select(
+    //       'subtitle region city activityImageUrls activityStartTime activityEndTime bookedCapacity likers'
+    //     );
+    // }
     if (!activities) {
       handleAppError(
         404,
@@ -38,6 +87,7 @@ export const activityController = {
       );
       return;
     }
+
     handleResponse(res, activities, '取得成功');
   }
 };
