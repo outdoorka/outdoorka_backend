@@ -28,7 +28,8 @@ export enum status400Codes {
   'INVALID_REQEST' = '請求失敗' as any,
   'ACCOUNT_NOT_VERIFIED' = '帳號尚未完成驗證' as any,
   'QUERY_FAILED' = 'QS 參數錯誤' as any,
-  'ACCOUNT_LOCKED' = '帳號已被鎖定，請聯繫客服' as any
+  'ACCOUNT_LOCKED' = '帳號已被鎖定，請聯繫客服' as any,
+  'PASSWORD_ATTEMPTS' = '密碼錯誤次數過多，請聯繫客服' as any
 }
 
 /**

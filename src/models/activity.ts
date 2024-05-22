@@ -4,7 +4,11 @@ import type { IActivityModel, IActivityLink } from '../types/dto/activity';
 
 // 相關 Array 筆數限制
 const activityArrayLimit = (val: any[]) => {
-  return val.length <= 5;
+  if (val.length > 5) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 // 相關連結
@@ -35,17 +39,12 @@ const activitySchema = new Schema<IActivityModel>(
     ],
     activityLinks: [
       {
-        type: [activityLinkSchema],
-        trim: true,
-        validate: [activityArrayLimit, '{PATH} exceeds the limit of 5']
+        type: activityLinkSchema
       }
     ],
     activityImageUrls: [
       {
-        type: [String],
-        required: true,
-        trim: true,
-        validate: [activityArrayLimit, '{PATH} exceeds the limit of 5']
+        type: String
       }
     ],
     isPublish: { type: Boolean, required: true },
@@ -57,5 +56,13 @@ const activitySchema = new Schema<IActivityModel>(
   },
   { versionKey: false, timestamps: true }
 );
+
+activitySchema
+  .path('activityLinks')
+  .validate(activityArrayLimit, '{PATH} 限制最多 5 筆', 'Invalid activityLinks');
+
+activitySchema
+  .path('activityImageUrls')
+  .validate(activityArrayLimit, '{PATH} 限制最多 5 筆', 'Invalid activityImageUrls');
 
 export const ActivityModel = model('Activity', activitySchema);

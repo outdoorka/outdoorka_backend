@@ -1,3 +1,4 @@
+import { HttpUrl } from '../utils/regexs';
 import { ActivityTag, City } from '../types/enum/activity';
 import { type TypeOf, z, object } from 'zod';
 
@@ -15,9 +16,11 @@ export const createActivitySchema = z.object({
     location: z.string().min(2, '集合地點 為 2~100 個字').max(100, '集合地點 為 2~100 個字'),
     activityDetail: z.string().min(2, '活動介紹為 2~1000 個字').max(1000, '活動介紹為 2~1000 個字'),
     activityNotice: z.string().min(2, '注意事項為 2~200 個字').max(200, '注意事項為 2~200 個字'),
-    activityTags: z.array(z.enum(activityEnumValue as [string, ...string[]]), {
-      message: '須為字串陣列'
-    }),
+    activityTags: z
+      .array(z.enum(activityEnumValue as [string, ...string[]]), {
+        message: '須為字串陣列'
+      })
+      .min(1, '最少選擇一個活動標籤'),
     activityLinks: z
       .array(
         z.object({
@@ -27,7 +30,15 @@ export const createActivitySchema = z.object({
         { message: '須為物件陣列' }
       )
       .max(5, '最多5個相關連結'),
-    activityImageUrls: z.array(z.string(), { message: '須為字串陣列' }).max(5, '最多5張圖片'),
+    activityImageUrls: z
+      .array(
+        z.string().refine((photo) => {
+          if (!photo) return true;
+          return HttpUrl.test(photo);
+        }, '請輸入正確圖片網址')
+      )
+      .min(1, '最少1張圖片')
+      .max(5, '最多5張圖片'),
     isPublish: z.boolean(),
     activitySignupStartTime: z.string().transform((val) => new Date(val)),
     activitySignupEndTime: z.string().transform((val) => new Date(val)),

@@ -18,7 +18,7 @@ router.post(
         required: true,
         schema: {
           $id: 'xxxxxxxxxxxxxxxxx',
-          $email: 'email@gmail.com'
+          $email: 'email'
         }
       }
     #swagger.responses[200] = {

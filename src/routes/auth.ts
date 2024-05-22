@@ -61,7 +61,7 @@ router.post(
       description: '登入',
       required: true,
       schema: {
-        $email: 'email@gmail.com',
+        $email: 'email',
         $password: 'password'
       }
     }
@@ -148,7 +148,7 @@ router.post(
       description: '登入',
       required: true,
       schema: {
-        $email: 'email@gmail.com',
+        $email: 'email',
         $password: 'password'
       }
     }

@@ -47,6 +47,16 @@ export const organizerAuthController = {
       return;
     }
 
+    if (organizer.pwdAttempts > 5) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.PASSWORD_ATTEMPTS],
+        status400Codes.PASSWORD_ATTEMPTS,
+        next
+      );
+      return;
+    }
+
     generatorOrganizerTokenAndSend(organizer, res);
   },
   // 主揪註冊

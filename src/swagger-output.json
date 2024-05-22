@@ -47,7 +47,7 @@
                 },
                 "email": {
                   "type": "string",
-                  "example": "email@gmail.com"
+                  "example": "email"
                 }
               },
               "required": [
@@ -1016,7 +1016,7 @@
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "email@gmail.com"
+                  "example": "email"
                 },
                 "password": {
                   "type": "string",
@@ -1270,7 +1270,7 @@
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "email@gmail.com"
+                  "example": "email"
                 },
                 "password": {
                   "type": "string",

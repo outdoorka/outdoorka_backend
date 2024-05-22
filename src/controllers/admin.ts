@@ -25,7 +25,7 @@ export const adminController = {
 
     const getOrganizer = await OrganizerModel.findById(id);
 
-    if (!getOrganizer || getOrganizer.email !== email) {
+    if (!getOrganizer || getOrganizer.email !== email.toLowerCase()) {
       handleAppError(
         404,
         status404Codes[status404Codes.NOT_FOUND_USER],

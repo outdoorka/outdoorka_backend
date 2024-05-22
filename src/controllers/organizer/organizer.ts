@@ -31,11 +31,13 @@ export const organizerController = {
     // 活動區域，會依照 city 來判斷
     const region = convertCityToArea(req.body.city);
 
-    const createActivity = await ActivityModel.create({
+    const activity = new ActivityModel({
       ...req.body,
       region,
       organizer: ogData._id
     });
+
+    const createActivity = await activity.save();
 
     if (!createActivity || !createActivity._id) {
       handleAppError(
