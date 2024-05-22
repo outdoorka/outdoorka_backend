@@ -3,7 +3,7 @@ import { HttpUrl, MobileTW, Password } from '../utils/regexs';
 
 export const ogRegistrationSchema = z.object({
   body: object({
-    username: z.string().min(2, '最少2個字').max(20, '最多20個字'),
+    name: z.string().min(2, '最少2個字').max(20, '最多20個字'),
     nickName: z.string().min(2, '最少2個字').max(20, '最多20個字'),
     email: z
       .string({
