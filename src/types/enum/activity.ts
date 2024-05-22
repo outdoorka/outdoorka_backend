@@ -5,6 +5,7 @@ export enum Region {
   Eastern = '東部',
   Overseas = '海外離島'
 }
+
 export enum City {
   Taipei = '臺北市',
   NewTaipei = '新北市',

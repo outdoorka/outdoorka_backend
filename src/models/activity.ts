@@ -2,11 +2,8 @@ import { Schema, model } from 'mongoose';
 import { Region, City, ActivityTag } from '../types/enum/activity';
 import type { IActivityModel, IActivityLink } from '../types/dto/activity';
 
-const activityLinkLimit = (val: any[]) => {
-  return val.length <= 3;
-};
-
-const activityImageUrlsLimit = (val: any[]) => {
+// 相關 Array 筆數限制
+const activityArrayLimit = (val: any[]) => {
   return val.length <= 5;
 };
 
@@ -18,23 +15,29 @@ const activityLinkSchema = new Schema<IActivityLink>({
 
 const activitySchema = new Schema<IActivityModel>(
   {
-    organizerId: { type: Schema.Types.ObjectId, required: true, ref: 'Organizer' },
-    title: { type: String, required: true, trim: true, maxlength: 100 },
+    organizer: {
+      type: Schema.ObjectId,
+      required: [true, 'organizer 未填寫'],
+      ref: 'Organizer'
+    },
+    title: { type: String, required: [true, 'title 未填寫'], trim: true, maxlength: 100 },
     subtitle: { type: String, trim: true, maxlength: 100 },
-    price: { type: Number, required: true },
-    totalCapacity: { type: Number, required: true },
-    region: { type: String, enum: Object.values(Region), required: true },
-    city: { type: String, enum: Object.values(City), required: true },
-    address: { type: String, required: true, trim: true, maxlength: 100 },
-    location: { type: String, required: true, trim: true, maxlength: 100 },
-    activityDetail: { type: String, required: true, maxlength: 1000 },
-    activityNotice: { type: String, required: true, maxlength: 200 },
-    activityTags: [{ type: String, enum: Object.values(ActivityTag), required: true }],
+    price: { type: Number, required: [true, 'price 未填寫'] },
+    totalCapacity: { type: Number, required: [true, 'totalCapacity 未填寫'] },
+    region: { type: String, enum: Object.values(Region), required: [true, 'region 未填寫'] },
+    city: { type: String, enum: Object.values(City), required: [true, 'city 未填寫'] },
+    address: { type: String, required: [true, 'address 未填寫'], trim: true, maxlength: 100 },
+    location: { type: String, required: [true, 'location 未填寫'], trim: true, maxlength: 100 },
+    activityDetail: { type: String, required: [true, 'activityDetail 未填寫'], maxlength: 1000 },
+    activityNotice: { type: String, required: [true, 'activityNotice 未填寫'], maxlength: 200 },
+    activityTags: [
+      { type: String, enum: Object.keys(ActivityTag), required: [true, 'activityTags 未填寫'] }
+    ],
     activityLinks: [
       {
         type: [activityLinkSchema],
         trim: true,
-        validate: [activityLinkLimit, '{PATH} exceeds the limit of 3']
+        validate: [activityArrayLimit, '{PATH} exceeds the limit of 5']
       }
     ],
     activityImageUrls: [
@@ -42,7 +45,7 @@ const activitySchema = new Schema<IActivityModel>(
         type: [String],
         required: true,
         trim: true,
-        validate: [activityImageUrlsLimit, '{PATH} exceeds the limit of 5']
+        validate: [activityArrayLimit, '{PATH} exceeds the limit of 5']
       }
     ],
     isPublish: { type: Boolean, required: true },
@@ -50,9 +53,9 @@ const activitySchema = new Schema<IActivityModel>(
     activitySignupEndTime: { type: Date, required: true },
     activityStartTime: { type: Date, required: true },
     activityEndTime: { type: Date, required: true },
-    likers: [{ type: [Schema.Types.ObjectId], required: true, ref: 'User' }]
+    likers: [{ type: [Schema.ObjectId], ref: 'User' }]
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 export const ActivityModel = model('Activity', activitySchema);

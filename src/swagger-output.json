@@ -80,7 +80,7 @@
                     },
                     "name": {
                       "type": "string",
-                      "example": "RRRPPP"
+                      "example": "xxxxxx"
                     },
                     "nickName": {
                       "type": "string",
@@ -111,6 +111,15 @@
                     "area": {
                       "type": "string",
                       "example": "Taipei"
+                    },
+                    "pwdAttempts": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "rating": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
                     },
                     "createdAt": {
                       "type": "string",
@@ -607,98 +616,6 @@
         ]
       }
     },
-    "/api/v1/organizer/": {
-      "get": {
-        "tags": [
-          "Organizer"
-        ],
-        "description": "取得 Organizer",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "取得 Organizer",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string",
-                      "example": "xxxxxxxxxxxxxxxxxx"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "xxxxxx@gmail.com"
-                    },
-                    "isActive": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "RRRPPP"
-                    },
-                    "nickName": {
-                      "type": "string",
-                      "example": "RR"
-                    },
-                    "mobile": {
-                      "type": "string",
-                      "example": "0911000000"
-                    },
-                    "photo": {
-                      "type": "string",
-                      "example": "https://thispersondoesnotexist.com/"
-                    },
-                    "profileDetail": {
-                      "type": "string",
-                      "example": "主揪的詳細資料"
-                    },
-                    "profileTags": {
-                      "type": "array",
-                      "example": [
-                        "Camping",
-                        "Hiking"
-                      ],
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "area": {
-                      "type": "string",
-                      "example": "Taipei"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "example": "2024-05-16T06:42:19.740Z"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "example": "2024-05-16T06:42:19.740Z"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
     "/api/v1/organizer/activities": {
       "post": {
         "tags": [
@@ -706,6 +623,11 @@
         ],
         "description": "建立活動",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "post",
             "in": "body",
@@ -732,7 +654,7 @@
                 },
                 "city": {
                   "type": "string",
-                  "example": "台北市"
+                  "example": "臺北市"
                 },
                 "address": {
                   "type": "string",
@@ -811,7 +733,7 @@
         ],
         "responses": {
           "200": {
-            "description": "開通成功回應",
+            "description": "建立成功回應",
             "schema": {
               "type": "object",
               "properties": {
@@ -822,35 +744,64 @@
                       "type": "string",
                       "example": "xxxxxxxxxxxxxxxxxx"
                     },
-                    "email": {
+                    "organizer": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxxxxxx"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "xxxxxx@gmail.com"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://thispersondoesnotexist.com/"
+                        }
+                      }
+                    },
+                    "title": {
                       "type": "string",
-                      "example": "xxxxxx@gmail.com"
+                      "example": "title 最多100個字"
                     },
-                    "isActive": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "name": {
+                    "subtitle": {
                       "type": "string",
-                      "example": "RRRPPP"
+                      "example": "subtitle 最多100個字"
                     },
-                    "nickName": {
+                    "price": {
+                      "type": "number",
+                      "example": 600
+                    },
+                    "totalCapacity": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "region": {
                       "type": "string",
-                      "example": "RR"
+                      "example": "北部"
                     },
-                    "mobile": {
+                    "city": {
                       "type": "string",
-                      "example": "0911000000"
+                      "example": "臺北市"
                     },
-                    "photo": {
+                    "address": {
                       "type": "string",
-                      "example": "https://thispersondoesnotexist.com/"
+                      "example": "address 最多100個字"
                     },
-                    "profileDetail": {
+                    "location": {
                       "type": "string",
-                      "example": "主揪的詳細資料"
+                      "example": "location 最多100個字"
                     },
-                    "profileTags": {
+                    "activityDetail": {
+                      "type": "string",
+                      "example": "activityDetail 最多1000個字"
+                    },
+                    "activityNotice": {
+                      "type": "string",
+                      "example": "activityNotice 最多200個字"
+                    },
+                    "activityTags": {
                       "type": "array",
                       "example": [
                         "Camping",
@@ -860,17 +811,73 @@
                         "type": "string"
                       }
                     },
-                    "area": {
+                    "activityLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "name 最多50個字"
+                            },
+                            "url": {
+                              "type": "string",
+                              "example": "https://www.google.com/"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "664d813a375ad2f7a00e087c"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "activityImageUrls": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "example": [
+                          "https://thispersondoesnotexist.com/"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "isPublish": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "activitySignupStartTime": {
                       "type": "string",
-                      "example": "Taipei"
+                      "example": "2024-05-17T06:39:19.740Z"
+                    },
+                    "activitySignupEndTime": {
+                      "type": "string",
+                      "example": "2024-06-15T06:39:19.740Z"
+                    },
+                    "activityStartTime": {
+                      "type": "string",
+                      "example": "2024-06-17T00:39:19.740Z"
+                    },
+                    "activityEndTime": {
+                      "type": "string",
+                      "example": "2024-06-17T06:39:19.740Z"
+                    },
+                    "likers": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
                     },
                     "createdAt": {
                       "type": "string",
-                      "example": "2024-05-16T06:42:19.740Z"
+                      "example": "2024-05-22T05:23:06.124Z"
                     },
                     "updatedAt": {
                       "type": "string",
-                      "example": "2024-05-16T06:42:19.740Z"
+                      "example": "2024-05-22T05:23:06.124Z"
                     }
                   }
                 }
@@ -1116,7 +1123,7 @@
                 },
                 "photo": {
                   "type": "string",
-                  "example": "https://thispersondoesnotexist.com/"
+                  "example": "https://thispersondoesnotexist.com"
                 },
                 "mobile": {
                   "type": "string",
@@ -1186,7 +1193,7 @@
                     },
                     "photo": {
                       "type": "string",
-                      "example": "https://thispersondoesnotexist.com/"
+                      "example": "https://thispersondoesnotexist.com"
                     },
                     "email": {
                       "type": "string",
@@ -1213,6 +1220,15 @@
                     "area": {
                       "type": "string",
                       "example": ""
+                    },
+                    "rating": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "pwdAttempts": {
+                      "type": "number",
+                      "example": 0
                     },
                     "createdAt": {
                       "type": "string",
@@ -1294,7 +1310,7 @@
                         },
                         "photo": {
                           "type": "string",
-                          "example": "https://thispersondoesnotexist.com/"
+                          "example": "https://thispersondoesnotexist.com"
                         },
                         "email": {
                           "type": "string",

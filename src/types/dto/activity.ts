@@ -2,7 +2,7 @@ import type { Document, SchemaTimestampsConfig, Types } from 'mongoose';
 import type { Region, City, ActivityTag } from '../enum/activity';
 
 export interface IActivityModel extends Document, SchemaTimestampsConfig {
-  organizerId: Types.ObjectId;
+  organizer: Types.ObjectId;
   title: string;
   subtitle: string;
   totalCapacity: number;

@@ -1,4 +1,4 @@
-import type { Document, SchemaTimestampsConfig } from 'mongoose';
+import type { Document, SchemaTimestampsConfig, Types } from 'mongoose';
 import type { ActivityTag } from '../enum/activity';
 
 export interface IOrganizerModel extends Document, SchemaTimestampsConfig {
@@ -17,4 +17,12 @@ export interface IOrganizerModel extends Document, SchemaTimestampsConfig {
     fbUrl: string;
     igUrl: string;
   };
+  rating: IOrganizerRating[];
+  // 密碼錯誤次數
+  pwdAttempts: number;
+}
+
+export interface IOrganizerRating {
+  id: Types.ObjectId;
+  rating: number;
 }

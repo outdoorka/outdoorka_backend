@@ -103,7 +103,7 @@ router.post(
       schema: {
         $name: 'name',
         $nickName: 'nickName',
-        $photo: 'https://thispersondoesnotexist.com/',
+        $photo: 'https://thispersondoesnotexist.com',
         $mobile: '0911000000',
         $email: 'email@gmail.com',
         $profileDetail: '主揪的詳細資料',
@@ -119,12 +119,14 @@ router.post(
           "_id": "xxxxxxxxxxxxxxxxxx",
           "name": "XXX",
           "nickName": 'nickName',
-          "photo": "https://thispersondoesnotexist.com/",
+          "photo": "https://thispersondoesnotexist.com",
           "email": "test@gmail.com",
           "mobile": "0911000000",
           "profileDetail": "主揪的詳細資料",
           "profileTags": ['Camping', 'Hiking'],
           "area": "",
+          "rating": [],
+          "pwdAttempts": 0,
           "createdAt": "2024-05-16T06:50:19.045Z",
           "updatedAt": "2024-05-16T06:50:19.045Z"
         },
@@ -158,7 +160,7 @@ router.post(
             "_id": "xxxxxxxxxxxxxxxxxx",
             "name": "XXX",
             "nickName": 'nickName',
-            "photo": "https://thispersondoesnotexist.com/",
+            "photo": "https://thispersondoesnotexist.com",
             "email": "test@gmail.com",
             "mobile": "0911000000"
           },
