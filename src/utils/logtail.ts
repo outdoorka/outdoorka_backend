@@ -29,26 +29,56 @@ class Logtail {
     }
   }
 
+  /**
+   * @description Log info message
+   * @param message string
+   * @param data Object
+   */
   public info(message: string, data?: any) {
     this.logger?.info(data, message);
   }
 
+  /**
+   * @description Log error message
+   * @param message string
+   * @param data Object
+   */
   public error(message: string, data?: any) {
     this.logger?.error(data, message);
   }
 
+  /**
+   * @description Log warn message
+   * @param message string
+   * @param data Object
+   */
   public warn(message: string, data?: any) {
     this.logger?.warn(data, message);
   }
 
+  /**
+   * @description Log debug message
+   * @param message string
+   * @param data Object
+   */
   public debug(message: string, data?: any) {
     this.logger?.debug(data, message);
   }
 
+  /**
+   * @description Log trace message
+   * @param message string
+   * @param data Object
+   */
   public trace(message: string, data?: any) {
     this.logger?.trace(data, message);
   }
 
+  /**
+   * @description Log fatal message
+   * @param message string
+   * @param data Object
+   */
   public fatal(message: string, data?: any) {
     this.logger?.fatal(data, message);
   }
