@@ -7,8 +7,7 @@ import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
 export const activityController = {
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
     const type = req.query.type;
-    const count = req.query.count;
-    console.log(count);
+
     if (!type) {
       handleAppError(
         400,
