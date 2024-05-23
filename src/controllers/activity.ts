@@ -35,13 +35,12 @@ export const activityController = {
           from: 'organizers', // 關聯的集合名
           localField: 'organizer', // 原集合中的欄位
           foreignField: '_id', // 關聯的 _id
-          as: 'organizerInfo' // 關聯查询结果的输出
+          as: 'organizer' // 關聯查询结果的输出
         }
       },
       {
         $addFields: {
-          organizer: { $arrayElemAt: ['$organizerInfo', 0] },
-          organizerInfo: 1
+          organizer: { $arrayElemAt: ['$organizer', 0] }
         }
       },
       {
@@ -55,7 +54,7 @@ export const activityController = {
           likers: { $size: '$likers' },
           bookedCapacity: 1,
           popularity: { $divide: ['$bookedCapacity', '$totalCapacity'] },
-          organizerInfo: '$organizerInfo'
+          organizerInfo: '$organizer'
         }
       },
       {
@@ -65,6 +64,7 @@ export const activityController = {
         $limit: 10
       }
     ]);
+
     // }
     // if (type === 'NEW') {
     //   activities = await ActivityModel.find()
@@ -81,8 +81,8 @@ export const activityController = {
     if (!activities) {
       handleAppError(
         404,
-        status404Codes[status404Codes.NOT_FOUND_USER],
-        status404Codes.NOT_FOUND_USER,
+        status404Codes[status404Codes.NOT_FOUND_ACTIVITY],
+        status404Codes.NOT_FOUND_ACTIVITY,
         next
       );
       return;
