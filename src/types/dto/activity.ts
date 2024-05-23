@@ -22,6 +22,7 @@ export interface IActivityModel extends Document, SchemaTimestampsConfig {
   activityStartTime: Date;
   activityEndTime: Date;
   likers: Types.ObjectId[];
+  bookedCapacity: number;
 }
 
 export interface IActivityLink {

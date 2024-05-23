@@ -1353,6 +1353,111 @@
           }
         }
       }
+    },
+    "/api/v1/activity/homelist": {
+      "get": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "取得首頁的熱門活動/最新活動資料",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "請填HOT或NEW。HOT(熱門活動),NEW(最新活動)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得首頁的熱門活動/最新活動資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "664cb717ae8e74de4ae74873"
+                      },
+                      "organizerId": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "664caee7ae10d7e7604c4feb"
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "拼圖戶外生活"
+                          },
+                          "photo": {
+                            "type": "string",
+                            "example": "https://static.accupass.com/org/2005260527172844358540.jpg"
+                          }
+                        }
+                      },
+                      "subtitle": {
+                        "type": "string",
+                        "example": "大屯溪古道上小觀音山｜拼圖戶外生活 X 山旅戶外"
+                      },
+                      "region": {
+                        "type": "string",
+                        "example": "Northern"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "Taipei"
+                      },
+                      "activityImageUrls": {
+                        "type": "array",
+                        "example": [
+                          "XXXX",
+                          "XXXX",
+                          "XXXX"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "activityStartTime": {
+                        "type": "string",
+                        "example": "2024-07-10T08:00:00.537Z"
+                      },
+                      "activityEndTime": {
+                        "type": "string",
+                        "example": "1970-01-01T00:00:00.000Z"
+                      },
+                      "likers": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "bookedCapacity": {
+                        "type": "number",
+                        "example": 12
+                      }
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

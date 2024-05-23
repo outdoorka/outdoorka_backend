@@ -17,7 +17,7 @@ export interface IOrganizerModel extends Document, SchemaTimestampsConfig {
     fbUrl: string;
     igUrl: string;
   };
-  rating: IOrganizerRating[];
+  rating: number;
   // 密碼錯誤次數
   pwdAttempts: number;
 }

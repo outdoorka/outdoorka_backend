@@ -53,7 +53,8 @@ export enum status403Codes {
  * @description 404 用戶端錯誤代碼
  */
 export enum status404Codes {
-  'NOT_FOUND_USER' = '找不到使用者' as any
+  'NOT_FOUND_USER' = '找不到使用者' as any,
+  'NOT_FOUND_ACTIVITY' = '找不到活動' as any
 }
 
 /**
