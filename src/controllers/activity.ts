@@ -7,8 +7,8 @@ import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
 export const activityController = {
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
     const type = req.query.type;
-    // const count = req.query.count;
-
+    const count = req.query.count;
+    console.log(count);
     if (!type) {
       handleAppError(
         400,
@@ -30,6 +30,7 @@ export const activityController = {
     }
 
     const activities = await ActivityModel.aggregate([
+      { $match: { isPublish: true } },
       {
         $lookup: {
           from: 'organizers', // 關聯的集合名
@@ -54,9 +55,15 @@ export const activityController = {
           likers: { $size: '$likers' },
           bookedCapacity: 1,
           popularity: { $divide: ['$bookedCapacity', '$totalCapacity'] },
-          organizerInfo: '$organizer'
+          organizer: {
+            _id: '$organizer._id',
+            name: '$organizer.username',
+            photo: '$organizer.photo',
+            rating: '$organizer.rating'
+          }
         }
       },
+
       {
         $sort: type === 'HOT' ? { popularity: -1 } : { activityStartTime: -1 }
       },
@@ -65,20 +72,7 @@ export const activityController = {
       }
     ]);
 
-    // }
-    // if (type === 'NEW') {
-    //   activities = await ActivityModel.find()
-    //     .sort({ activityStartTime: 1 }) // 按活動價格升序排序
-    //     .limit(10)
-    //     .populate({
-    //       path: 'organizer',
-    //       select: 'username photo rating'
-    //     })
-    //     .select(
-    //       'subtitle region city activityImageUrls activityStartTime activityEndTime bookedCapacity likers'
-    //     );
-    // }
-    if (!activities) {
+    if (!activities || activities.length === 0) {
       handleAppError(
         404,
         status404Codes[status404Codes.NOT_FOUND_ACTIVITY],
