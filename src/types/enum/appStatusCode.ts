@@ -20,6 +20,7 @@ export enum status400Codes {
    * 錯誤輸入
    */
   'INVALID_VALUE' = '錯誤輸入' as any,
+  'INVALID_FILE' = '錯誤檔案' as any,
   'UNKNOWN_FIELD' = '提供不明查詢參數或內容時使用' as any,
   'INVALID_TIME' = ' 時間設定異常' as any,
   'INVALID_INPUT' = '輸入資料異常' as any,
@@ -28,7 +29,8 @@ export enum status400Codes {
   'INVALID_REQEST' = '請求失敗' as any,
   'ACCOUNT_NOT_VERIFIED' = '帳號尚未完成驗證' as any,
   'QUERY_FAILED' = 'QS 參數錯誤' as any,
-  'ACCOUNT_LOCKED' = '帳號已被鎖定，請聯繫客服' as any
+  'ACCOUNT_LOCKED' = '帳號已被鎖定，請聯繫客服' as any,
+  'PASSWORD_ATTEMPTS' = '密碼錯誤次數過多，請聯繫客服' as any
 }
 
 /**
@@ -52,7 +54,8 @@ export enum status403Codes {
  * @description 404 用戶端錯誤代碼
  */
 export enum status404Codes {
-  'NOT_FOUND_USER' = '找不到使用者' as any
+  'NOT_FOUND_USER' = '找不到使用者' as any,
+  'NOT_FOUND_ACTIVITY' = '找不到活動' as any
 }
 
 /**
@@ -88,7 +91,8 @@ export enum status500Codes {
   'CREATE_FAILED' = '建立失敗' as any,
   'FETCH_FAILED' = '活動取得失敗' as any,
   'UPDATE_FAILED' = '編輯失敗' as any,
-  'INVALID_PUBLISH' = '發佈異常' as any
+  'INVALID_PUBLISH' = '發佈異常' as any,
+  'UPLOAD_FAILED' = '上傳失敗' as any
 }
 
 export type StatusCodeEnum =

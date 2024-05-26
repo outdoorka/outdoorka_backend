@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
-import { handleAppError, handleResponse } from '../services/handleResponse';
-import { UserModel } from '../models/user';
+import { handleAppError, handleErrorAsync, handleResponse } from '../services/handleResponse';
+import { UserModel, OrganizerModel } from '../models';
 import type { NextFunction, Request, Response } from 'express';
-import { status401Codes } from '../types/enum/appStatusCode';
+import { status400Codes, status401Codes } from '../types/enum/appStatusCode';
 import { type JwtPayloadRequest } from '../types/dto/user';
 
 const ACCESS_TOKEN_SECRET = config.JWT_ACCESS_TOKEN;
@@ -56,7 +56,7 @@ const generatorTokenAndSend = (user: any, res: any) => {
 };
 
 // 驗證 Token
-const isAuth = async (req: Request, res: Response, next: NextFunction) => {
+const isAuth = handleErrorAsync(async (req: Request, res: Response, next: NextFunction) => {
   let token;
   const { authorization } = req.headers;
 
@@ -91,7 +91,7 @@ const isAuth = async (req: Request, res: Response, next: NextFunction) => {
 
   (req as JwtPayloadRequest).user = currentUser;
   next();
-};
+});
 
 // 產生主揪 Token 並回傳
 const generatorOrganizerTokenAndSend = (organizer: any, res: any) => {
@@ -100,7 +100,7 @@ const generatorOrganizerTokenAndSend = (organizer: any, res: any) => {
   const responseData = {
     organizer: {
       _id: organizer._id,
-      username: organizer.username,
+      name: organizer.name,
       nickName: organizer.nickName,
       photo: organizer.photo,
       email: organizer.email,
@@ -116,4 +116,53 @@ const generatorOrganizerTokenAndSend = (organizer: any, res: any) => {
   handleResponse(res, responseData, '登入成功');
 };
 
-export { signAccessToken, generatorTokenAndSend, generatorOrganizerTokenAndSend, isAuth };
+// 驗證主揪 Token
+const isOgAuth = handleErrorAsync(async (req: Request, res: Response, next: NextFunction) => {
+  let token;
+  const { authorization } = req.headers;
+
+  // Check Token exist
+  if (authorization?.startsWith('Bearer')) {
+    token = authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    handleAppError(
+      401,
+      status401Codes[status401Codes.UNAUTHORIZED],
+      status401Codes.UNAUTHORIZED,
+      next
+    );
+    return;
+  }
+
+  // Verify Token
+  const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET) as jwt.JwtPayload;
+  const currentUser = await OrganizerModel.findById(decoded.userId);
+
+  if (!currentUser || !currentUser._id) {
+    handleAppError(
+      401,
+      status401Codes[status401Codes.INVALID_TOKEN],
+      status401Codes.INVALID_TOKEN,
+      next
+    );
+    return;
+  }
+
+  // 驗證是否啟用
+  if (!currentUser.isActive) {
+    handleAppError(
+      401,
+      status400Codes[status400Codes.ACCOUNT_LOCKED],
+      status400Codes.ACCOUNT_LOCKED,
+      next
+    );
+    return;
+  }
+
+  (req as JwtPayloadRequest).user = currentUser;
+  next();
+});
+
+export { signAccessToken, generatorTokenAndSend, generatorOrganizerTokenAndSend, isAuth, isOgAuth };

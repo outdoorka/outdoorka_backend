@@ -26,6 +26,120 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/admin/authorizeAccess": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "description": "開通主揪",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "開通",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "xxxxxxxxxxxxxxxxx"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "email"
+                }
+              },
+              "required": [
+                "id",
+                "email"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "開通成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "xxxxxx@gmail.com"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "xxxxxx"
+                    },
+                    "nickName": {
+                      "type": "string",
+                      "example": "RR"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com/"
+                    },
+                    "profileDetail": {
+                      "type": "string",
+                      "example": "主揪的詳細資料"
+                    },
+                    "profileTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "area": {
+                      "type": "string",
+                      "example": "Taipei"
+                    },
+                    "pwdAttempts": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "rating": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:42:19.740Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-16T06:42:19.740Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/users/all": {
       "get": {
         "tags": [
@@ -502,6 +616,342 @@
         ]
       }
     },
+    "/api/v1/organizer/activities": {
+      "post": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "建立活動",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "body",
+            "description": "輸入活動資訊",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "title 最多100個字"
+                },
+                "subtitle": {
+                  "type": "string",
+                  "example": "subtitle 最多100個字"
+                },
+                "price": {
+                  "type": "number",
+                  "example": 600
+                },
+                "totalCapacity": {
+                  "type": "number",
+                  "example": 20
+                },
+                "city": {
+                  "type": "string",
+                  "example": "臺北市"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "address 最多100個字"
+                },
+                "location": {
+                  "type": "string",
+                  "example": "location 最多100個字"
+                },
+                "activityDetail": {
+                  "type": "string",
+                  "example": "activityDetail 最多1000個字"
+                },
+                "activityNotice": {
+                  "type": "string",
+                  "example": "activityNotice 最多200個字"
+                },
+                "activityTags": {
+                  "type": "array",
+                  "example": [
+                    "Camping",
+                    "Hiking"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "activityLinks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "name 最多50個字"
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "https://www.google.com/"
+                      }
+                    }
+                  }
+                },
+                "activityImageUrls": {
+                  "type": "array",
+                  "example": [
+                    "https://thispersondoesnotexist.com/"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isPublish": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "activitySignupStartTime": {
+                  "type": "string",
+                  "example": "2024-05-17T06:39:19.740Z"
+                },
+                "activitySignupEndTime": {
+                  "type": "string",
+                  "example": "2024-06-15T06:39:19.740Z"
+                },
+                "activityStartTime": {
+                  "type": "string",
+                  "example": "2024-06-17T00:39:19.740Z"
+                },
+                "activityEndTime": {
+                  "type": "string",
+                  "example": "2024-06-17T06:39:19.740Z"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "建立成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "organizer": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxxxxxx"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "xxxxxx@gmail.com"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://thispersondoesnotexist.com/"
+                        }
+                      }
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "title 最多100個字"
+                    },
+                    "subtitle": {
+                      "type": "string",
+                      "example": "subtitle 最多100個字"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 600
+                    },
+                    "totalCapacity": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "region": {
+                      "type": "string",
+                      "example": "北部"
+                    },
+                    "city": {
+                      "type": "string",
+                      "example": "臺北市"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "address 最多100個字"
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "location 最多100個字"
+                    },
+                    "activityDetail": {
+                      "type": "string",
+                      "example": "activityDetail 最多1000個字"
+                    },
+                    "activityNotice": {
+                      "type": "string",
+                      "example": "activityNotice 最多200個字"
+                    },
+                    "activityTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "activityLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "name 最多50個字"
+                            },
+                            "url": {
+                              "type": "string",
+                              "example": "https://www.google.com/"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "664d813a375ad2f7a00e087c"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "activityImageUrls": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "example": [
+                          "https://thispersondoesnotexist.com/"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "isPublish": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "activitySignupStartTime": {
+                      "type": "string",
+                      "example": "2024-05-17T06:39:19.740Z"
+                    },
+                    "activitySignupEndTime": {
+                      "type": "string",
+                      "example": "2024-06-15T06:39:19.740Z"
+                    },
+                    "activityStartTime": {
+                      "type": "string",
+                      "example": "2024-06-17T00:39:19.740Z"
+                    },
+                    "activityEndTime": {
+                      "type": "string",
+                      "example": "2024-06-17T06:39:19.740Z"
+                    },
+                    "likers": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-22T05:23:06.124Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-22T05:23:06.124Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/organizer/imageUpload": {
+      "post": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "上傳圖片",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "formData",
+            "description": "上傳圖片",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "上傳成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "上傳成功"
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://xxxxxxx.com/xxxxxxxxxxxxxxxxxx.jpg"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "上傳成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/register": {
       "post": {
         "tags": [
@@ -623,7 +1073,7 @@
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "email@gmail.com"
+                  "example": "email"
                 },
                 "password": {
                   "type": "string",
@@ -720,7 +1170,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "username": {
+                "name": {
                   "type": "string",
                   "example": "name"
                 },
@@ -730,7 +1180,7 @@
                 },
                 "photo": {
                   "type": "string",
-                  "example": "https://thispersondoesnotexist.com/"
+                  "example": "https://thispersondoesnotexist.com"
                 },
                 "mobile": {
                   "type": "string",
@@ -764,7 +1214,7 @@
                 }
               },
               "required": [
-                "username",
+                "name",
                 "nickName",
                 "photo",
                 "mobile",
@@ -790,7 +1240,7 @@
                       "type": "string",
                       "example": "xxxxxxxxxxxxxxxxxx"
                     },
-                    "username": {
+                    "name": {
                       "type": "string",
                       "example": "XXX"
                     },
@@ -800,7 +1250,7 @@
                     },
                     "photo": {
                       "type": "string",
-                      "example": "https://thispersondoesnotexist.com/"
+                      "example": "https://thispersondoesnotexist.com"
                     },
                     "email": {
                       "type": "string",
@@ -827,6 +1277,15 @@
                     "area": {
                       "type": "string",
                       "example": ""
+                    },
+                    "rating": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "pwdAttempts": {
+                      "type": "number",
+                      "example": 0
                     },
                     "createdAt": {
                       "type": "string",
@@ -868,7 +1327,7 @@
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "email@gmail.com"
+                  "example": "email"
                 },
                 "password": {
                   "type": "string",
@@ -898,7 +1357,7 @@
                           "type": "string",
                           "example": "xxxxxxxxxxxxxxxxxx"
                         },
-                        "username": {
+                        "name": {
                           "type": "string",
                           "example": "XXX"
                         },
@@ -908,7 +1367,7 @@
                         },
                         "photo": {
                           "type": "string",
-                          "example": "https://thispersondoesnotexist.com/"
+                          "example": "https://thispersondoesnotexist.com"
                         },
                         "email": {
                           "type": "string",
@@ -942,6 +1401,111 @@
                 "message": {
                   "type": "string",
                   "example": "登入成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/activity/homelist": {
+      "get": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "取得首頁的熱門活動/最新活動資料",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "請填HOT或NEW。HOT(熱門活動),NEW(最新活動)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得首頁的熱門活動/最新活動資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "664cb717ae8e74de4ae74873"
+                      },
+                      "organizerId": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "664caee7ae10d7e7604c4feb"
+                          },
+                          "username": {
+                            "type": "string",
+                            "example": "拼圖戶外生活"
+                          },
+                          "photo": {
+                            "type": "string",
+                            "example": "https://static.accupass.com/org/2005260527172844358540.jpg"
+                          }
+                        }
+                      },
+                      "subtitle": {
+                        "type": "string",
+                        "example": "大屯溪古道上小觀音山｜拼圖戶外生活 X 山旅戶外"
+                      },
+                      "region": {
+                        "type": "string",
+                        "example": "Northern"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "Taipei"
+                      },
+                      "activityImageUrls": {
+                        "type": "array",
+                        "example": [
+                          "XXXX",
+                          "XXXX",
+                          "XXXX"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "activityStartTime": {
+                        "type": "string",
+                        "example": "2024-07-10T08:00:00.537Z"
+                      },
+                      "activityEndTime": {
+                        "type": "string",
+                        "example": "1970-01-01T00:00:00.000Z"
+                      },
+                      "likers": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "bookedCapacity": {
+                        "type": "number",
+                        "example": 12
+                      }
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
                 }
               },
               "xml": {

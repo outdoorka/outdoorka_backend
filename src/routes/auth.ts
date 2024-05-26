@@ -61,7 +61,7 @@ router.post(
       description: '登入',
       required: true,
       schema: {
-        $email: 'email@gmail.com',
+        $email: 'email',
         $password: 'password'
       }
     }
@@ -94,18 +94,16 @@ router.post(
   '/organizer/register',
   validateBody(ogRegistrationSchema),
   /**
-   * #swagger.tags = ['Organizer Auth']
-   * #swagger.description = '主揪註冊'
-   */
-  /*
+    #swagger.tags = ['Organizer Auth']
+    #swagger.description = '主揪註冊'
     #swagger.parameters['post'] = {
       in: 'body',
       description: '主揪註冊',
       required: true,
       schema: {
-        $username: 'name',
+        $name: 'name',
         $nickName: 'nickName',
-        $photo: 'https://thispersondoesnotexist.com/',
+        $photo: 'https://thispersondoesnotexist.com',
         $mobile: '0911000000',
         $email: 'email@gmail.com',
         $profileDetail: '主揪的詳細資料',
@@ -119,14 +117,16 @@ router.post(
       schema: {
         "data": {
           "_id": "xxxxxxxxxxxxxxxxxx",
-          "username": "XXX",
+          "name": "XXX",
           "nickName": 'nickName',
-          "photo": "https://thispersondoesnotexist.com/",
+          "photo": "https://thispersondoesnotexist.com",
           "email": "test@gmail.com",
           "mobile": "0911000000",
           "profileDetail": "主揪的詳細資料",
           "profileTags": ['Camping', 'Hiking'],
           "area": "",
+          "rating": [],
+          "pwdAttempts": 0,
           "createdAt": "2024-05-16T06:50:19.045Z",
           "updatedAt": "2024-05-16T06:50:19.045Z"
         },
@@ -141,16 +141,14 @@ router.post(
   '/organizer/login',
   validateBody(ogLoginSchema),
   /**
-   * #swagger.tags = ['Organizer Auth']
-   * #swagger.description = '主揪登入'
-   */
-  /*
+    #swagger.tags = ['Organizer Auth']
+    #swagger.description = '主揪登入'
     #swagger.parameters['post'] = {
       in: 'body',
       description: '登入',
       required: true,
       schema: {
-        $email: 'email@gmail.com',
+        $email: 'email',
         $password: 'password'
       }
     }
@@ -160,9 +158,9 @@ router.post(
         "data": {
           "organizer": {
             "_id": "xxxxxxxxxxxxxxxxxx",
-            "username": "XXX",
+            "name": "XXX",
             "nickName": 'nickName',
-            "photo": "https://thispersondoesnotexist.com/",
+            "photo": "https://thispersondoesnotexist.com",
             "email": "test@gmail.com",
             "mobile": "0911000000"
           },
