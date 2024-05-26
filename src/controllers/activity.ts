@@ -3,6 +3,7 @@ import type { NextFunction, Request, Response } from 'express';
 import { ActivityModel } from '../models';
 
 import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
+import { getActivityListSchema, type GetActivityListInput } from '../validate/activitiesSchemas';
 
 export const activityController = {
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -82,5 +83,26 @@ export const activityController = {
     }
 
     handleResponse(res, activities, '取得成功');
+  },
+  async getActivityList(
+    req: Request<{}, {}, GetActivityListInput>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const parsedQuery = getActivityListSchema.safeParse(req);
+    let parsedData: Record<string, any>;
+    if (parsedQuery.success) {
+      parsedData = parsedQuery.data.query;
+    } else {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_VALUE],
+        status400Codes.INVALID_VALUE,
+        next
+      );
+      return;
+    }
+    console.log('parsedData', parsedData);
+    handleResponse(res, [], '取得成功');
   }
 };

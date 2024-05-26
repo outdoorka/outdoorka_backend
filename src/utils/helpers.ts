@@ -1,5 +1,4 @@
-import { City, Region } from '../types/enum/activity';
-
+import { City, Region, ActivityTag } from '../types/enum/activity';
 /**
  * 檢查是否為 string
  * @param input
@@ -65,4 +64,18 @@ export function convertCityToArea(city: string = ''): Region {
   }
 
   return region;
+}
+
+/**
+ * 檢查是否字串包含的為有效的活動主題，並以逗號分隔
+ * @param theme
+ * @returns boolean
+ */
+export function isValidTheme(theme: string | null): boolean {
+  if (theme === null) {
+    return true;
+  }
+
+  const themes = theme.split(',') as ActivityTag[]; // Cast the array elements to ActivityTag type
+  return themes.every((t) => Object.values(ActivityTag).includes(t));
 }
