@@ -616,6 +616,125 @@
         ]
       }
     },
+    "/api/v1/users/imageUpload": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "上傳圖片",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "formData",
+            "description": "上傳圖片",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "上傳成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "上傳成功"
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://xxxxxxx.com/xxxxxxxxxxxxxxxxxx.jpg"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "上傳成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/organizer/profile": {
+      "get": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "取得主揪資料",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "主揪資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "nickName": {
+                      "type": "string",
+                      "example": "nickName"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "test@gmail.com"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/organizer/activities": {
       "post": {
         "tags": [
