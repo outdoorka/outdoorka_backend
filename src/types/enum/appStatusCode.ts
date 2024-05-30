@@ -80,7 +80,9 @@ export enum status422Codes {
   'UNPROCESSABLE_CONTENT' = '格式不正確' as any,
   'INVALID_FORMAT' = '無效格式' as any,
   'UNPROCESSABLE_ENTITY' = '請求的格式錯誤，伺服器無法處理所包含的指令' as any,
-  'WORDS_EXCEEDS' = '字數超過限制' as any
+  'WORDS_EXCEEDS' = '字數超過限制' as any,
+  'INVALID_STARTENDTIME' = '活動時間不正確' as any,
+  'INVALID_SIGNUPTIME' = '活動報名時間不正確' as any
 }
 
 /**
