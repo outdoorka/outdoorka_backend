@@ -152,7 +152,7 @@ export const activityController = {
       bookedCapacity: activity.bookedCapacity,
       remainingCapacity: activity.totalCapacity - activity.bookedCapacity,
       organizer: activity.organizer,
-      isLiked: isLiked
+      isLiked
     };
 
     handleResponse(res, finalRes, '取得成功');
