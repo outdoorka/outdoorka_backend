@@ -152,4 +152,28 @@ router.post(
   handleErrorAsync(commonController.imageUpload)
 );
 
+// 主揪刪除圖片
+router.delete(
+  '/image',
+  isOgAuth,
+  /**
+    #swagger.tags = ['Organizer']
+    #swagger.security = [{ "bearerAuth": [] }]
+    #swagger.description = '刪除圖片'
+    #swagger.parameters['fileName'] = {
+        in: 'query',
+        description: '刪除圖片',
+        required: true
+      }
+    #swagger.responses[200] = {
+      description: '成功回應',
+      schema: {
+        "data": null,
+        "message": "刪除成功"
+      }
+    }
+  */
+  commonController.imageDelete
+);
+
 export default router;

@@ -1,7 +1,8 @@
 import { handleAppError, handleResponse } from '../../services/handleResponse';
 import { ActivityModel, OrganizerModel } from '../../models';
-import { status404Codes, status500Codes } from '../../types/enum/appStatusCode';
+import { status404Codes, status422Codes, status500Codes } from '../../types/enum/appStatusCode';
 import { convertCityToArea } from '../../utils/helpers';
+import dayjs from 'dayjs';
 
 import type { NextFunction, Request, Response } from 'express';
 import { type JwtPayloadRequest } from '../../types/dto/user';
@@ -52,6 +53,32 @@ export const organizerController = {
         404,
         status404Codes[status404Codes.NOT_FOUND_USER],
         status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
+    }
+
+    // 判斷活動的結束時間必須在開始時間之後
+    const activityStartTime = dayjs(req.body.activityStartTime);
+    const activityEndTime = dayjs(req.body.activityEndTime);
+    if (activityEndTime.isBefore(activityStartTime)) {
+      handleAppError(
+        422,
+        status422Codes[status422Codes.INVALID_STARTENDTIME],
+        status422Codes.INVALID_STARTENDTIME,
+        next
+      );
+      return;
+    }
+
+    // 判斷活動報名的開始時間必須在活動報名的結束時間之前，並且活動報名的結束時間必須在活動開始時間之前
+    const signupStartTime = dayjs(req.body.activitySignupStartTime);
+    const signupEndTime = dayjs(req.body.activitySignupEndTime);
+    if (signupEndTime.isBefore(signupStartTime) || signupStartTime.isAfter(activityStartTime)) {
+      handleAppError(
+        422,
+        status422Codes[status422Codes.INVALID_SIGNUPTIME],
+        status422Codes.INVALID_SIGNUPTIME,
         next
       );
       return;

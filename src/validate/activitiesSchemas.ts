@@ -7,13 +7,13 @@ const activityEnumValue: string[] = Object.keys(ActivityTag);
 
 export const createActivitySchema = z.object({
   body: object({
-    title: z.string().min(2, 'title 為 2~100 個字').max(100, 'title 為 2~100 個字'),
-    subtitle: z.string().max(100, 'subtitle 最多 100 個字'),
-    price: z.number().int().positive('價格必須為正整數'),
-    totalCapacity: z.number().int().positive('總人數必須為正整數'),
+    title: z.string().min(2, '活動主標題為 2~100 個字').max(100, 'title 為 2~100 個字'),
+    subtitle: z.string().max(100, '活動副標題為最多 100 個字'),
+    price: z.number().int().positive('價格必須為大於0'),
+    totalCapacity: z.number().int().positive('總人數必須為大於0'),
     city: z.nativeEnum(City),
     address: z.string().min(1, '活動地址為 2~100 個字').max(100, '活動地址為 2~100 個字'),
-    location: z.string().min(2, '集合地點 為 2~100 個字').max(100, '集合地點 為 2~100 個字'),
+    location: z.string().min(2, '集合地點為 2~100 個字').max(100, '集合地點 為 2~100 個字'),
     activityDetail: z.string().min(2, '活動介紹為 2~1000 個字').max(1000, '活動介紹為 2~1000 個字'),
     activityNotice: z.string().min(2, '注意事項為 2~200 個字').max(200, '注意事項為 2~200 個字'),
     activityTags: z
