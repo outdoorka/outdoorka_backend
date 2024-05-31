@@ -1071,6 +1071,51 @@
         ]
       }
     },
+    "/api/v1/organizer/image": {
+      "delete": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "刪除圖片",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "fileName",
+            "in": "query",
+            "description": "刪除圖片",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {},
+                "message": {
+                  "type": "string",
+                  "example": "刪除成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/register": {
       "post": {
         "tags": [

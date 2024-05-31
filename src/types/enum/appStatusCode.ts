@@ -94,7 +94,8 @@ export enum status500Codes {
   'FETCH_FAILED' = '活動取得失敗' as any,
   'UPDATE_FAILED' = '編輯失敗' as any,
   'INVALID_PUBLISH' = '發佈異常' as any,
-  'UPLOAD_FAILED' = '上傳失敗' as any
+  'UPLOAD_FAILED' = '上傳失敗' as any,
+  'DELETE_FAILED' = '刪除失敗' as any
 }
 
 export type StatusCodeEnum =
