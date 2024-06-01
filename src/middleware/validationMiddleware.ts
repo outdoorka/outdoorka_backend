@@ -36,6 +36,7 @@ export function validateBody<T extends AnyZodObject>(schema: T) {
           next
         );
       } else {
+        console.error('validateBody Error:', error);
         handleAppError(
           500,
           status500Codes[status500Codes.SERVER_ERROR],

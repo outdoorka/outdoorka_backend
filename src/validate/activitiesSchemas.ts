@@ -1,9 +1,19 @@
 import { HttpUrl } from '../utils/regexs';
-import { ActivityTag, City } from '../types/enum/activity';
+import { ActivityTag, City, Region } from '../types/enum/activity';
 import { type TypeOf, z, object } from 'zod';
+import { Types } from 'mongoose';
 
 // 將 ActivityTag 的 enum 轉成 string[]，要確保 enum 的值都是 string 並有值
 const activityEnumValue: string[] = Object.keys(ActivityTag);
+const regionEnumValue: string[] = Object.keys(Region);
+const sortEnumValue = [
+  'date_asc',
+  'date_desc',
+  'rating_asc',
+  'rating_desc',
+  'capacity_asc',
+  'capacity_desc'
+];
 
 export const createActivitySchema = z.object({
   body: object({
@@ -47,4 +57,81 @@ export const createActivitySchema = z.object({
   })
 });
 
+const defaultEndDate = new Date(new Date().setMonth(new Date().getMonth() + 1));
+
+export const getActivityListSchema = z.object({
+  query: object({
+    perPage: z
+      .string()
+      .optional()
+      .default('10')
+      .transform((val) => Number(val))
+      .refine((val) => Number.isInteger(val) && val > 0, {
+        message: 'perPage must be a positive integer',
+        path: ['perPage']
+      }),
+    cursor: z.string().optional().nullable(),
+    // .transform((val) => (val ? new Types.ObjectId(val) : null)),
+    direction: z.enum(['forward', 'backward']).optional().default('forward'),
+    startTime: z
+      .string()
+      .optional()
+      .default(() => new Date().toISOString())
+      .transform((val) => new Date(val)),
+    endTime: z
+      .string()
+      .optional()
+      .default(() => defaultEndDate.toISOString())
+      .transform((val) => new Date(val)),
+    theme: z
+      .string()
+      .nullable()
+      .optional()
+      .transform((val) => (val ? val.split(',') : null))
+      .refine(
+        (val) =>
+          val === null ||
+          val.every((item) => activityEnumValue.includes(item), {
+            message: `theme must be a item of: ${activityEnumValue.join(',')})`,
+            path: ['theme']
+          })
+      ),
+    region: z
+      .string()
+      .nullable()
+      .optional()
+      .transform((val) => (val ? val.split(',') : null))
+      .refine((val) => val === null || val.every((item) => regionEnumValue.includes(item)), {
+        message: `region must be a item of: ${regionEnumValue.join(',')})`,
+        path: ['region']
+      }),
+    capacity: z
+      .string()
+      .optional()
+      .transform((val) => (val ? Number(val) : null))
+      .refine((val) => val === null || [1, 2, 3, 4, 5].includes(val), {
+        message: 'capacity must be in 1-5',
+        path: ['capacity']
+      }),
+    organizerId: z
+      .string()
+      .optional()
+      .nullable()
+      .transform((val) => (val ? new Types.ObjectId(val) : null)),
+    keyword: z
+      .string()
+      .optional()
+      .nullable()
+      .transform((val) => (val ? val.trim() : null)),
+    sort: z
+      .string()
+      .optional()
+      .default('date_asc')
+      .refine((value) => sortEnumValue.includes(value), {
+        message: `sort value must be one of: ${sortEnumValue.join(',')})`
+      })
+  })
+});
+
 export type CreateActivitySchemaInput = TypeOf<typeof createActivitySchema>['body'];
+export type GetActivityListInput = TypeOf<typeof getActivityListSchema>['query'];

@@ -1680,6 +1680,168 @@
         }
       }
     },
+    "/api/v1/activity/list": {
+      "get": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "取得活動列表清單",
+        "responses": {
+          "200": {
+            "description": "成功取得活動列表清單",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "664cb717ae8e74de4ae74882"
+                      },
+                      "organizer": {
+                        "type": "string",
+                        "example": "664ca866ae10d7e7604c4fe7"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "大屯溪古道上小觀音山｜戶外生活 X 山旅戶外"
+                      },
+                      "subtitle": {
+                        "type": "string",
+                        "example": "大屯溪古道上小觀音山｜戶外生活 X 山旅戶外"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": 600
+                      },
+                      "totalCapacity": {
+                        "type": "number",
+                        "example": 20
+                      },
+                      "region": {
+                        "type": "string",
+                        "example": "北部"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "新北市"
+                      },
+                      "address": {
+                        "type": "string",
+                        "example": "address 最多100個字"
+                      },
+                      "location": {
+                        "type": "string",
+                        "example": "location 最多100個字"
+                      },
+                      "activityDetail": {
+                        "type": "string",
+                        "example": "activityDetail 最多1000個字"
+                      },
+                      "activityNotice": {
+                        "type": "string",
+                        "example": "activityNotice 最多200個字"
+                      },
+                      "activityTags": {
+                        "type": "array",
+                        "example": [
+                          "Camping",
+                          "Hiking"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "activityLinks": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "name 最多50個字123ewq"
+                            },
+                            "url": {
+                              "type": "string",
+                              "example": "https://www.google.com/"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "664da320952a06a2b9c25e03"
+                            }
+                          }
+                        }
+                      },
+                      "activityImageUrls": {
+                        "type": "array",
+                        "example": [
+                          "https://media.istockphoto.com/id/891408558/photo/male-and-woman-couples-asia-travelers-travel-nature-forests-mountains-waterfalls.jpg?s=612x612&w=0&k=20&c=_lZBEwoNODR8NcgmLSvHTF79o6eQGNWY6dejpD9PvOs=",
+                          "https://media.istockphoto.com/id/648802984/photo/businessman-with-backpack-and-laptop-and-phone-at-waterfall-the-forest.jpg?s=612x612&w=0&k=20&c=73imKgvhulPgnskKTcwdKgnZueP07dmnj_u--JB0qyw=",
+                          "https://media.istockphoto.com/id/481072273/photo/rainforest.jpg?s=612x612&w=0&k=20&c=HK0t1fI4-LPgCQKzFeMpVW0LvwTn91Paq52c0HfE1OM="
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "isPublish": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "activitySignupStartTime": {
+                        "type": "string",
+                        "example": "2024-05-05T00:00:00.537Z"
+                      },
+                      "activitySignupEndTime": {
+                        "type": "string",
+                        "example": "2024-05-30T10:00:00.000Z"
+                      },
+                      "activityStartTime": {
+                        "type": "string",
+                        "example": "2024-06-09T01:00:00.537Z"
+                      },
+                      "activityEndTime": {
+                        "type": "string",
+                        "example": "2024-06-09T12:00:00.000Z"
+                      },
+                      "likers": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "example": [
+                            "662e50040c6ea78849fae82f"
+                          ],
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-05-22T07:47:44.839Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-05-22T07:47:44.839Z"
+                      },
+                      "bookedCapacity": {
+                        "type": "number",
+                        "example": 18
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/activity/{id}": {
       "get": {
         "tags": [

@@ -23,7 +23,7 @@ import userRouter from './routes/user';
 import adminRouter from './routes/admin';
 import authRouter from './routes/auth';
 import organizerRouter from './routes/organizer';
-import activity from './routes/activity';
+import activityRouter from './routes/activity';
 
 // const USER_BASE_URL = '/api/v1';
 // const ORGANIZER_BASE_URL = '/api/v1/organizer';
@@ -59,7 +59,7 @@ app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/organizer', organizerRouter);
 app.use('/api/v1', authRouter);
-app.use('/api/v1/activity', activity);
+app.use('/api/v1/activity', activityRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 

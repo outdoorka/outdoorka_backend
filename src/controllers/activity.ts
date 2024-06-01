@@ -3,7 +3,13 @@ import type { NextFunction, Request, Response } from 'express';
 import { ActivityModel, UserModel } from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
 import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
-import { Types } from 'mongoose';
+import { getActivityListSchema, type GetActivityListInput } from '../validate/activitiesSchemas';
+import { type SortOrder, Types } from 'mongoose';
+import {
+  mapCapacityScaleToRange,
+  transformedCursor,
+  generateCursor
+} from '../services/handleActivityList';
 
 export const activityController = {
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -109,7 +115,6 @@ export const activityController = {
       );
       return;
     }
-
     const activity = await ActivityModel.findById(activityId).populate({
       path: 'organizer',
       select: 'name, email photo rating socialMediaUrls'
@@ -156,5 +161,117 @@ export const activityController = {
     };
 
     handleResponse(res, finalRes, '取得成功');
+  },
+  async getActivityList(
+    req: Request<{}, {}, GetActivityListInput>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const parsedQuery = getActivityListSchema.safeParse(req);
+    let parsedQueryInput: Record<string, any> = {};
+    if (parsedQuery.success) {
+      parsedQueryInput = parsedQuery.data.query;
+    } else {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_VALUE],
+        status400Codes.INVALID_VALUE,
+        next
+      );
+    }
+    const activitiesTimeQuery = {
+      activityStartTime: { $gte: parsedQueryInput.startTime, $lte: parsedQueryInput.endTime }
+    };
+    const query = {
+      ...(parsedQueryInput.startTime && parsedQueryInput.endTime ? activitiesTimeQuery : {}),
+      ...(parsedQueryInput.theme ? { theme: { $in: parsedQueryInput.theme } } : {}),
+      ...(parsedQueryInput.region ? { region: { $in: parsedQueryInput.region } } : {}),
+      ...(parsedQueryInput.capacity
+        ? mapCapacityScaleToRange(parsedQueryInput.capacity)
+          ? { totalCapacity: mapCapacityScaleToRange(parsedQueryInput.capacity) }
+          : {}
+        : {}),
+      ...(parsedQueryInput.organizerId ? { organizerId: parsedQueryInput.organizerId } : {}),
+      ...(parsedQueryInput.keyword
+        ? { title: { $regex: parsedQueryInput.keyword, $options: 'i' } }
+        : {})
+    };
+    const sortFieldMapping: Record<string, string> = {
+      date: 'activityStartTime',
+      rating: 'averageRating',
+      capacity: 'totalCapacity'
+    };
+    const [field, order] = parsedQueryInput.sort.split('_');
+    const mappedField = sortFieldMapping[field];
+    const sort: Record<string, SortOrder> = { [mappedField]: order === 'asc' ? 1 : -1, _id: 1 };
+
+    const aggregateCondition: any = [
+      { $match: { ...query, isPublish: true } },
+      {
+        $lookup: {
+          from: 'organizerratings', // 注意這邊是DB的collection名稱(小寫且加s) 不是model名稱
+          localField: '_id',
+          foreignField: 'activityId',
+          as: 'ratings'
+        }
+      },
+      {
+        $addFields: {
+          averageRating: { $ifNull: [{ $avg: '$ratings.rating' }, 0] },
+          likeCount: { $size: '$likers' }
+        }
+      },
+      { $sort: sort as Record<string, 1 | -1> }
+    ];
+
+    // Pagination logic
+    const cursor = parsedQueryInput.cursor;
+    const perPage = parsedQueryInput.perPage;
+    const direction = parsedQueryInput.direction;
+    let directionOperator;
+    if (cursor) {
+      let cursorValue;
+      let cursorObjectId;
+      try {
+        ({ cursorValue, cursorObjectId } = transformedCursor(field, cursor));
+      } catch (error) {
+        console.error('CursorId is not a valid value');
+        handleAppError(
+          400,
+          status400Codes[status400Codes.INVALID_VALUE],
+          status400Codes.INVALID_VALUE,
+          next
+        );
+      }
+      const cursorDirectionOperator = direction === 'forward' ? '$gt' : '$lt';
+      if (order === 'asc') {
+        directionOperator = direction === 'forward' ? '$gte' : '$lte';
+      } else {
+        directionOperator = direction === 'forward' ? '$lte' : '$gte';
+      }
+      aggregateCondition.push({
+        $match: {
+          $and: [
+            { [mappedField]: { [directionOperator]: cursorValue } },
+            { _id: { [cursorDirectionOperator]: cursorObjectId } }
+          ]
+        }
+      });
+    }
+    const perPagePlusOne = perPage + 1;
+    const activities = await ActivityModel.aggregate(aggregateCondition).limit(perPagePlusOne);
+
+    const hasNextPage = activities.length === perPagePlusOne;
+    if (hasNextPage) {
+      // Remove the extra element
+      activities.pop();
+    }
+    const startCursor = activities.length > 0 ? generateCursor(activities[0], mappedField) : null;
+    const endCursor =
+      activities.length > 0 ? generateCursor(activities[activities.length - 1], mappedField) : null;
+    const hasPrevPage = !!cursor;
+
+    const pageInfo = { hasNextPage, hasPrevPage, startCursor, endCursor };
+    handleResponse(res, activities, '取得成功', pageInfo);
   }
 };
