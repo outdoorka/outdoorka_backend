@@ -4,10 +4,16 @@ import type { StatusCodeEnum } from '../types/enum/appStatusCode';
 import logtail from '../utils/logtail';
 
 // 回傳成功
-export const handleResponse = <T>(res: Response, data: T, message: string = ''): void => {
+export const handleResponse = <T>(
+  res: Response,
+  data: T,
+  message: string = '',
+  pageInfo?: Record<string, any>
+): void => {
   res.json({
     data,
-    message
+    message,
+    pageInfo
   });
 };
 

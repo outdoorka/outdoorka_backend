@@ -5,7 +5,11 @@ import { type JwtPayloadRequest } from '../types/dto/user';
 import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
 import { getActivityListSchema, type GetActivityListInput } from '../validate/activitiesSchemas';
 import { type SortOrder, Types } from 'mongoose';
-import { mapCapacityScaleToRange, transformedCursor } from '../services/handleActivityList';
+import {
+  mapCapacityScaleToRange,
+  transformedCursor,
+  generateCursor
+} from '../services/handleActivityList';
 
 export const activityController = {
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -224,7 +228,7 @@ export const activityController = {
     const cursor = parsedQueryInput.cursor;
     const perPage = parsedQueryInput.perPage;
     const direction = parsedQueryInput.direction;
-
+    let directionOperator;
     if (cursor) {
       let cursorValue;
       let cursorObjectId;
@@ -239,7 +243,6 @@ export const activityController = {
           next
         );
       }
-      let directionOperator;
       const cursorDirectionOperator = direction === 'forward' ? '$gt' : '$lt';
       if (order === 'asc') {
         directionOperator = direction === 'forward' ? '$gte' : '$lte';
@@ -255,9 +258,20 @@ export const activityController = {
         }
       });
     }
+    const perPagePlusOne = perPage + 1;
+    const activities = await ActivityModel.aggregate(aggregateCondition).limit(perPagePlusOne);
 
-    aggregateCondition.push({ $limit: perPage } as any);
-    const activities = await ActivityModel.aggregate(aggregateCondition);
-    handleResponse(res, activities, '取得成功');
+    const hasNextPage = activities.length === perPagePlusOne;
+    if (hasNextPage) {
+      // Remove the extra element
+      activities.pop();
+    }
+    const startCursor = activities.length > 0 ? generateCursor(activities[0], mappedField) : null;
+    const endCursor =
+      activities.length > 0 ? generateCursor(activities[activities.length - 1], mappedField) : null;
+    const hasPrevPage = !!cursor;
+
+    const pageInfo = { hasNextPage, hasPrevPage, startCursor, endCursor };
+    handleResponse(res, activities, '取得成功', pageInfo);
   }
 };
