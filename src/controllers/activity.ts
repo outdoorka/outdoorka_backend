@@ -4,7 +4,8 @@ import { ActivityModel, UserModel } from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
 import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
 import { getActivityListSchema, type GetActivityListInput } from '../validate/activitiesSchemas';
-import { Types } from 'mongoose';
+import { type SortOrder, Types } from 'mongoose';
+import { mapCapacityScaleToRange } from '../services/handleActivityList';
 
 export const activityController = {
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -163,9 +164,9 @@ export const activityController = {
     next: NextFunction
   ): Promise<void> {
     const parsedQuery = getActivityListSchema.safeParse(req);
-    let parsedData: Record<string, any> = {};
+    let parsedQueryInput: Record<string, any> = {};
     if (parsedQuery.success) {
-      parsedData = parsedQuery.data.query;
+      parsedQueryInput = parsedQuery.data.query;
     } else {
       handleAppError(
         400,
@@ -174,7 +175,50 @@ export const activityController = {
         next
       );
     }
-    console.log('parsedData', parsedData);
-    handleResponse(res, [], '取得成功');
+    const activitiesTimeQuery = {
+      activityStartTime: { $gte: parsedQueryInput.startTime, $lte: parsedQueryInput.endTime }
+    };
+    const query = {
+      ...(parsedQueryInput.startTime && parsedQueryInput.endTime ? activitiesTimeQuery : {}),
+      ...(parsedQueryInput.theme ? { theme: { $in: parsedQueryInput.theme } } : {}),
+      ...(parsedQueryInput.region ? { region: { $in: parsedQueryInput.region } } : {}),
+      ...(parsedQueryInput.capacity
+        ? mapCapacityScaleToRange(parsedQueryInput.capacity)
+          ? { totalCapacity: mapCapacityScaleToRange(parsedQueryInput.capacity) }
+          : {}
+        : {}),
+      ...(parsedQueryInput.organizerId ? { organizerId: parsedQueryInput.organizerId } : {}),
+      ...(parsedQueryInput.keyword
+        ? { title: { $regex: parsedQueryInput.keyword, $options: 'i' } }
+        : {})
+    };
+    const sortFieldMapping: Record<string, string> = {
+      date: 'activityStartTime',
+      rating: 'averageRating',
+      price: 'price'
+    };
+    const [field, order] = parsedQueryInput.sort.split('_');
+    const mappedField = sortFieldMapping[field];
+    const sort: Record<string, SortOrder> = { [mappedField]: order === 'asc' ? 1 : -1 };
+    const activities = await ActivityModel.aggregate([
+      { $match: { ...query, isPublish: true } },
+      {
+        $lookup: {
+          from: 'organizerratings', // 注意這邊是DB的collection名稱(小寫且加s) 不是model名稱
+          localField: '_id',
+          foreignField: 'activityId',
+          as: 'ratings'
+        }
+      },
+      {
+        $addFields: {
+          averageRating: { $ifNull: [{ $avg: '$ratings.rating' }, 0] },
+          likeCount: { $size: '$likers' }
+        }
+      },
+      { $sort: sort as Record<string, 1 | -1> },
+      { $limit: parsedQueryInput.perPage }
+    ]);
+    handleResponse(res, activities, '取得成功');
   }
 };

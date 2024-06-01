@@ -1,8 +1,7 @@
-export function mapCapacityScaleToRange(capacityScale: string | number): {
+export function mapCapacityScaleToRange(capacityScale: number): {
   $gte: number;
   $lte?: number;
 } | null {
-  capacityScale = typeof capacityScale === 'number' ? capacityScale : parseInt(capacityScale, 10);
   switch (capacityScale) {
     case 1:
       return { $gte: 0, $lte: 10 };

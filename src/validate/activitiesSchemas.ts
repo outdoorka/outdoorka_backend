@@ -90,17 +90,21 @@ export const getActivityListSchema = z.object({
       .string()
       .nullable()
       .optional()
-      .transform((val) => (val ? val.split(',') : []))
-      .refine((val) => val.every((item) => activityEnumValue.includes(item)), {
-        message: `theme must be a item of: ${activityEnumValue.join(',')})`,
-        path: ['theme']
-      }),
+      .transform((val) => (val ? val.split(',') : null))
+      .refine(
+        (val) =>
+          val === null ||
+          val.every((item) => activityEnumValue.includes(item), {
+            message: `theme must be a item of: ${activityEnumValue.join(',')})`,
+            path: ['theme']
+          })
+      ),
     region: z
       .string()
       .nullable()
       .optional()
-      .transform((val) => (val ? val.split(',') : []))
-      .refine((val) => val.every((item) => regionEnumValue.includes(item)), {
+      .transform((val) => (val ? val.split(',') : null))
+      .refine((val) => val === null || val.every((item) => regionEnumValue.includes(item)), {
         message: `region must be a item of: ${regionEnumValue.join(',')})`,
         path: ['region']
       }),
@@ -124,12 +128,10 @@ export const getActivityListSchema = z.object({
       .transform((val) => (val ? val.trim() : null)),
     sort: z
       .string()
-      .nullable()
       .optional()
-      .transform((val) => (val ? val.split(',') : ['date_asc']))
-      .refine((val) => val.every((item) => sortEnumValue.includes(item)), {
-        message: `sort must be a item of: ${sortEnumValue.join(',')})`,
-        path: ['sort']
+      .default('date_asc')
+      .refine((value) => sortEnumValue.includes(value), {
+        message: `sort value must be one of: ${sortEnumValue.join(',')})`
       })
   })
 });
