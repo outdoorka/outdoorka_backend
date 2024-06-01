@@ -1116,6 +1116,37 @@
         ]
       }
     },
+    "/api/v1/organizer/{id}/activities": {
+      "post": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "主揪角度-取得活動詳細資料",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/register": {
       "post": {
         "tags": [
