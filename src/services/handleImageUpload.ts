@@ -63,7 +63,26 @@ export const handleImageUpload = async (file: Express.Multer.File, fileName: str
 };
 
 /**
- * 圖片上傳處理
+ * 圖片刪除處理
+ * @param fileName
+ * @returns
+ */
+export const handleImageDelete = async (fileName: string) => {
+  return await new Promise((resolve, reject) => {
+    const blob = bucket.file(fileName);
+    blob
+      .delete()
+      .then(() => {
+        resolve('刪除成功');
+      })
+      .catch((err) => {
+        reject(new Error(err.message || '刪除失敗'));
+      });
+  });
+};
+
+/**
+ * 圖片檔案處理
  * @param file Express.Multer.File
  * @returns Promise<Buffer>
  */
@@ -79,7 +98,7 @@ export const imageOptimize = async (file: Express.Multer.File): Promise<Buffer> 
           resolve(bufferData);
         })
         .catch(() => {
-          reject(new Error('圖片上傳失敗'));
+          reject(new Error('圖片處理失敗'));
         });
     }
   });

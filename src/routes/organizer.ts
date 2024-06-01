@@ -1,11 +1,38 @@
 import express from 'express';
-import { organizerController } from '../controllers';
+import { commonController, organizerController } from '../controllers';
 import { handleErrorAsync } from '../services/handleResponse';
 import { isOgAuth } from '../services/handleAuth';
 import { validateBody, validateImage } from '../middleware/validationMiddleware';
 import { createActivitySchema } from '../validate/activitiesSchemas';
 
 const router = express.Router();
+
+// 取得主揪資料
+router.get(
+  '/profile',
+  isOgAuth,
+  /**
+   * #swagger.tags = ['Organizer']
+   * #swagger.security = [{ "bearerAuth": [] }]
+   * #swagger.description = '取得主揪資料'
+   */
+  /**
+    #swagger.responses[200] = {
+      description: '主揪資料',
+      schema: {
+        "data": {
+          "_id": "xxxxxxxxxxxxxxxxxx",
+          "name": "XXX",
+          "nickName": 'nickName',
+          "photo": "https://thispersondoesnotexist.com",
+          "email": "test@gmail.com",
+          "mobile": "0911000000"
+        }
+      }
+    }
+  */
+  handleErrorAsync(organizerController.getOrganizer)
+);
 
 // 主揪建立活動
 router.post(
@@ -122,7 +149,31 @@ router.post(
       }
     }
   */
-  handleErrorAsync(organizerController.imageUpload)
+  handleErrorAsync(commonController.imageUpload)
+);
+
+// 主揪刪除圖片
+router.delete(
+  '/image',
+  isOgAuth,
+  /**
+    #swagger.tags = ['Organizer']
+    #swagger.security = [{ "bearerAuth": [] }]
+    #swagger.description = '刪除圖片'
+    #swagger.parameters['fileName'] = {
+        in: 'query',
+        description: '刪除圖片',
+        required: true
+      }
+    #swagger.responses[200] = {
+      description: '成功回應',
+      schema: {
+        "data": null,
+        "message": "刪除成功"
+      }
+    }
+  */
+  commonController.imageDelete
 );
 
 export default router;

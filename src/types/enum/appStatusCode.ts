@@ -80,7 +80,9 @@ export enum status422Codes {
   'UNPROCESSABLE_CONTENT' = '格式不正確' as any,
   'INVALID_FORMAT' = '無效格式' as any,
   'UNPROCESSABLE_ENTITY' = '請求的格式錯誤，伺服器無法處理所包含的指令' as any,
-  'WORDS_EXCEEDS' = '字數超過限制' as any
+  'WORDS_EXCEEDS' = '字數超過限制' as any,
+  'INVALID_STARTENDTIME' = '活動時間不正確' as any,
+  'INVALID_SIGNUPTIME' = '活動報名時間不正確' as any
 }
 
 /**
@@ -92,7 +94,8 @@ export enum status500Codes {
   'FETCH_FAILED' = '活動取得失敗' as any,
   'UPDATE_FAILED' = '編輯失敗' as any,
   'INVALID_PUBLISH' = '發佈異常' as any,
-  'UPLOAD_FAILED' = '上傳失敗' as any
+  'UPLOAD_FAILED' = '上傳失敗' as any,
+  'DELETE_FAILED' = '刪除失敗' as any
 }
 
 export type StatusCodeEnum =

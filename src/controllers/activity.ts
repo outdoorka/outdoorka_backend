@@ -1,9 +1,10 @@
 import { handleResponse, handleAppError } from '../services/handleResponse';
 import type { NextFunction, Request, Response } from 'express';
-import { ActivityModel } from '../models';
-
+import { ActivityModel, UserModel } from '../models';
+import { type JwtPayloadRequest } from '../types/dto/user';
 import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
 import { getActivityListSchema, type GetActivityListInput } from '../validate/activitiesSchemas';
+import { Types } from 'mongoose';
 
 export const activityController = {
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -84,13 +85,85 @@ export const activityController = {
 
     handleResponse(res, activities, '取得成功');
   },
+  async getActivity(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const ObjectId = Types.ObjectId;
+    const activityId = req.params.id;
+
+    if (!ObjectId.isValid(activityId)) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_REQEST],
+        status400Codes.INVALID_REQEST,
+        next
+      );
+    }
+
+    const _id = (req as JwtPayloadRequest).user._id;
+    const checkUserId = await UserModel.findById(_id);
+
+    if (!checkUserId) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_USER],
+        status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
+    }
+    const activity = await ActivityModel.findById(activityId).populate({
+      path: 'organizer',
+      select: 'name, email photo rating socialMediaUrls'
+    });
+
+    console.log(activity);
+    if (!activity) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_ACTIVITY],
+        status404Codes.NOT_FOUND_ACTIVITY,
+        next
+      );
+      return;
+    }
+    let isLiked = true;
+
+    const index = activity.likers.findIndex((element) => element.toString() === _id);
+    if (index === -1) {
+      isLiked = false;
+    }
+
+    const finalRes = {
+      _id: activity._id,
+      title: activity.title,
+      subtitle: activity.subtitle,
+      address: activity.address,
+      location: activity.location,
+      region: activity.region,
+      activityLinks: activity.activityLinks,
+      activityDetail: activity.activityDetail,
+      activityNote: activity.activityNotice,
+      activityTags: activity.activityTags,
+      activityImageUrls: activity.activityImageUrls,
+      price: activity.price,
+      activitySignupStartTime: activity.activitySignupStartTime,
+      activitySignupEndTime: activity.activitySignupEndTime,
+      activityStartTime: activity.activityStartTime,
+      activityEndTime: activity.activityEndTime,
+      bookedCapacity: activity.bookedCapacity,
+      remainingCapacity: activity.totalCapacity - activity.bookedCapacity,
+      organizer: activity.organizer,
+      isLiked
+    };
+
+    handleResponse(res, finalRes, '取得成功');
+  },
   async getActivityList(
     req: Request<{}, {}, GetActivityListInput>,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     const parsedQuery = getActivityListSchema.safeParse(req);
-    let parsedData: Record<string, any>;
+    let parsedData: Record<string, any> = {};
     if (parsedQuery.success) {
       parsedData = parsedQuery.data.query;
     } else {
@@ -100,7 +173,6 @@ export const activityController = {
         status400Codes.INVALID_VALUE,
         next
       );
-      return;
     }
     console.log('parsedData', parsedData);
     handleResponse(res, [], '取得成功');

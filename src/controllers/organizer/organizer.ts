@@ -1,16 +1,43 @@
-import logtail from '../../utils/logtail';
-import { v4 as uuidv4 } from 'uuid';
 import { handleAppError, handleResponse } from '../../services/handleResponse';
 import { ActivityModel, OrganizerModel } from '../../models';
-import { status400Codes, status404Codes, status500Codes } from '../../types/enum/appStatusCode';
+import { status404Codes, status422Codes, status500Codes } from '../../types/enum/appStatusCode';
 import { convertCityToArea } from '../../utils/helpers';
-import { handleImageUpload } from '../../services/handleImageUpload';
+import dayjs from 'dayjs';
 
 import type { NextFunction, Request, Response } from 'express';
 import { type JwtPayloadRequest } from '../../types/dto/user';
 import { type CreateActivitySchemaInput } from '../../validate/activitiesSchemas';
 
 export const organizerController = {
+  // 取得主揪資料
+  async getOrganizer(req: Request, res: Response, next: NextFunction) {
+    const ogId = (req as JwtPayloadRequest).user._id;
+    const ogData = await OrganizerModel.findById(ogId).lean();
+
+    if (!ogData) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_USER],
+        status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
+    }
+
+    const { _id, name, nickName, email, photo, mobile } = ogData;
+    handleResponse(
+      res,
+      {
+        _id,
+        email,
+        name,
+        nickName,
+        photo,
+        mobile
+      },
+      '取得成功'
+    );
+  },
   // 主揪建立活動
   async createActivity(
     req: Request<{}, {}, CreateActivitySchemaInput>,
@@ -26,6 +53,32 @@ export const organizerController = {
         404,
         status404Codes[status404Codes.NOT_FOUND_USER],
         status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
+    }
+
+    // 判斷活動的結束時間必須在開始時間之後
+    const activityStartTime = dayjs(req.body.activityStartTime);
+    const activityEndTime = dayjs(req.body.activityEndTime);
+    if (activityEndTime.isBefore(activityStartTime)) {
+      handleAppError(
+        422,
+        status422Codes[status422Codes.INVALID_STARTENDTIME],
+        status422Codes.INVALID_STARTENDTIME,
+        next
+      );
+      return;
+    }
+
+    // 判斷活動報名的開始時間必須在活動報名的結束時間之前，並且活動報名的結束時間必須在活動開始時間之前
+    const signupStartTime = dayjs(req.body.activitySignupStartTime);
+    const signupEndTime = dayjs(req.body.activitySignupEndTime);
+    if (signupEndTime.isBefore(signupStartTime) || signupStartTime.isAfter(activityStartTime)) {
+      handleAppError(
+        422,
+        status422Codes[status422Codes.INVALID_SIGNUPTIME],
+        status422Codes.INVALID_SIGNUPTIME,
         next
       );
       return;
@@ -58,34 +111,5 @@ export const organizerController = {
     });
 
     handleResponse(res, getActivity, '取得成功');
-  },
-  async imageUpload(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const files = req.files as Express.Multer.File[];
-    if (!files?.length) {
-      handleAppError(
-        400,
-        status400Codes[status400Codes.INVALID_FILE],
-        status400Codes.INVALID_FILE,
-        next
-      );
-      return;
-    }
-
-    const file = files[0];
-    const fileName = `images/${uuidv4()}.${file.originalname.split('.').pop()}`;
-
-    handleImageUpload(file, fileName)
-      .then((data) => {
-        handleResponse(res, data, '上傳成功');
-      })
-      .catch((error) => {
-        logtail.error(error.message || '非預期圖片上傳失敗', error);
-        handleAppError(
-          500,
-          status500Codes[status500Codes.UPLOAD_FAILED],
-          status500Codes.UPLOAD_FAILED,
-          next
-        );
-      });
   }
 };

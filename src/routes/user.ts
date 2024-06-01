@@ -1,8 +1,8 @@
 import express from 'express';
-import { userController } from '../controllers';
+import { userController, commonController } from '../controllers';
 import { handleErrorAsync } from '../services/handleResponse';
 import { isAuth } from '../services/handleAuth';
-import { validateBody } from '../middleware/validationMiddleware';
+import { validateBody, validateImage } from '../middleware/validationMiddleware';
 import {
   userUpdateEmailSchema,
   userUpdatePwdSchema,
@@ -195,6 +195,35 @@ router.patch(
     }
   */
   handleErrorAsync(userController.updateUserPassword)
+);
+
+// 會員上傳圖片
+router.post(
+  '/imageUpload',
+  isAuth,
+  validateImage,
+  /**
+    #swagger.tags = ['User']
+    #swagger.security = [{ "bearerAuth": [] }]
+    #swagger.description = '上傳圖片'
+    #swagger.parameters['post'] = {
+        in: 'formData',
+        description: '上傳圖片',
+        required: true,
+        type: 'file'
+      }
+    #swagger.responses[200] = {
+      description: '上傳成功回應',
+      schema: {
+        "data": {
+          "message": "上傳成功",
+          "url": "https://xxxxxxx.com/xxxxxxxxxxxxxxxxxx.jpg"
+        },
+        "message": "上傳成功"
+      }
+    }
+  */
+  handleErrorAsync(commonController.imageUpload)
 );
 
 export default router;
