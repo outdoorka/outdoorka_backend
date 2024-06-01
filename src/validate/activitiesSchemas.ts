@@ -70,11 +70,8 @@ export const getActivityListSchema = z.object({
         message: 'perPage must be a positive integer',
         path: ['perPage']
       }),
-    cursor: z
-      .string()
-      .optional()
-      .nullable()
-      .transform((val) => (val ? new Types.ObjectId(val) : null)),
+    cursor: z.string().optional().nullable(),
+    // .transform((val) => (val ? new Types.ObjectId(val) : null)),
     direction: z.enum(['forward', 'backward']).optional().default('forward'),
     startTime: z
       .string()

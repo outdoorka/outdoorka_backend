@@ -5,7 +5,7 @@ import { type JwtPayloadRequest } from '../types/dto/user';
 import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
 import { getActivityListSchema, type GetActivityListInput } from '../validate/activitiesSchemas';
 import { type SortOrder, Types } from 'mongoose';
-import { mapCapacityScaleToRange } from '../services/handleActivityList';
+import { mapCapacityScaleToRange, transformedCursor } from '../services/handleActivityList';
 
 export const activityController = {
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -195,12 +195,13 @@ export const activityController = {
     const sortFieldMapping: Record<string, string> = {
       date: 'activityStartTime',
       rating: 'averageRating',
-      price: 'price'
+      capacity: 'totalCapacity'
     };
     const [field, order] = parsedQueryInput.sort.split('_');
     const mappedField = sortFieldMapping[field];
-    const sort: Record<string, SortOrder> = { [mappedField]: order === 'asc' ? 1 : -1 };
-    const activities = await ActivityModel.aggregate([
+    const sort: Record<string, SortOrder> = { [mappedField]: order === 'asc' ? 1 : -1, _id: 1 };
+
+    const aggregateCondition: any = [
       { $match: { ...query, isPublish: true } },
       {
         $lookup: {
@@ -216,9 +217,47 @@ export const activityController = {
           likeCount: { $size: '$likers' }
         }
       },
-      { $sort: sort as Record<string, 1 | -1> },
-      { $limit: parsedQueryInput.perPage }
-    ]);
+      { $sort: sort as Record<string, 1 | -1> }
+    ];
+
+    // Pagination logic
+    const cursor = parsedQueryInput.cursor;
+    const perPage = parsedQueryInput.perPage;
+    const direction = parsedQueryInput.direction;
+
+    if (cursor) {
+      let cursorValue;
+      let cursorObjectId;
+      try {
+        ({ cursorValue, cursorObjectId } = transformedCursor(field, cursor));
+      } catch (error) {
+        console.error('CursorId is not a valid value');
+        handleAppError(
+          400,
+          status400Codes[status400Codes.INVALID_VALUE],
+          status400Codes.INVALID_VALUE,
+          next
+        );
+      }
+      let directionOperator;
+      const cursorDirectionOperator = direction === 'forward' ? '$gt' : '$lt';
+      if (order === 'asc') {
+        directionOperator = direction === 'forward' ? '$gte' : '$lte';
+      } else {
+        directionOperator = direction === 'forward' ? '$lte' : '$gte';
+      }
+      aggregateCondition.push({
+        $match: {
+          $and: [
+            { [mappedField]: { [directionOperator]: cursorValue } },
+            { _id: { [cursorDirectionOperator]: cursorObjectId } }
+          ]
+        }
+      });
+    }
+
+    aggregateCondition.push({ $limit: perPage } as any);
+    const activities = await ActivityModel.aggregate(aggregateCondition);
     handleResponse(res, activities, '取得成功');
   }
 };
