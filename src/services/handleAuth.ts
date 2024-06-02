@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import { config } from '../config';
 import { handleAppError, handleErrorAsync, handleResponse } from '../services/handleResponse';
 import { UserModel, OrganizerModel } from '../models';
@@ -165,4 +166,43 @@ const isOgAuth = handleErrorAsync(async (req: Request, res: Response, next: Next
   next();
 });
 
-export { signAccessToken, generatorTokenAndSend, generatorOrganizerTokenAndSend, isAuth, isOgAuth };
+const saveResetToken = async (userId: string, token: string, expires: number) => {
+  try {
+    // 更新使用者紀錄，添加重置token和時間
+    await UserModel.findByIdAndUpdate(userId, {
+      resetToken: token,
+      resetTokenExpire: new Date(expires)
+    });
+  } catch (error) {
+    console.error('Error saving reset token:', error);
+    throw error;
+  }
+};
+
+const verifyResetToken = async (token: string) => {
+  return await UserModel.findOne({
+    resetToken: token,
+    resetTokenExpire: { $gt: Date.now() }
+  });
+};
+
+const updatePassword = async (userId: string, newPassword: string) => {
+  const hashedPassword = await bcrypt.hash(newPassword, 12);
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  user.password = hashedPassword;
+  await user.save();
+};
+
+export {
+  signAccessToken,
+  generatorTokenAndSend,
+  generatorOrganizerTokenAndSend,
+  isAuth,
+  isOgAuth,
+  saveResetToken,
+  verifyResetToken,
+  updatePassword
+};

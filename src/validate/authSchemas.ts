@@ -38,5 +38,26 @@ export const authLoginSchema = z.object({
   })
 });
 
+export const authForgetPassowrdScheme = z.object({
+  body: object({
+    email: z
+      .string({
+        required_error: '請輸入 Email'
+      })
+      .email('請輸入正確的 Email 格式')
+  })
+});
+
+export const authResetPassowrdScheme = z.object({
+  body: z.object({
+    token: z.string(),
+    password: z.string().regex(Password, {
+      message: '密碼必須為 8-20 位英數字混合，且至少包含一個大寫字母、一個小寫字母和一個數字'
+    })
+  })
+});
+
 export type AuthRegisterInput = TypeOf<typeof authRegistrationSchema>['body'];
 export type AuthLoginInput = TypeOf<typeof authLoginSchema>['body'];
+export type AuthForgetPasswordInput = TypeOf<typeof authForgetPassowrdScheme>['body'];
+export type AuthResetPasswordInput = TypeOf<typeof authResetPassowrdScheme>['body'];
