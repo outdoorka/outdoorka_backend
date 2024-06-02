@@ -56,6 +56,27 @@ const generatorTokenAndSend = (user: any, res: any) => {
   handleResponse(res, responseData, '登入成功');
 };
 
+const generateAccessToken = (refreshToken: string) => {
+  try {
+    const decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET) as any;
+    const userId = decoded.userId;
+
+    // 生成新的 accessToken
+    const newAccessToken = jwt.sign({ userId }, ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+
+    return {
+      accessToken: newAccessToken,
+      expiresIn: 3600,
+      success: true
+    };
+  } catch (error) {
+    return {
+      error: 'token無效或過期',
+      success: false
+    };
+  }
+};
+
 // 驗證 Token
 const isAuth = handleErrorAsync(async (req: Request, res: Response, next: NextFunction) => {
   let token;
@@ -199,6 +220,7 @@ const updatePassword = async (userId: string, newPassword: string) => {
 export {
   signAccessToken,
   generatorTokenAndSend,
+  generateAccessToken,
   generatorOrganizerTokenAndSend,
   isAuth,
   isOgAuth,

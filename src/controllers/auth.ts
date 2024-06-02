@@ -5,6 +5,7 @@ import nodemailer from 'nodemailer';
 import { UserModel } from '../models/user';
 import {
   generatorTokenAndSend,
+  generateAccessToken,
   saveResetToken,
   verifyResetToken,
   updatePassword
@@ -13,6 +14,7 @@ import { handleAppError, handleResponse } from '../services/handleResponse';
 import { status400Codes, status404Codes, status409Codes } from '../types/enum/appStatusCode';
 import type {
   AuthLoginInput,
+  AuthRefreshTokenInput,
   AuthRegisterInput,
   AuthForgetPasswordInput,
   AuthResetPasswordInput
@@ -171,7 +173,26 @@ export const authController = {
     }
   },
 
-  async generateAccessToken(req: Request) {
-    console.log(req);
+  async authRefreshAccessToken(
+    req: Request<{}, {}, AuthRefreshTokenInput>,
+    res: Response
+  ): Promise<void> {
+    const { refreshToken } = req.body;
+
+    const result = generateAccessToken(refreshToken);
+
+    if (result.success) {
+      res.status(200).json({
+        data: {
+          access_token: result.accessToken,
+          expires_in: result.expiresIn
+        },
+        message: 'token交換成功'
+      });
+    } else {
+      res.status(401).json({
+        message: result.error
+      });
+    }
   }
 };

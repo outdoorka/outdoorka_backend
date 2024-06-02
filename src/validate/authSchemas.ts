@@ -38,6 +38,14 @@ export const authLoginSchema = z.object({
   })
 });
 
+export const authRefreshTokenSchema = z.object({
+  body: z.object({
+    refreshToken: z.string({
+      required_error: '需要提供刷新token'
+    })
+  })
+});
+
 export const authForgetPassowrdScheme = z.object({
   body: object({
     email: z
@@ -59,5 +67,6 @@ export const authResetPassowrdScheme = z.object({
 
 export type AuthRegisterInput = TypeOf<typeof authRegistrationSchema>['body'];
 export type AuthLoginInput = TypeOf<typeof authLoginSchema>['body'];
+export type AuthRefreshTokenInput = TypeOf<typeof authRefreshTokenSchema>['body'];
 export type AuthForgetPasswordInput = TypeOf<typeof authForgetPassowrdScheme>['body'];
 export type AuthResetPasswordInput = TypeOf<typeof authResetPassowrdScheme>['body'];

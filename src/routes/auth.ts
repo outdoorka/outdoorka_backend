@@ -4,6 +4,7 @@ import { validateBody } from '../middleware/validationMiddleware';
 import { ogLoginSchema, ogRegistrationSchema } from '../validate/organizerSchemas';
 import {
   authLoginSchema,
+  authRefreshTokenSchema,
   authRegistrationSchema,
   authForgetPassowrdScheme,
   authResetPassowrdScheme
@@ -94,7 +95,7 @@ router.post(
 // 會員 refresh token
 router.post(
   '/refresh-token',
-  validateBody(authLoginSchema),
+  validateBody(authRefreshTokenSchema),
   /**
    * #swagger.tags = ['User Auth']
    * #swagger.description = '更新登入token'
@@ -120,7 +121,7 @@ router.post(
       }
     }
   */
-  handleErrorAsync(authController.generateAccessToken)
+  handleErrorAsync(authController.authRefreshAccessToken)
 );
 
 // 主揪註冊
