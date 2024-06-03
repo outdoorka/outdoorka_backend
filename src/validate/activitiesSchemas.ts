@@ -129,6 +129,14 @@ export const getActivityListSchema = z.object({
       .default('date_asc')
       .refine((value) => sortEnumValue.includes(value), {
         message: `sort value must be one of: ${sortEnumValue.join(',')})`
+      }),
+    rating: z
+      .string()
+      .optional()
+      .transform((val) => (val ? Number(val) : null))
+      .refine((val) => val === null || [1, 2, 3, 4, 5].includes(val), {
+        message: 'rating must be in 1-5',
+        path: ['rating']
       })
   })
 });

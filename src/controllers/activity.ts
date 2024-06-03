@@ -213,9 +213,12 @@ export const activityController = {
         ? { title: { $regex: parsedQueryInput.keyword, $options: 'i' } }
         : {})
     };
+    const queryAfterLookup = {
+      ...(parsedQueryInput.rating ? { organizerRating: { $eq: parsedQueryInput.rating } } : {})
+    };
     const sortFieldMapping: Record<string, string> = {
       date: 'activityStartTime',
-      rating: 'averageRating',
+      rating: 'organizerRating',
       capacity: 'totalCapacity'
     };
     const [field, order] = parsedQueryInput.sort.split('_');
@@ -233,10 +236,42 @@ export const activityController = {
         }
       },
       {
-        $addFields: {
-          averageRating: { $ifNull: [{ $avg: '$ratings.rating' }, 0] },
-          likeCount: { $size: '$likers' }
+        $lookup: {
+          from: 'organizers',
+          localField: 'organizer',
+          foreignField: '_id',
+          as: 'organizer'
         }
+      },
+      {
+        $addFields: {
+          organizer: { $arrayElemAt: ['$organizer', 0] }
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          subtitle: 1,
+          region: 1,
+          city: 1,
+          price: 1,
+          activityImageUrls: 1,
+          activitySignupStartTime: 1,
+          activitySignupEndTime: 1,
+          activityStartTime: 1,
+          activityEndTime: 1,
+          likeCount: { $size: '$likers' },
+          bookedCapacity: 1,
+          totalCapacity: 1,
+          activityTags: 1,
+          organizerRating: '$organizer.rating',
+          organzierName: '$organizer.username',
+          organizerId: '$organizer._id'
+        }
+      },
+      {
+        $match: queryAfterLookup
       },
       { $sort: sort as Record<string, 1 | -1> }
     ];
@@ -287,26 +322,7 @@ export const activityController = {
     const endCursor =
       activities.length > 0 ? generateCursor(activities[activities.length - 1], mappedField) : null;
     const hasPrevPage = !!cursor;
-    const finalRes = activities.map((activity) => ({
-      _id: activity._id,
-      title: activity.title,
-      subtitle: activity.subtitle,
-      region: activity.region,
-      city: activity.city,
-      activityTags: activity.activityTags,
-      activityImageUrls: activity.activityImageUrls,
-      price: activity.price,
-      activitySignupStartTime: activity.activitySignupStartTime,
-      activitySignupEndTime: activity.activitySignupEndTime,
-      activityStartTime: activity.activityStartTime,
-      activityEndTime: activity.activityEndTime,
-      bookedCapacity: activity.bookedCapacity,
-      totalCapacity: activity.totalCapacity,
-      organizer: activity.organizer,
-      likeCount: activity.likeCount,
-      averageRating: activity.averageRating
-    }));
     const pageInfo = { hasNextPage, hasPrevPage, startCursor, endCursor };
-    handleResponse(res, finalRes, '取得成功', pageInfo);
+    handleResponse(res, activities, '取得成功', pageInfo);
   }
 };
