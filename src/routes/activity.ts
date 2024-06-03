@@ -66,7 +66,7 @@ router.get(
   #swagger.parameters['perPage'] = {
     in: 'query',
     name: 'perPage',
-    description: '顯示幾筆資料',
+    description: '顯示幾筆資料，預設10筆',
     required: false,
     schema: {
       type: 'number',
@@ -158,6 +158,15 @@ router.get(
     in: 'query',
     name: 'organizerId',
     description: '主揪ID，用來查詢特定主揪的活動',
+    required: false,
+    schema: {
+      type: 'string',
+    }
+  }
+  #swagger.parameters['sort'] = {
+    in: 'query',
+    name: 'sort',
+    description: 'sorting的條件，目前有date_asc,date_desc,rating_asc,rating_desc,capacity_asc,capacity_desc,price_asc,price_desc 預設是date_asc',
     required: false,
     schema: {
       type: 'string',

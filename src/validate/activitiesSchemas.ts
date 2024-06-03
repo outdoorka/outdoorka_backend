@@ -12,7 +12,9 @@ const sortEnumValue = [
   'rating_asc',
   'rating_desc',
   'capacity_asc',
-  'capacity_desc'
+  'capacity_desc',
+  'price_asc',
+  'price_desc'
 ];
 
 export const createActivitySchema = z.object({
