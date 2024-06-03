@@ -145,6 +145,15 @@ router.get(
       type: 'integer',
     }
   }
+  #swagger.parameters['rating'] = {
+    in: 'query',
+    name: 'rating',
+    description: '主揪的分數，1-5',
+    required: false,
+    schema: {
+      type: 'integer',
+    }
+  }
   #swagger.parameters['organizerId'] = {
     in: 'query',
     name: 'organizerId',
@@ -157,41 +166,42 @@ router.get(
   #swagger.responses[200] = {
       description: '取得活動列表清單',
       schema: {
-      "data": [
-          {
-              "_id": "664cb717ae8e74de4ae74871",
-              "title": "池上大坡池水上娛樂，悠遊玩水趣",
-              "subtitle": "池上大坡池水上娛樂，悠遊玩水趣",
-              "region": "南部",
-              "city": "台東縣",
-              "activityTags": [
-                  "Camping",
-                  "Hiking"
-              ],
-              "activityImageUrls": [
-                  "https://media.istockphoto.com/id/1071632168/photo/happy-family-kayak-walking-sunset-sea-island.webp?b=1&s=170667a&w=0&k=20&c=oCziJF4r4oEPkDZS64itjf5Ymj08YMs44WVjWWaoRco=",
-                  "https://media.istockphoto.com/id/1179337230/photo/young-couple-kayaking-on-river-during-summer.jpg?s=612x612&w=0&k=20&c=dipz6yknPgOyL6aKOaxh983MeN4GE-l15s56BuQ1GU0=",
-                  "https://media.istockphoto.com/id/903779686/photo/woman-kayaking.jpg?s=612x612&w=0&k=20&c=huykTRf_OAPiVZYWtqSfIRireHV8b1rzyoJpvM1CLj0="
-              ],
-              "price": 600,
-              "activitySignupStartTime": "2024-05-17T06:39:19.740Z",
-              "activitySignupEndTime": "2024-06-15T06:39:19.740Z",
-              "activityStartTime": "2024-06-24T00:00:00.537Z",
-              "activityEndTime": "2024-07-27T10:00:00.000Z",
-              "bookedCapacity": 2,
-              "totalCapacity": 50,
-              "organizer": "664ca866ae10d7e7604c4fe7",
-              "likeCount": 2,
-              "averageRating": 4.5
-          }
-      ],
-      "message": "取得成功",
-      "pageInfo": {
-          "hasNextPage": false,
-          "hasPrevPage": true,
-          "startCursor": "2024-06-24T00:00:00.537Z_664cb717ae8e74de4ae74871",
-          "endCursor": "2024-06-26T00:00:00.537Z_664cb717ae8e74de4ae74872"
-      }
+    "data": [
+        {
+            "_id": "664cb717ae8e74de4ae74872",
+            "title": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點",
+            "subtitle": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點",
+            "price": 600,
+            "totalCapacity": 20,
+            "region": "北部",
+            "city": "新北市",
+            "activityTags": [
+                "Camping",
+                "Hiking"
+            ],
+            "activityImageUrls": [
+                "https://media.istockphoto.com/id/1367438696/photo/cute-redhead-boy-and-grandfather-fishing-in-the-river-in-quebec.jpg?s=612x612&w=0&k=20&c=34JDzuhY4Nlt5sHonFWh8ZAiUdHyybCCv44BhNtzvEw=",
+                "https://media.istockphoto.com/id/841837302/photo/fishing.jpg?s=612x612&w=0&k=20&c=Fge9dv6z5JA6r_dKSdKPQNpgm9geb7O58N8xAs8ZGYo=",
+                "https://media.istockphoto.com/id/1322104405/photo/father-and-son-fishing-together-at-the-lake.jpg?s=612x612&w=0&k=20&c=B6z3DZXUzb4R47z0d4Sj5ijICnDXCORU0vJhWh9ci4o="
+            ],
+            "activitySignupStartTime": "2024-05-17T06:39:19.740Z",
+            "activitySignupEndTime": "2024-06-15T06:39:19.740Z",
+            "activityStartTime": "2024-06-26T00:00:00.537Z",
+            "activityEndTime": "2024-07-21T10:00:00.000Z",
+            "bookedCapacity": 2,
+            "likeCount": 2,
+            "organizerRating": 5,
+            "organzierName": "拼圖戶外生活",
+            "organizerId": "664caee7ae10d7e7604c4feb"
+        }
+    ],
+    "message": "取得成功",
+    "pageInfo": {
+        "hasNextPage": true,
+        "hasPrevPage": false,
+        "startCursor": "5_664cb717ae8e74de4ae74872",
+        "endCursor": "5_664cb717ae8e74de4ae74872"
+    }
 }
     }
   */
