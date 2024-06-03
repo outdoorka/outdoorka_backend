@@ -1721,7 +1721,7 @@
           {
             "name": "perPage",
             "in": "query",
-            "description": "顯示幾筆資料",
+            "description": "顯示幾筆資料，預設10筆",
             "required": false,
             "schema": {
               "type": "object",
@@ -1822,6 +1822,15 @@
             "name": "organizerId",
             "in": "query",
             "description": "主揪ID，用來查詢特定主揪的活動",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "sorting的條件，目前有date_asc,date_desc,rating_asc,rating_desc,capacity_asc,capacity_desc,price_asc,price_desc 預設是date_asc",
             "required": false,
             "schema": {
               "type": "string"
