@@ -219,7 +219,8 @@ export const activityController = {
     const sortFieldMapping: Record<string, string> = {
       date: 'activityStartTime',
       rating: 'organizerRating',
-      capacity: 'totalCapacity'
+      capacity: 'totalCapacity',
+      price: 'price'
     };
     const [field, order] = parsedQueryInput.sort.split('_');
     const mappedField = sortFieldMapping[field];
