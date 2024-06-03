@@ -287,8 +287,26 @@ export const activityController = {
     const endCursor =
       activities.length > 0 ? generateCursor(activities[activities.length - 1], mappedField) : null;
     const hasPrevPage = !!cursor;
-
+    const finalRes = activities.map((activity) => ({
+      _id: activity._id,
+      title: activity.title,
+      subtitle: activity.subtitle,
+      region: activity.region,
+      city: activity.city,
+      activityTags: activity.activityTags,
+      activityImageUrls: activity.activityImageUrls,
+      price: activity.price,
+      activitySignupStartTime: activity.activitySignupStartTime,
+      activitySignupEndTime: activity.activitySignupEndTime,
+      activityStartTime: activity.activityStartTime,
+      activityEndTime: activity.activityEndTime,
+      bookedCapacity: activity.bookedCapacity,
+      totalCapacity: activity.totalCapacity,
+      organizer: activity.organizer,
+      likeCount: activity.likeCount,
+      averageRating: activity.averageRating
+    }));
     const pageInfo = { hasNextPage, hasPrevPage, startCursor, endCursor };
-    handleResponse(res, activities, '取得成功', pageInfo);
+    handleResponse(res, finalRes, '取得成功', pageInfo);
   }
 };
