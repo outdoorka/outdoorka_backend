@@ -139,7 +139,7 @@ export const organizerController = {
     })
       .populate({
         path: 'organizer', // 對的 organizer 欄位
-        select: 'name, email photo'
+        select: 'username nickName'
       })
       .lean();
 
@@ -152,6 +152,7 @@ export const organizerController = {
       );
       return;
     }
+
     handleResponse(res, activityData, '取得成功');
   }
 };
