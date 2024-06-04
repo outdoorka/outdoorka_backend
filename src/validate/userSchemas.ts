@@ -3,7 +3,7 @@ import { HttpUrl, MobileTW, Password } from '../utils/regexs';
 
 export const userUpdateSchema = z.object({
   body: object({
-    name: z.string().min(2, '最少2個字').max(20, '最多20個字'),
+    name: z.string().min(2, '名稱最少2個字').max(20, '最多20個字'),
     mobile: z.string().regex(MobileTW, '請輸入正確的手機號碼'),
     photo: z
       .string()
