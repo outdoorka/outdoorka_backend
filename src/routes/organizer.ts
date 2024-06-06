@@ -192,7 +192,7 @@ router.post(
       schema: {
       "data": {
         "_id": "664cb717ae8e74de4ae74871",
-        organizer": {
+        "organizer": {
             "_id": "664caee7ae10d7e7604c4feb",
             "email": "email1@gmail.com",
             "photo": "https://static.accupass.com/org/2005260527172844358540.jpg"
