@@ -1136,8 +1136,169 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "建立成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "664cb717ae8e74de4ae74871"
+                    },
+                    "organizer": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "664caee7ae10d7e7604c4feb"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "email1@gmail.com"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://static.accupass.com/org/2005260527172844358540.jpg"
+                        }
+                      }
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                    },
+                    "subtitle": {
+                      "type": "string",
+                      "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 600
+                    },
+                    "totalCapacity": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "region": {
+                      "type": "string",
+                      "example": "南部"
+                    },
+                    "city": {
+                      "type": "string",
+                      "example": "台東縣"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "address 最多100個字"
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "location 最多100個字"
+                    },
+                    "activityDetail": {
+                      "type": "string",
+                      "example": "activityDetail 最多1000個字"
+                    },
+                    "activityNotice": {
+                      "type": "string",
+                      "example": "activityNotice 最多200個字"
+                    },
+                    "activityTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "activityLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "name 最多50個字123ewq"
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://www.google.com/"
+                          },
+                          "_id": {
+                            "type": "string",
+                            "example": "664da320952a06a2b9c25e03"
+                          }
+                        }
+                      }
+                    },
+                    "activityImageUrls": {
+                      "type": "array",
+                      "example": [
+                        "XXXX",
+                        "XXXX",
+                        "XXXX"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "isPublish": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "activitySignupStartTime": {
+                      "type": "string",
+                      "example": "2024-05-17T06:39:19.740Z"
+                    },
+                    "activitySignupEndTime": {
+                      "type": "string",
+                      "example": "2024-06-15T06:39:19.740Z"
+                    },
+                    "activityStartTime": {
+                      "type": "string",
+                      "example": "2024-07-27T00:00:00.537Z"
+                    },
+                    "activityEndTime": {
+                      "type": "string",
+                      "example": "2024-07-27T10:00:00.000Z"
+                    },
+                    "likers": {
+                      "type": "array",
+                      "example": [
+                        "XX",
+                        "XX"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-22T07:47:44.839Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-22T07:47:44.839Z"
+                    },
+                    "bookedCapacity": {
+                      "type": "number",
+                      "example": 2
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         },
         "security": [
