@@ -1,3 +1,4 @@
+import DOMPurify from 'isomorphic-dompurify';
 import { handleAppError, handleResponse } from '../../services/handleResponse';
 import { ActivityModel, OrganizerModel } from '../../models';
 import {
@@ -92,8 +93,17 @@ export const organizerController = {
     // 活動區域，會依照 city 來判斷
     const region = convertCityToArea(req.body.city);
 
+    // 活動內容的資料安全判斷 xss
+    const cleanActivityDetail = DOMPurify.sanitize(req.body.activityDetail, {
+      USE_PROFILES: { html: false }
+    });
+    // 活動注意事項的資料安全判斷 xss
+    const cleanActivityNotice = DOMPurify.sanitize(req.body.activityNotice);
+
     const activity = new ActivityModel({
       ...req.body,
+      activityDetail: cleanActivityDetail,
+      activityNotice: cleanActivityNotice,
       region,
       organizer: ogData._id
     });
