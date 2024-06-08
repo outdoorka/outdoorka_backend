@@ -12,7 +12,9 @@ const sortEnumValue = [
   'rating_asc',
   'rating_desc',
   'capacity_asc',
-  'capacity_desc'
+  'capacity_desc',
+  'price_asc',
+  'price_desc'
 ];
 
 export const createActivitySchema = z.object({
@@ -24,7 +26,7 @@ export const createActivitySchema = z.object({
     city: z.nativeEnum(City),
     address: z.string().min(1, '活動地址為 2~100 個字').max(100, '活動地址為 2~100 個字'),
     location: z.string().min(2, '集合地點為 2~100 個字').max(100, '集合地點 為 2~100 個字'),
-    activityDetail: z.string().min(2, '活動介紹為 2~1000 個字').max(1000, '活動介紹為 2~1000 個字'),
+    activityDetail: z.string().min(2, '活動介紹為 2~600 個字').max(1000, '活動介紹為 2~600 個字'),
     activityNotice: z.string().min(2, '注意事項為 2~200 個字').max(200, '注意事項為 2~200 個字'),
     activityTags: z
       .array(z.enum(activityEnumValue as [string, ...string[]]), {
@@ -129,6 +131,14 @@ export const getActivityListSchema = z.object({
       .default('date_asc')
       .refine((value) => sortEnumValue.includes(value), {
         message: `sort value must be one of: ${sortEnumValue.join(',')})`
+      }),
+    rating: z
+      .string()
+      .optional()
+      .transform((val) => (val ? Number(val) : null))
+      .refine((val) => val === null || [1, 2, 3, 4, 5].includes(val), {
+        message: 'rating must be in 1-5',
+        path: ['rating']
       })
   })
 });
