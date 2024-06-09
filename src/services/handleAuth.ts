@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import { config } from '../config';
 import { handleAppError, handleErrorAsync, handleResponse } from '../services/handleResponse';
 import { UserModel, OrganizerModel } from '../models';
@@ -53,6 +54,27 @@ const generatorTokenAndSend = (user: any, res: any) => {
   };
 
   handleResponse(res, responseData, '登入成功');
+};
+
+const generateAccessToken = (refreshToken: string) => {
+  try {
+    const decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET) as any;
+    const userId = decoded.userId;
+
+    // 生成新的 accessToken
+    const newAccessToken = jwt.sign({ userId }, ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+
+    return {
+      accessToken: newAccessToken,
+      expiresIn: 3600,
+      success: true
+    };
+  } catch (error) {
+    return {
+      error: 'token無效或過期',
+      success: false
+    };
+  }
 };
 
 // 驗證 Token
@@ -165,4 +187,46 @@ const isOgAuth = handleErrorAsync(async (req: Request, res: Response, next: Next
   next();
 });
 
-export { signAccessToken, generatorTokenAndSend, generatorOrganizerTokenAndSend, isAuth, isOgAuth };
+const saveResetToken = async (userId: string, token: string, expires: number) => {
+  try {
+    // 更新使用者紀錄，添加重置token和時間
+    await UserModel.findByIdAndUpdate(userId, {
+      resetToken: token,
+      resetTokenExpire: new Date(expires)
+    });
+  } catch (error) {
+    console.error('Error saving reset token:', error);
+    throw error;
+  }
+};
+
+const verifyResetToken = async (token: string) => {
+  console.log('success');
+  return await UserModel.findOne({
+    resetToken: token,
+    resetTokenExpire: { $gt: Date.now() }
+  });
+};
+
+const updatePassword = async (userId: string, password: string) => {
+  const hashedPassword = await bcrypt.hash(password, 12);
+  const user = await UserModel.findById(userId);
+  console.log('User details:', user);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  user.password = hashedPassword;
+  await user.save({ validateBeforeSave: false });
+};
+
+export {
+  signAccessToken,
+  generatorTokenAndSend,
+  generateAccessToken,
+  generatorOrganizerTokenAndSend,
+  isAuth,
+  isOgAuth,
+  saveResetToken,
+  verifyResetToken,
+  updatePassword
+};

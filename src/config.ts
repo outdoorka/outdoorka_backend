@@ -16,6 +16,8 @@ class Config {
   public JWT_ACCESS_TOKEN: string;
   public JWT_REFRESH_TOKEN: string;
   public REFRESH_TOKEN_EXPIRES_IN: string;
+  public NODEMAIL_PASSWORD: string;
+  public REDIRECT_URL: string;
   public FILE_SIZE_LIMIT: number;
   public FIREBASE_TYPE: string;
   public FIREBASE_PROJECT_ID: string;
@@ -39,6 +41,8 @@ class Config {
     this.JWT_ACCESS_TOKEN = process.env.JWT_ACCESS_TOKEN || 'test';
     this.JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN || 'test';
     this.REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '7d';
+    this.NODEMAIL_PASSWORD = process.env.NODEMAIL_PASSWORD ?? '';
+    this.REDIRECT_URL = process.env.REDIRECT_URL ?? '';
 
     this.FILE_SIZE_LIMIT = parseInt(process.env.FILE_SIZE_LIMIT || '2', 10) || 2;
     this.FIREBASE_TYPE = process.env.FIREBASE_TYPE || '';
@@ -68,7 +72,9 @@ class Config {
       JWT_ACCESS_TOKEN: this.JWT_ACCESS_TOKEN,
       JWT_REFRESH_TOKEN: this.JWT_REFRESH_TOKEN,
       REFRESH_TOKEN_EXPIRES_IN: this.REFRESH_TOKEN_EXPIRES_IN,
-      FILE_SIZE_LIMIT: this.FILE_SIZE_LIMIT
+      FILE_SIZE_LIMIT: this.FILE_SIZE_LIMIT,
+      NODEMAIL_PASSWORD: this.NODEMAIL_PASSWORD,
+      REDIRECT_URL: this.REDIRECT_URL
     });
 
     for (const [key, value] of Object.entries(this)) {

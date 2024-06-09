@@ -11,6 +11,8 @@ export interface IUserModel extends Document, SchemaTimestampsConfig {
   photo: string;
   gender: string;
   birthday: Date;
+  resetToken: String;
+  resetTokenExpire: Date;
 }
 
 export interface JwtPayloadRequest extends Request {

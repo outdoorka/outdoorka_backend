@@ -58,6 +58,14 @@ const userSchema = new Schema<IUserModel>(
     birthday: {
       type: Date,
       required: false
+    },
+    resetToken: {
+      type: String,
+      required: false
+    },
+    resetTokenExpire: {
+      type: Date,
+      required: false
     }
   },
   { versionKey: false, timestamps: true }
