@@ -216,7 +216,7 @@ router.post(
   '/forget',
   validateBody(authForgetPassowrdScheme),
   /**
-    #swagger.tags = ['Organizer Auth']
+    #swagger.tags = ['User Auth']
     #swagger.description = '忘記密碼'
     #swagger.parameters['post'] = {
       in: 'body',
@@ -240,20 +240,21 @@ router.post(
   '/forget/confirm',
   validateBody(authResetPassowrdScheme),
   /**
-    #swagger.tags = ['Organizer Auth']
-    #swagger.description = '忘記密碼'
+    #swagger.tags = ['User Auth']
+    #swagger.description = '更換新密碼'
     #swagger.parameters['post'] = {
       in: 'body',
-      description: '忘記密碼',
+      description: '更換新密碼',
       required: true,
       schema: {
-        $email: 'email',
+        $resetToken: 'xxxxxxxxxxx',
+        $password: 'xxxxxxxxx'
       }
     }
     #swagger.responses[200] = {
-      description: '忘記密碼成功回應',
+      description: '更換新密碼成功回應',
       schema: {
-        "message": "發送寄件成功"
+        "message": "密碼重置成功"
       }
     }
   */

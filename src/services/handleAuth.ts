@@ -201,20 +201,22 @@ const saveResetToken = async (userId: string, token: string, expires: number) =>
 };
 
 const verifyResetToken = async (token: string) => {
+  console.log('success');
   return await UserModel.findOne({
     resetToken: token,
     resetTokenExpire: { $gt: Date.now() }
   });
 };
 
-const updatePassword = async (userId: string, newPassword: string) => {
-  const hashedPassword = await bcrypt.hash(newPassword, 12);
+const updatePassword = async (userId: string, password: string) => {
+  const hashedPassword = await bcrypt.hash(password, 12);
   const user = await UserModel.findById(userId);
+  console.log('User details:', user);
   if (!user) {
     throw new Error('User not found');
   }
   user.password = hashedPassword;
-  await user.save();
+  await user.save({ validateBeforeSave: false });
 };
 
 export {

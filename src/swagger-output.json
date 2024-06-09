@@ -1503,10 +1503,52 @@
     },
     "/api/v1/refresh-token": {
       "post": {
-        "description": "",
+        "tags": [
+          "User Auth"
+        ],
+        "description": "更新登入token",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "更新token",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "refresh_token": {
+                  "type": "string",
+                  "example": "xxxxxxxxxxxxxx"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "token交換成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxx"
+                    },
+                    "expires_in": {
+                      "type": "number",
+                      "example": 3600
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "message": "token交換成功"
           }
         }
       }
@@ -1757,6 +1799,96 @@
                 "message": {
                   "type": "string",
                   "example": "登入成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/forget": {
+      "post": {
+        "tags": [
+          "Organizer Auth"
+        ],
+        "description": "忘記密碼",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "忘記密碼",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email"
+                }
+              },
+              "required": [
+                "email"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "忘記密碼成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "發送寄件成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/forget/confirm": {
+      "post": {
+        "tags": [
+          "Organizer Auth"
+        ],
+        "description": "忘記密碼",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "忘記密碼",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email"
+                }
+              },
+              "required": [
+                "email"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "忘記密碼成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "發送寄件成功"
                 }
               },
               "xml": {

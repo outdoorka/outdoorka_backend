@@ -19,6 +19,7 @@ import type {
   AuthForgetPasswordInput,
   AuthResetPasswordInput
 } from '../validate/authSchemas';
+import { config } from '../config';
 
 export const authController = {
   // 會員註冊
@@ -127,13 +128,14 @@ export const authController = {
       const transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-          user: '',
-          pass: ''
+          user: 'outdoorkacontact@gmail.com',
+          pass: config.NODEMAIL_PASSWORD
         }
       });
 
       const resetUrl = `https://outdoorka-frontend-ten.vercel.app/?token=${resetToken}`;
       const mailOptions = {
+        from: 'outdoorkacontact@gmail.com',
         to: email,
         subject: '密碼重置',
         html: `重置的網址: <a href="${resetUrl}">${resetUrl}</a>`
