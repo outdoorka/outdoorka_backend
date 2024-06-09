@@ -5,3 +5,4 @@ export * from './common';
 export * from './activity';
 export * from './organizer/auth';
 export * from './organizer/organizer';
+export * from './ticket';
