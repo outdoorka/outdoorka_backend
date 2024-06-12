@@ -187,7 +187,7 @@ const isOgAuth = handleErrorAsync(async (req: Request, res: Response, next: Next
   next();
 });
 
-const saveResetToken = async (userId: string, token: string, expires: number) => {
+const saveResetToken = async (userId: any, token: string, expires: number) => {
   try {
     // 更新使用者紀錄，添加重置token和時間
     await UserModel.findByIdAndUpdate(userId, {
@@ -208,7 +208,7 @@ const verifyResetToken = async (token: string) => {
   });
 };
 
-const updatePassword = async (userId: string, password: string) => {
+const updatePassword = async (userId: any, password: string) => {
   const hashedPassword = await bcrypt.hash(password, 12);
   const user = await UserModel.findById(userId);
   console.log('User details:', user);

@@ -1116,10 +1116,138 @@
         ]
       }
     },
+    "/api/v1/organizer/activity": {
+      "get": {
+        "tags": [
+          "Organizer Activity"
+        ],
+        "description": "主揪取得活動列表資料",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "請填0-2。0(草稿),1(已發佈),2(過往活動)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "Integer"
+                },
+                "default": {
+                  "type": "number",
+                  "example": 2
+                }
+              }
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "請填asc或desc",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "default": {
+                  "type": "string",
+                  "example": "desc"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得主揪的活動列表資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "664cb717ae8e74de4ae74871"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                      },
+                      "isPublish": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "totalCapacity": {
+                        "type": "number",
+                        "example": 20
+                      },
+                      "bookedCapacity": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "region": {
+                        "type": "string",
+                        "example": "南部"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "台東縣"
+                      },
+                      "address": {
+                        "type": "string",
+                        "example": "address 最多100個字"
+                      },
+                      "activityImageUrls": {
+                        "type": "array",
+                        "example": [
+                          "XXXX"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "activityStartTime": {
+                        "type": "string",
+                        "example": "2024-07-27T00:00:00.537Z"
+                      },
+                      "activityEndTime": {
+                        "type": "string",
+                        "example": "2024-07-27T10:00:00.000Z"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/organizer/{id}/activities": {
       "post": {
         "tags": [
-          "Organizer"
+          "Organizer Activity"
         ],
         "description": "主揪角度-取得活動詳細資料",
         "parameters": [
@@ -1812,7 +1940,7 @@
     "/api/v1/forget": {
       "post": {
         "tags": [
-          "Organizer Auth"
+          "User Auth"
         ],
         "description": "忘記密碼",
         "parameters": [
@@ -1857,38 +1985,43 @@
     "/api/v1/forget/confirm": {
       "post": {
         "tags": [
-          "Organizer Auth"
+          "User Auth"
         ],
-        "description": "忘記密碼",
+        "description": "更換新密碼",
         "parameters": [
           {
             "name": "post",
             "in": "body",
-            "description": "忘記密碼",
+            "description": "更換新密碼",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "email": {
+                "resetToken": {
                   "type": "string",
-                  "example": "email"
+                  "example": "xxxxxxxxxxx"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "xxxxxxxxx"
                 }
               },
               "required": [
-                "email"
+                "resetToken",
+                "password"
               ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "忘記密碼成功回應",
+            "description": "更換新密碼成功回應",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "發送寄件成功"
+                  "example": "密碼重置成功"
                 }
               },
               "xml": {
