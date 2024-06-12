@@ -143,5 +143,26 @@ export const getActivityListSchema = z.object({
   })
 });
 
+export const getOrganizerActivityListSchema = z.object({
+  query: object({
+    sort: z
+      .string()
+      .optional()
+      .default('asc')
+      .refine((value) => ['asc', 'desc'].includes(value), {
+        message: 'sort value must be one of: asc, desc'
+      }),
+    status: z
+      .string()
+      .default('2')
+      .transform((val) => (val ? Number(val) : null))
+      .refine((val) => val === null || [0, 1, 2].includes(val), {
+        message: 'status must be in 0-2',
+        path: ['status']
+      })
+  })
+});
+
 export type CreateActivitySchemaInput = TypeOf<typeof createActivitySchema>['body'];
 export type GetActivityListInput = TypeOf<typeof getActivityListSchema>['query'];
+export type GetOrganizerActivityInput = TypeOf<typeof getOrganizerActivityListSchema>['query'];

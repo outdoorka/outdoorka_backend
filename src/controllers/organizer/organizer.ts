@@ -12,7 +12,11 @@ import dayjs from 'dayjs';
 
 import type { NextFunction, Request, Response } from 'express';
 import { type JwtPayloadRequest } from '../../types/dto/user';
-import { type CreateActivitySchemaInput } from '../../validate/activitiesSchemas';
+import {
+  type CreateActivitySchemaInput,
+  type GetOrganizerActivityInput,
+  getOrganizerActivityListSchema
+} from '../../validate/activitiesSchemas';
 import { Types } from 'mongoose';
 export const organizerController = {
   // 取得主揪資料
@@ -126,6 +130,75 @@ export const organizerController = {
     });
 
     handleResponse(res, getActivity, '取得成功');
+  },
+
+  // 取得主揪角度的活動列表
+  async getActivities(
+    req: Request<{}, {}, GetOrganizerActivityInput>,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const parsedQuery = getOrganizerActivityListSchema.safeParse(req);
+
+    let parsedQueryInput: Record<string, any> = {};
+    if (parsedQuery.success) {
+      parsedQueryInput = parsedQuery.data.query;
+    } else {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_VALUE],
+        status400Codes.INVALID_VALUE,
+        next
+      );
+    }
+
+    const ogId = (req as JwtPayloadRequest).user._id;
+    const now = new Date();
+    const sortOrder = parsedQueryInput.sort === 'asc' ? 1 : -1;
+    const status = parsedQueryInput.status;
+    const matchStatus: Record<number, any> = {
+      0: { isPublish: false, activityStartTime: { $gt: now } }, // 草稿
+      1: { isPublish: true, activityStartTime: { $gt: now } }, // 已發佈
+      2: { isPublish: true, activityEndTime: { $lt: now } } // 過往活動
+    };
+
+    const activityData = await ActivityModel.aggregate([
+      {
+        $match: {
+          organizer: ogId,
+          ...matchStatus[status]
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          isPublish: 1,
+          totalCapacity: 1,
+          bookedCapacity: 1,
+          region: 1,
+          city: 1,
+          address: 1,
+          activityImageUrls: 1,
+          activityStartTime: 1,
+          activityEndTime: 1
+        }
+      },
+      { $sort: { activityStartTime: sortOrder } }
+    ]);
+    console.log(activityData);
+
+    if (!activityData || activityData.length === 0) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_ACTIVITY],
+        status404Codes.NOT_FOUND_ACTIVITY,
+        next
+      );
+      return;
+    }
+
+    handleResponse(res, activityData, '取得成功');
   },
 
   // 取得主揪角度的活動詳細資訊

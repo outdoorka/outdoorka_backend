@@ -176,13 +176,63 @@ router.delete(
   commonController.imageDelete
 );
 
+// 主揪角度-取得活動列表資料
+router.get(
+  '/activity',
+  isOgAuth,
+  handleErrorAsync(organizerController.getActivities)
+  /**
+    #swagger.tags = ['Organizer Activity']
+    #swagger.security = [{ "bearerAuth": [] }]
+    #swagger.description = '主揪取得活動列表資料'
+    #swagger.parameters['status'] = {
+      in: 'query',
+      name: 'status',
+      description: '請填0-2。0(草稿),1(已發佈),2(過往活動)',
+      required: true,
+      schema: {
+        type: 'Integer',
+        default: 2
+      }
+    }
+    #swagger.parameters['sort'] = {
+      in: 'query',
+      name: 'sort',
+      description: '請填asc或desc',
+      required: false,
+      schema: {
+        type: 'string',
+        default: 'desc'
+      }
+    }]
+    #swagger.responses[200] = {
+      description: '取得主揪的活動列表資料',
+      schema: {
+        "data": [{
+          "_id": "664cb717ae8e74de4ae74871",
+          "title": "池上大坡池水上娛樂，悠遊玩水趣",
+          "isPublish": true,
+          "totalCapacity": 20,
+          "bookedCapacity": 2,
+          "region": "南部",
+          "city": "台東縣",
+          "address": "address 最多100個字",
+          "activityImageUrls": ["XXXX"],
+          "activityStartTime": "2024-07-27T00:00:00.537Z",
+          "activityEndTime": "2024-07-27T10:00:00.000Z",
+        }]
+      }
+    }
+  */
+);
+
 // 主揪角度-取得活動詳細資料
 router.post(
   '/:id/activities',
   isOgAuth,
   handleErrorAsync(organizerController.getActivity)
   /**
-   * #swagger.tags = ['Organizer']
+   * #swagger.tags = ['Organizer Activity']
    * #swagger.security = [{ "bearerAuth": [] }]
    * #swagger.description = '主揪角度-取得活動詳細資料'
    */
