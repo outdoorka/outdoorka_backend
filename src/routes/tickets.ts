@@ -60,7 +60,7 @@ router.get(
 router.patch(
   '/:id/confirm',
   isOgAuth,
-  handleErrorAsync(ticketController.ticketComfirm)
+  handleErrorAsync(ticketController.ticketConfirm)
   /**
    * #swagger.tags = ['Ticket']
    * #swagger.description = '活動驗票，主揪做確認報到動作 '
