@@ -48,7 +48,7 @@ export const ticketController = {
     handleResponse(res, ticketData, '取得成功');
   },
 
-  async ticketComfirm(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async ticketConfirm(req: Request, res: Response, next: NextFunction): Promise<void> {
     const ObjectId = Types.ObjectId;
     const ticketId = req.params.id;
     const ogId = (req as JwtPayloadRequest).user._id;
