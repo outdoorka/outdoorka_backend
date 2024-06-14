@@ -1014,6 +1014,291 @@
         ]
       }
     },
+    "/api/v1/organizer/activities/{id}": {
+      "patch": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "更新活動",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "description": "輸入活動資訊",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "title 最多100個字"
+                },
+                "subtitle": {
+                  "type": "string",
+                  "example": "subtitle 最多100個字"
+                },
+                "price": {
+                  "type": "number",
+                  "example": 600
+                },
+                "totalCapacity": {
+                  "type": "number",
+                  "example": 20
+                },
+                "city": {
+                  "type": "string",
+                  "example": "臺北市"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "address 最多100個字"
+                },
+                "location": {
+                  "type": "string",
+                  "example": "location 最多100個字"
+                },
+                "activityDetail": {
+                  "type": "string",
+                  "example": "activityDetail 最多1000個字"
+                },
+                "activityNotice": {
+                  "type": "string",
+                  "example": "activityNotice 最多200個字"
+                },
+                "activityTags": {
+                  "type": "array",
+                  "example": [
+                    "Camping",
+                    "Hiking"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "activityLinks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "name 最多50個字"
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "https://www.google.com/"
+                      }
+                    }
+                  }
+                },
+                "activityImageUrls": {
+                  "type": "array",
+                  "example": [
+                    "https://thispersondoesnotexist.com/"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isPublish": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "activitySignupStartTime": {
+                  "type": "string",
+                  "example": "2024-05-17T06:39:19.740Z"
+                },
+                "activitySignupEndTime": {
+                  "type": "string",
+                  "example": "2024-06-15T06:39:19.740Z"
+                },
+                "activityStartTime": {
+                  "type": "string",
+                  "example": "2024-06-17T00:39:19.740Z"
+                },
+                "activityEndTime": {
+                  "type": "string",
+                  "example": "2024-06-17T06:39:19.740Z"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "建立成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "organizer": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxxxxxx"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "xxxxxx@gmail.com"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://thispersondoesnotexist.com/"
+                        }
+                      }
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "title 最多100個字"
+                    },
+                    "subtitle": {
+                      "type": "string",
+                      "example": "subtitle 最多100個字"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 600
+                    },
+                    "totalCapacity": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "region": {
+                      "type": "string",
+                      "example": "北部"
+                    },
+                    "city": {
+                      "type": "string",
+                      "example": "臺北市"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "address 最多100個字"
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "location 最多100個字"
+                    },
+                    "activityDetail": {
+                      "type": "string",
+                      "example": "activityDetail 最多1000個字"
+                    },
+                    "activityNotice": {
+                      "type": "string",
+                      "example": "activityNotice 最多200個字"
+                    },
+                    "activityTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "activityLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "name 最多50個字"
+                            },
+                            "url": {
+                              "type": "string",
+                              "example": "https://www.google.com/"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "664d813a375ad2f7a00e087c"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "activityImageUrls": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "example": [
+                          "https://thispersondoesnotexist.com/"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "isPublish": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "activitySignupStartTime": {
+                      "type": "string",
+                      "example": "2024-05-17T06:39:19.740Z"
+                    },
+                    "activitySignupEndTime": {
+                      "type": "string",
+                      "example": "2024-06-15T06:39:19.740Z"
+                    },
+                    "activityStartTime": {
+                      "type": "string",
+                      "example": "2024-06-17T00:39:19.740Z"
+                    },
+                    "activityEndTime": {
+                      "type": "string",
+                      "example": "2024-06-17T06:39:19.740Z"
+                    },
+                    "likers": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-22T05:23:06.124Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-22T05:23:06.124Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/organizer/imageUpload": {
       "post": {
         "tags": [
