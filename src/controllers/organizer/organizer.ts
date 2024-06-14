@@ -5,11 +5,11 @@ import {
   status404Codes,
   status422Codes,
   status500Codes,
-  status400Codes
+  status400Codes,
+  status405Codes
 } from '../../types/enum/appStatusCode';
 import { convertCityToArea } from '../../utils/helpers';
 import dayjs from 'dayjs';
-
 import type { NextFunction, Request, Response } from 'express';
 import { type JwtPayloadRequest } from '../../types/dto/user';
 import {
@@ -18,6 +18,7 @@ import {
   getOrganizerActivityListSchema
 } from '../../validate/activitiesSchemas';
 import { Types } from 'mongoose';
+
 export const organizerController = {
   // 取得主揪資料
   async getOrganizer(req: Request, res: Response, next: NextFunction) {
@@ -48,6 +49,7 @@ export const organizerController = {
       '取得成功'
     );
   },
+
   // 主揪建立活動
   async createActivity(
     req: Request<{}, {}, CreateActivitySchemaInput>,
@@ -130,6 +132,136 @@ export const organizerController = {
     });
 
     handleResponse(res, getActivity, '取得成功');
+  },
+
+  // 主揪更新活動
+  async updateActivity(
+    req: Request<{}, {}, CreateActivitySchemaInput>,
+    res: Response,
+    next: NextFunction
+  ) {
+    // 確認主揪身份
+    const ogId = (req as JwtPayloadRequest).user._id;
+    const ogData = await OrganizerModel.findById(ogId);
+    if (!ogData) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_USER],
+        status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
+    }
+
+    // 確認是否有活動 id
+    const activityId = (req as any).params.id;
+    if (!activityId) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_REQEST],
+        status400Codes.INVALID_REQEST,
+        next
+      );
+      return;
+    }
+
+    // 判斷活動的結束時間必須在開始時間之後
+    const activityStartTime = dayjs(req.body.activityStartTime);
+    const activityEndTime = dayjs(req.body.activityEndTime);
+    if (activityEndTime.isBefore(activityStartTime)) {
+      handleAppError(
+        422,
+        status422Codes[status422Codes.INVALID_STARTENDTIME],
+        status422Codes.INVALID_STARTENDTIME,
+        next
+      );
+      return;
+    }
+
+    // 判斷活動報名的開始時間必須在活動報名的結束時間之前，並且活動報名的結束時間必須在活動開始時間之前
+    const signupStartTime = dayjs(req.body.activitySignupStartTime);
+    const signupEndTime = dayjs(req.body.activitySignupEndTime);
+    if (signupEndTime.isBefore(signupStartTime) || signupStartTime.isAfter(activityStartTime)) {
+      handleAppError(
+        422,
+        status422Codes[status422Codes.INVALID_SIGNUPTIME],
+        status422Codes.INVALID_SIGNUPTIME,
+        next
+      );
+      return;
+    }
+
+    const getActivity = await ActivityModel.findById(activityId);
+    // 活動不存在
+    if (!getActivity) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_ACTIVITY],
+        status404Codes.NOT_FOUND_ACTIVITY,
+        next
+      );
+      return;
+    }
+
+    // 已發佈狀態就不能編輯
+    if (getActivity.isPublish) {
+      handleAppError(
+        405,
+        status405Codes[status405Codes.EDIT_NOT_ALLOWED],
+        status405Codes.EDIT_NOT_ALLOWED,
+        next
+      );
+      return;
+    }
+
+    // 活動區域，會依照 city 來判斷
+    const region = convertCityToArea(req.body.city);
+
+    // 活動內容的資料安全判斷 xss
+    const cleanActivityDetail = DOMPurify.sanitize(req.body.activityDetail, {
+      USE_PROFILES: { html: false }
+    });
+    // 活動注意事項的資料安全判斷 xss
+    const cleanActivityNotice = DOMPurify.sanitize(req.body.activityNotice);
+
+    // 更新活動資料
+    getActivity.title = req.body.title;
+    getActivity.subtitle = req.body.subtitle;
+    getActivity.price = req.body.price;
+    getActivity.activityTags = req.body.activityTags as any[];
+    getActivity.totalCapacity = req.body.totalCapacity;
+    getActivity.city = req.body.city;
+    getActivity.address = req.body.address;
+    getActivity.region = region;
+    getActivity.location = req.body.location;
+    getActivity.activityStartTime = req.body.activityStartTime;
+    getActivity.activityEndTime = req.body.activityEndTime;
+    getActivity.activitySignupStartTime = req.body.activitySignupStartTime;
+    getActivity.activitySignupEndTime = req.body.activitySignupEndTime;
+    getActivity.activityImageUrls = req.body.activityImageUrls;
+    getActivity.activityDetail = cleanActivityDetail;
+    getActivity.activityNotice = cleanActivityNotice;
+    getActivity.activityLinks = req.body.activityLinks;
+
+    // 儲存活動資料
+    const updateResult = await getActivity.save();
+
+    if (!updateResult) {
+      handleAppError(
+        500,
+        status500Codes[status500Codes.UPDATE_FAILED],
+        status500Codes.UPDATE_FAILED,
+        next
+      );
+      return;
+    }
+
+    // const getActivity = await ActivityModel.findById(updateRresult._id).populate({
+    //   path: 'organizer', // 對的 organizer 欄位
+    //   select: 'name, email photo'
+    // });
+
+    handleResponse(res, updateResult, '更新成功');
   },
 
   // 取得主揪角度的活動列表
