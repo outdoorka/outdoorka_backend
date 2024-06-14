@@ -1,17 +1,17 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
 import type { IPaymentModel } from '../types/dto/payment';
-import { PaymentStatus } from '../types/enum/activity';
+import { PaymentStatus } from '../types/enum/payment';
 
 const paymentSchema = new Schema<IPaymentModel>(
   {
     activity: {
-      type: Schema.ObjectId,
+      type: Schema.Types.ObjectId,
       required: [true, 'activityId 未填寫'],
       ref: 'Activity'
     },
     buyer: {
-      type: Schema.ObjectId,
+      type: Schema.Types.ObjectId,
       required: [true, 'buyerId 未填寫'],
       ref: 'User'
     },
@@ -20,7 +20,8 @@ const paymentSchema = new Schema<IPaymentModel>(
         type: String,
         required: [true, 'Name is required'],
         trim: true,
-        minlength: 2
+        minlength: 2,
+        maxlength: 20
       },
       buyerMobile: {
         type: String,
@@ -38,10 +39,12 @@ const paymentSchema = new Schema<IPaymentModel>(
     ticketCount: { type: Number, required: [true, 'ticketCount 未填寫'] },
     ticketPrice: { type: Number, required: [true, 'ticketPrice 未填寫'] },
     paymentMethod: { type: String, maxlength: 100 }, // TODO 看看需不需要定義enum
-    paymentStatus: [
-      { type: String, enum: Object.keys(PaymentStatus), required: [true, 'paymentStatus 未填寫'] }
-    ],
-    paymentCompletedAt: { type: Date, required: true }
+    paymentStatus: {
+      type: String,
+      enum: Object.values(PaymentStatus),
+      required: [true, 'paymentStatus 未填寫']
+    },
+    paymentCompletedAt: { type: Date, default: null }
   },
   { versionKey: false, timestamps: true }
 );

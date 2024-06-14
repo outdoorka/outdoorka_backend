@@ -3207,6 +3207,128 @@
           }
         ]
       }
+    },
+    "/api/v1/payments/registration": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "使用者購買活動票券",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "body",
+            "description": "使用者購買活動票券",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "activityId": {
+                  "type": "string",
+                  "example": "xxxxxxxxxxxxxxxxxx"
+                },
+                "ticketCount": {
+                  "type": "number",
+                  "example": 1
+                },
+                "buyerName": {
+                  "type": "string",
+                  "example": "name"
+                },
+                "buyerMobile": {
+                  "type": "string",
+                  "example": "0911000000"
+                },
+                "buyerEmail": {
+                  "type": "string",
+                  "example": "email@gmail.com"
+                }
+              },
+              "required": [
+                "activityId",
+                "ticketCount",
+                "buyerName",
+                "buyerMobile",
+                "buyerEmail"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "購買成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "ticketCount": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "totalPrice": {
+                      "type": "number",
+                      "example": 1000
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/payments/result": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "金流回傳付款結果",
+        "responses": {
+          "200": {
+            "description": "金流回傳付款結果成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "paymentStatus": {
+                      "type": "string",
+                      "example": "paid"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import type { Document, SchemaTimestampsConfig, Types } from 'mongoose';
+import type { PaymentStatus } from '../enum/payment';
 
 export interface IPaymentModel extends Document, SchemaTimestampsConfig {
   activity: Types.ObjectId;
@@ -11,6 +12,6 @@ export interface IPaymentModel extends Document, SchemaTimestampsConfig {
   ticketCount: number;
   ticketPrice: number;
   paymentMethod: string;
-  paymentStatus: string; // [unpaid", "failed", "paid"]
+  paymentStatus: PaymentStatus;
   paymentCompletedAt: Date;
 }
