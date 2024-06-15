@@ -25,6 +25,7 @@ import authRouter from './routes/auth';
 import organizerRouter from './routes/organizer';
 import activityRouter from './routes/activity';
 import ticketsRouter from './routes/tickets';
+import likedListRouter from './routes/likedlist';
 
 // const USER_BASE_URL = '/api/v1';
 // const ORGANIZER_BASE_URL = '/api/v1/organizer';
@@ -62,6 +63,7 @@ app.use('/api/v1/organizer', organizerRouter);
 app.use('/api/v1', authRouter);
 app.use('/api/v1/activity', activityRouter);
 app.use('/api/v1/tickets', ticketsRouter);
+app.use('/api/v1/liked-list', likedListRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 

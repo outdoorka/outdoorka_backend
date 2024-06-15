@@ -57,7 +57,8 @@ export enum status403Codes {
 export enum status404Codes {
   'NOT_FOUND_USER' = '找不到使用者' as any,
   'NOT_FOUND_ACTIVITY' = '找不到活動' as any,
-  'NOT_FOUND_TICKET' = '找不到票券' as any
+  'NOT_FOUND_TICKET' = '找不到票券' as any,
+  'NOT_FOUND_LIKE_LIST' = '用戶未收藏该活動' as any
 }
 
 /**
@@ -72,7 +73,8 @@ export enum status405Codes {
  * @description 409 用戶端錯誤代碼
  */
 export enum status409Codes {
-  'ALREADY_EXISTS' = '資料已存在' as any
+  'ALREADY_EXISTS' = '資料已存在' as any,
+  'ACTIVITY_ALREADY_ADD' = '活動已加入收藏' as any
 }
 
 /**

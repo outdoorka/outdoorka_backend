@@ -101,6 +101,7 @@ export const activityController = {
         status400Codes.INVALID_REQEST,
         next
       );
+      return;
     }
 
     const _id = (req as JwtPayloadRequest).user._id;
