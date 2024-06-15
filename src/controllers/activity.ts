@@ -12,6 +12,7 @@ import {
 } from '../services/handleActivityList';
 
 export const activityController = {
+  // 取得首頁的熱門活動/最新活動資料
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
     const type = req.query.type;
 
@@ -63,7 +64,7 @@ export const activityController = {
           popularity: { $divide: ['$bookedCapacity', '$totalCapacity'] },
           organizer: {
             _id: '$organizer._id',
-            name: '$organizer.username',
+            name: '$organizer.name',
             photo: '$organizer.photo',
             rating: '$organizer.rating'
           }
@@ -90,6 +91,8 @@ export const activityController = {
 
     handleResponse(res, activities, '取得成功');
   },
+
+  // 跟團仔角度-取得活動詳細資料
   async getActivity(req: Request, res: Response, next: NextFunction): Promise<void> {
     const ObjectId = Types.ObjectId;
     const activityId = req.params.id;
@@ -118,7 +121,7 @@ export const activityController = {
     }
     const activity = await ActivityModel.findById(activityId).populate({
       path: 'organizer',
-      select: 'name, email photo rating socialMediaUrls'
+      select: 'name email photo rating socialMediaUrls'
     });
 
     console.log(activity);

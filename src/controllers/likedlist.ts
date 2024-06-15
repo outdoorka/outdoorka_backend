@@ -27,7 +27,7 @@ export const likedListController = {
       'subtitle region city activityImageUrls activityStartTime activityEndTime bookedCapacity'
     ).populate({
       path: 'organizer',
-      select: 'name, email photo rating socialMediaUrls'
+      select: 'name email photo rating socialMediaUrls'
     });
 
     if (!likedList) {

@@ -66,7 +66,8 @@ export enum status404Codes {
  */
 export enum status405Codes {
   'METHOD_NOT_ALLOWED' = '請求的方法（GET, POST, PUT, DELETE等）不被允許' as any,
-  'UNSUPPORTED_RESPONSE_TYPE' = '不支持的回應類型' as any
+  'UNSUPPORTED_RESPONSE_TYPE' = '不支持的回應類型' as any,
+  'EDIT_NOT_ALLOWED' = '不允許編輯' as any
 }
 
 /**
