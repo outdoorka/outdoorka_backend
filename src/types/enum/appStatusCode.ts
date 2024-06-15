@@ -73,7 +73,10 @@ export enum status405Codes {
  * @description 409 用戶端錯誤代碼
  */
 export enum status409Codes {
-  'ALREADY_EXISTS' = '資料已存在' as any
+  'ALREADY_EXISTS' = '資料已存在' as any,
+  'REGISTRATION_NOT_STARTED' = '報名尚未開始' as any,
+  'REGISTRATION_CLOSED' = '報名已截止' as any,
+  'REGISTRATION_FULL' = '超過可報名人數' as any
 }
 
 /**
