@@ -45,9 +45,3 @@ export enum ActivityTag {
   Trip = '旅行',
   Fishing = '釣魚'
 }
-
-export enum PaymentStatus {
-  Unpaid = 'unpaid',
-  Failed = 'failed',
-  Paid = 'paid'
-}

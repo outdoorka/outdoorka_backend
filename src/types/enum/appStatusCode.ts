@@ -75,7 +75,10 @@ export enum status405Codes {
  */
 export enum status409Codes {
   'ALREADY_EXISTS' = '資料已存在' as any,
-  'ACTIVITY_ALREADY_ADD' = '活動已加入收藏' as any
+  'ACTIVITY_ALREADY_ADD' = '活動已加入收藏' as any,
+  'REGISTRATION_NOT_STARTED' = '報名尚未開始' as any,
+  'REGISTRATION_CLOSED' = '報名已截止' as any,
+  'REGISTRATION_FULL' = '超過可報名人數' as any
 }
 
 /**

@@ -7,3 +7,4 @@ export * from './organizer/auth';
 export * from './organizer/organizer';
 export * from './ticket';
 export * from './likedlist';
+export * from './payment';
