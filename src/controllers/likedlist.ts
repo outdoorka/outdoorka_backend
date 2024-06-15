@@ -11,7 +11,6 @@ export const likedListController = {
     const checkUserId = await UserModel.findById(userID);
     let activityTags = [];
     let activityRegions = [];
-    let likedList = [];
 
     if (!checkUserId) {
       handleAppError(
@@ -22,7 +21,7 @@ export const likedListController = {
       );
       return;
     }
-    likedList = await ActivityModel.find(
+    const likedList = await ActivityModel.find(
       { likers: userID },
       'subtitle region city activityImageUrls activityStartTime activityEndTime bookedCapacity'
     ).populate({
@@ -59,9 +58,9 @@ export const likedListController = {
     }
 
     const finalRes = {
-      activityTags: activityTags,
+      activityTags: !activityTags ? [] : activityTags,
       region: activityRegions,
-      likedList: likedList
+      likedList: !likedList ? [] : likedList
     };
 
     handleResponse(res, finalRes, '取得成功');
