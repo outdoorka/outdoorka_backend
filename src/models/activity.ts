@@ -52,7 +52,7 @@ const activitySchema = new Schema<IActivityModel>(
     activitySignupEndTime: { type: Date, required: true },
     activityStartTime: { type: Date, required: true },
     activityEndTime: { type: Date, required: true },
-    likers: [{ type: [Schema.ObjectId], ref: 'User' }],
+    likers: [{ type: Schema.ObjectId, ref: 'User' }],
     bookedCapacity: { type: Number, default: 0 }
   },
   { versionKey: false, timestamps: true }

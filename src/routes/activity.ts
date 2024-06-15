@@ -7,6 +7,7 @@ import { isAuth } from '../services/handleAuth';
 import { handleErrorAsync } from '../services/handleResponse';
 const router = express.Router();
 
+// 取得首頁的熱門活動/最新活動資料
 router.get(
   '/homelist',
   handleErrorAsync(activityController.getActivityHomeList)
@@ -32,7 +33,7 @@ router.get(
                 "_id": "664cb717ae8e74de4ae74873",
                 "organizerId": {
                   "_id": "664caee7ae10d7e7604c4feb",
-                  "username": "拼圖戶外生活",
+                  "name": "拼圖戶外生活",
                   "photo": "https://static.accupass.com/org/2005260527172844358540.jpg"
                 },
                 "subtitle": "大屯溪古道上小觀音山｜拼圖戶外生活 X 山旅戶外",
@@ -216,6 +217,7 @@ router.get(
   */
 );
 
+// 跟團仔角度-取得活動詳細資料
 router.get(
   '/:id',
   isAuth,
@@ -270,7 +272,8 @@ router.get(
             "_id": "664ca866ae10d7e7604c4fe7",
             "email": "email2@gmail.com",
             "photo": "https://static.accupass.com/org/2304041722089876493900.jpg",
-            "rating": 4
+            "rating": 4,
+            "name":"XXX"
           },
           "isLiked": true
         },
