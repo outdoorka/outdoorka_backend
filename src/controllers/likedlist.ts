@@ -11,6 +11,7 @@ export const likedListController = {
     const checkUserId = await UserModel.findById(userID);
     let activityTags = [];
     let activityRegions = [];
+    let likedList = [];
 
     if (!checkUserId) {
       handleAppError(
@@ -21,7 +22,7 @@ export const likedListController = {
       );
       return;
     }
-    const activity = await ActivityModel.find(
+    likedList = await ActivityModel.find(
       { likers: userID },
       'subtitle region city activityImageUrls activityStartTime activityEndTime bookedCapacity'
     ).populate({
@@ -29,7 +30,7 @@ export const likedListController = {
       select: 'name, email photo rating socialMediaUrls'
     });
 
-    if (!activity) {
+    if (!likedList) {
       handleAppError(
         404,
         status404Codes[status404Codes.NOT_FOUND_ACTIVITY],
@@ -60,7 +61,7 @@ export const likedListController = {
     const finalRes = {
       activityTags: activityTags,
       region: activityRegions,
-      likedList: activity
+      likedList: likedList
     };
 
     handleResponse(res, finalRes, '取得成功');
