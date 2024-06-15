@@ -242,6 +242,7 @@ export const organizerController = {
     getActivity.activityDetail = cleanActivityDetail;
     getActivity.activityNotice = cleanActivityNotice;
     getActivity.activityLinks = req.body.activityLinks;
+    getActivity.isPublish = req.body.isPublish;
 
     // 儲存活動資料
     const updateResult = await getActivity.save();
