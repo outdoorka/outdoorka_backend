@@ -4,18 +4,6 @@ import validator from 'validator';
 import type { IOrganizerModel } from '../types/dto/organizer';
 import { ActivityTag } from '../types/enum/activity';
 
-// 會員評分
-// const ratingSchema = new Schema<IOrganizerRating>({
-//   id: {
-//     type: Schema.ObjectId,
-//     ref: 'User'
-//   },
-//   rating: {
-//     type: Number,
-//     max: 5
-//   }
-// });
-
 const organizerSchema = new Schema<IOrganizerModel, Model<IOrganizerModel>>(
   {
     email: {

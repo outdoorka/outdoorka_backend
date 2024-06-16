@@ -2,7 +2,13 @@ import express from 'express';
 import { authController, organizerAuthController } from '../controllers';
 import { validateBody } from '../middleware/validationMiddleware';
 import { ogLoginSchema, ogRegistrationSchema } from '../validate/organizerSchemas';
-import { authLoginSchema, authRegistrationSchema } from '../validate/authSchemas';
+import {
+  authLoginSchema,
+  authRefreshTokenSchema,
+  authRegistrationSchema,
+  authForgetPassowrdScheme,
+  authResetPassowrdScheme
+} from '../validate/authSchemas';
 import { handleErrorAsync } from '../services/handleResponse';
 
 const router = express.Router();
@@ -87,7 +93,36 @@ router.post(
   handleErrorAsync(authController.authLogin)
 );
 // 會員 refresh token
-router.post('/refresh-token', handleErrorAsync(authController.generateAccessToken));
+router.post(
+  '/refresh-token',
+  validateBody(authRefreshTokenSchema),
+  /**
+   * #swagger.tags = ['User Auth']
+   * #swagger.description = '更新登入token'
+   */
+  /*
+    #swagger.parameters['post'] = {
+      in: 'body',
+      description: '更新token',
+      required: true,
+      schema: {
+        "refresh_token": "xxxxxxxxxxxxxx"
+      }
+    }
+    #swagger.responses[200] = {
+      description: 'token交換成功回應',
+      schema: {
+        "data": {
+          "access_token": "xxxxxxxxxxxxxx",
+          "expires_in": 3600
+        }
+      },
+      "message": "token交換成功"
+      }
+    }
+  */
+  handleErrorAsync(authController.authRefreshAccessToken)
+);
 
 // 主揪註冊
 router.post(
@@ -175,6 +210,55 @@ router.post(
     }
   */
   handleErrorAsync(organizerAuthController.authLogin)
+);
+// 忘記密碼
+router.post(
+  '/forget',
+  validateBody(authForgetPassowrdScheme),
+  /**
+    #swagger.tags = ['User Auth']
+    #swagger.description = '忘記密碼'
+    #swagger.parameters['post'] = {
+      in: 'body',
+      description: '忘記密碼',
+      required: true,
+      schema: {
+        $email: 'email',
+      }
+    }
+    #swagger.responses[200] = {
+      description: '忘記密碼成功回應',
+      schema: {
+        "message": "發送寄件成功"
+      }
+    }
+  */
+  handleErrorAsync(authController.authForgetPassword)
+);
+// 重置密碼
+router.post(
+  '/forget/confirm',
+  validateBody(authResetPassowrdScheme),
+  /**
+    #swagger.tags = ['User Auth']
+    #swagger.description = '更換新密碼'
+    #swagger.parameters['post'] = {
+      in: 'body',
+      description: '更換新密碼',
+      required: true,
+      schema: {
+        $resetToken: 'xxxxxxxxxxx',
+        $password: 'xxxxxxxxx'
+      }
+    }
+    #swagger.responses[200] = {
+      description: '更換新密碼成功回應',
+      schema: {
+        "message": "密碼重置成功"
+      }
+    }
+  */
+  handleErrorAsync(authController.authResetPassword)
 );
 
 export default router;

@@ -616,6 +616,125 @@
         ]
       }
     },
+    "/api/v1/users/imageUpload": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "上傳圖片",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "formData",
+            "description": "上傳圖片",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "上傳成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "上傳成功"
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://xxxxxxx.com/xxxxxxxxxxxxxxxxxx.jpg"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "上傳成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/organizer/profile": {
+      "get": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "取得主揪資料",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "主揪資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "XXX"
+                    },
+                    "nickName": {
+                      "type": "string",
+                      "example": "nickName"
+                    },
+                    "photo": {
+                      "type": "string",
+                      "example": "https://thispersondoesnotexist.com"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "test@gmail.com"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "example": "0911000000"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/organizer/activities": {
       "post": {
         "tags": [
@@ -630,6 +749,291 @@
           },
           {
             "name": "post",
+            "in": "body",
+            "description": "輸入活動資訊",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "title 最多100個字"
+                },
+                "subtitle": {
+                  "type": "string",
+                  "example": "subtitle 最多100個字"
+                },
+                "price": {
+                  "type": "number",
+                  "example": 600
+                },
+                "totalCapacity": {
+                  "type": "number",
+                  "example": 20
+                },
+                "city": {
+                  "type": "string",
+                  "example": "臺北市"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "address 最多100個字"
+                },
+                "location": {
+                  "type": "string",
+                  "example": "location 最多100個字"
+                },
+                "activityDetail": {
+                  "type": "string",
+                  "example": "activityDetail 最多1000個字"
+                },
+                "activityNotice": {
+                  "type": "string",
+                  "example": "activityNotice 最多200個字"
+                },
+                "activityTags": {
+                  "type": "array",
+                  "example": [
+                    "Camping",
+                    "Hiking"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "activityLinks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "name 最多50個字"
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "https://www.google.com/"
+                      }
+                    }
+                  }
+                },
+                "activityImageUrls": {
+                  "type": "array",
+                  "example": [
+                    "https://thispersondoesnotexist.com/"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isPublish": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "activitySignupStartTime": {
+                  "type": "string",
+                  "example": "2024-05-17T06:39:19.740Z"
+                },
+                "activitySignupEndTime": {
+                  "type": "string",
+                  "example": "2024-06-15T06:39:19.740Z"
+                },
+                "activityStartTime": {
+                  "type": "string",
+                  "example": "2024-06-17T00:39:19.740Z"
+                },
+                "activityEndTime": {
+                  "type": "string",
+                  "example": "2024-06-17T06:39:19.740Z"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "建立成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "organizer": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "xxxxxxxxxxxxxxxxxx"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "xxxxxx@gmail.com"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://thispersondoesnotexist.com/"
+                        }
+                      }
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "title 最多100個字"
+                    },
+                    "subtitle": {
+                      "type": "string",
+                      "example": "subtitle 最多100個字"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 600
+                    },
+                    "totalCapacity": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "region": {
+                      "type": "string",
+                      "example": "北部"
+                    },
+                    "city": {
+                      "type": "string",
+                      "example": "臺北市"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "address 最多100個字"
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "location 最多100個字"
+                    },
+                    "activityDetail": {
+                      "type": "string",
+                      "example": "activityDetail 最多1000個字"
+                    },
+                    "activityNotice": {
+                      "type": "string",
+                      "example": "activityNotice 最多200個字"
+                    },
+                    "activityTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "activityLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "name 最多50個字"
+                            },
+                            "url": {
+                              "type": "string",
+                              "example": "https://www.google.com/"
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "664d813a375ad2f7a00e087c"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "activityImageUrls": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "example": [
+                          "https://thispersondoesnotexist.com/"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "isPublish": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "activitySignupStartTime": {
+                      "type": "string",
+                      "example": "2024-05-17T06:39:19.740Z"
+                    },
+                    "activitySignupEndTime": {
+                      "type": "string",
+                      "example": "2024-06-15T06:39:19.740Z"
+                    },
+                    "activityStartTime": {
+                      "type": "string",
+                      "example": "2024-06-17T00:39:19.740Z"
+                    },
+                    "activityEndTime": {
+                      "type": "string",
+                      "example": "2024-06-17T06:39:19.740Z"
+                    },
+                    "likers": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-22T05:23:06.124Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-22T05:23:06.124Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/organizer/activities/{id}": {
+      "patch": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "更新活動",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "patch",
             "in": "body",
             "description": "輸入活動資訊",
             "required": true,
@@ -952,6 +1356,375 @@
         ]
       }
     },
+    "/api/v1/organizer/image": {
+      "delete": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "刪除圖片",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "fileName",
+            "in": "query",
+            "description": "刪除圖片",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {},
+                "message": {
+                  "type": "string",
+                  "example": "刪除成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/organizer/activity": {
+      "get": {
+        "tags": [
+          "Organizer Activity"
+        ],
+        "description": "主揪取得活動列表資料",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "請填0-2。0(草稿),1(已發佈),2(過往活動)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "Integer"
+                },
+                "default": {
+                  "type": "number",
+                  "example": 2
+                }
+              }
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "請填asc或desc",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "default": {
+                  "type": "string",
+                  "example": "desc"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得主揪的活動列表資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "664cb717ae8e74de4ae74871"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                      },
+                      "isPublish": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "totalCapacity": {
+                        "type": "number",
+                        "example": 20
+                      },
+                      "bookedCapacity": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "region": {
+                        "type": "string",
+                        "example": "南部"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "台東縣"
+                      },
+                      "address": {
+                        "type": "string",
+                        "example": "address 最多100個字"
+                      },
+                      "activityImageUrls": {
+                        "type": "array",
+                        "example": [
+                          "XXXX"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "activityStartTime": {
+                        "type": "string",
+                        "example": "2024-07-27T00:00:00.537Z"
+                      },
+                      "activityEndTime": {
+                        "type": "string",
+                        "example": "2024-07-27T10:00:00.000Z"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/organizer/activity/{id}": {
+      "get": {
+        "tags": [
+          "Organizer Activity"
+        ],
+        "description": "主揪角度-取得活動詳細資料",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "建立成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "664cb717ae8e74de4ae74871"
+                    },
+                    "organizer": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "664caee7ae10d7e7604c4feb"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "email1@gmail.com"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://static.accupass.com/org/2005260527172844358540.jpg"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "XXX"
+                        }
+                      }
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                    },
+                    "subtitle": {
+                      "type": "string",
+                      "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 600
+                    },
+                    "totalCapacity": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "region": {
+                      "type": "string",
+                      "example": "南部"
+                    },
+                    "city": {
+                      "type": "string",
+                      "example": "台東縣"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "address 最多100個字"
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "location 最多100個字"
+                    },
+                    "activityDetail": {
+                      "type": "string",
+                      "example": "activityDetail 最多1000個字"
+                    },
+                    "activityNotice": {
+                      "type": "string",
+                      "example": "activityNotice 最多200個字"
+                    },
+                    "activityTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "activityLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "name 最多50個字123ewq"
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://www.google.com/"
+                          },
+                          "_id": {
+                            "type": "string",
+                            "example": "664da320952a06a2b9c25e03"
+                          }
+                        }
+                      }
+                    },
+                    "activityImageUrls": {
+                      "type": "array",
+                      "example": [
+                        "XXXX",
+                        "XXXX",
+                        "XXXX"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "isPublish": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "activitySignupStartTime": {
+                      "type": "string",
+                      "example": "2024-05-17T06:39:19.740Z"
+                    },
+                    "activitySignupEndTime": {
+                      "type": "string",
+                      "example": "2024-06-15T06:39:19.740Z"
+                    },
+                    "activityStartTime": {
+                      "type": "string",
+                      "example": "2024-07-27T00:00:00.537Z"
+                    },
+                    "activityEndTime": {
+                      "type": "string",
+                      "example": "2024-07-27T10:00:00.000Z"
+                    },
+                    "likers": {
+                      "type": "array",
+                      "example": [
+                        "XX",
+                        "XX"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-22T07:47:44.839Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-22T07:47:44.839Z"
+                    },
+                    "bookedCapacity": {
+                      "type": "number",
+                      "example": 2
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/register": {
       "post": {
         "tags": [
@@ -1147,10 +1920,52 @@
     },
     "/api/v1/refresh-token": {
       "post": {
-        "description": "",
+        "tags": [
+          "User Auth"
+        ],
+        "description": "更新登入token",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "更新token",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "refresh_token": {
+                  "type": "string",
+                  "example": "xxxxxxxxxxxxxx"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "token交換成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxx"
+                    },
+                    "expires_in": {
+                      "type": "number",
+                      "example": 3600
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "message": "token交換成功"
           }
         }
       }
@@ -1411,6 +2226,101 @@
         }
       }
     },
+    "/api/v1/forget": {
+      "post": {
+        "tags": [
+          "User Auth"
+        ],
+        "description": "忘記密碼",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "忘記密碼",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email"
+                }
+              },
+              "required": [
+                "email"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "忘記密碼成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "發送寄件成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/forget/confirm": {
+      "post": {
+        "tags": [
+          "User Auth"
+        ],
+        "description": "更換新密碼",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "更換新密碼",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "resetToken": {
+                  "type": "string",
+                  "example": "xxxxxxxxxxx"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "xxxxxxxxx"
+                }
+              },
+              "required": [
+                "resetToken",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "更換新密碼成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "密碼重置成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/activity/homelist": {
       "get": {
         "tags": [
@@ -1450,7 +2360,7 @@
                             "type": "string",
                             "example": "664caee7ae10d7e7604c4feb"
                           },
-                          "username": {
+                          "name": {
                             "type": "string",
                             "example": "拼圖戶外生活"
                           },
@@ -1506,6 +2416,1212 @@
                 "message": {
                   "type": "string",
                   "example": "取得成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/activity/list": {
+      "get": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "取得活動列表清單",
+        "parameters": [
+          {
+            "name": "perPage",
+            "in": "query",
+            "description": "顯示幾筆資料，預設10筆",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "number"
+                },
+                "default": {
+                  "type": "number",
+                  "example": 10
+                }
+              }
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "第一筆或最後一筆的游標ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "description": "往下或往上查找(forward, backward)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "關鍵字查詢，目前搜尋標題內包含關鍵字的活動",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "活動開始時間(搜尋區間的起始時間)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "活動開始時間(搜尋區間的結束時間)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "description": "活動區域(Northern,Central,Southern,Eastern,Overseas)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "theme",
+            "in": "query",
+            "description": "活動類別(Camping, Climbing, Hiking, Sports, Surfing, Excursion, Trip)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "capacity",
+            "in": "query",
+            "description": "活動規模，1-5分別對應的意思是: 1: 0-10人, 2: 11-30人, 3: 31-50人, 4: 51-100人, 5: 100人以上",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "rating",
+            "in": "query",
+            "description": "主揪的分數，1-5",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "organizerId",
+            "in": "query",
+            "description": "主揪ID，用來查詢特定主揪的活動",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "sorting的條件，目前有date_asc,date_desc,rating_asc,rating_desc,capacity_asc,capacity_desc,price_asc,price_desc 預設是date_asc",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得活動列表清單",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "664cb717ae8e74de4ae74872"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                      },
+                      "subtitle": {
+                        "type": "string",
+                        "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": 600
+                      },
+                      "totalCapacity": {
+                        "type": "number",
+                        "example": 20
+                      },
+                      "region": {
+                        "type": "string",
+                        "example": "北部"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "新北市"
+                      },
+                      "activityTags": {
+                        "type": "array",
+                        "example": [
+                          "Camping",
+                          "Hiking"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "activityImageUrls": {
+                        "type": "array",
+                        "example": [
+                          "https://media.istockphoto.com/id/1367438696/photo/cute-redhead-boy-and-grandfather-fishing-in-the-river-in-quebec.jpg?s=612x612&w=0&k=20&c=34JDzuhY4Nlt5sHonFWh8ZAiUdHyybCCv44BhNtzvEw=",
+                          "https://media.istockphoto.com/id/841837302/photo/fishing.jpg?s=612x612&w=0&k=20&c=Fge9dv6z5JA6r_dKSdKPQNpgm9geb7O58N8xAs8ZGYo=",
+                          "https://media.istockphoto.com/id/1322104405/photo/father-and-son-fishing-together-at-the-lake.jpg?s=612x612&w=0&k=20&c=B6z3DZXUzb4R47z0d4Sj5ijICnDXCORU0vJhWh9ci4o="
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "activitySignupStartTime": {
+                        "type": "string",
+                        "example": "2024-05-17T06:39:19.740Z"
+                      },
+                      "activitySignupEndTime": {
+                        "type": "string",
+                        "example": "2024-06-15T06:39:19.740Z"
+                      },
+                      "activityStartTime": {
+                        "type": "string",
+                        "example": "2024-06-26T00:00:00.537Z"
+                      },
+                      "activityEndTime": {
+                        "type": "string",
+                        "example": "2024-07-21T10:00:00.000Z"
+                      },
+                      "bookedCapacity": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "likeCount": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "organizerRating": {
+                        "type": "number",
+                        "example": 5
+                      },
+                      "organzierName": {
+                        "type": "string",
+                        "example": "拼圖戶外生活"
+                      },
+                      "organizerId": {
+                        "type": "string",
+                        "example": "664caee7ae10d7e7604c4feb"
+                      }
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
+                },
+                "pageInfo": {
+                  "type": "object",
+                  "properties": {
+                    "hasNextPage": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "hasPrevPage": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "startCursor": {
+                      "type": "string",
+                      "example": "5_664cb717ae8e74de4ae74872"
+                    },
+                    "endCursor": {
+                      "type": "string",
+                      "example": "5_664cb717ae8e74de4ae74872"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/activity/{id}": {
+      "get": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "跟團仔角度-取得活動詳細資料",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "跟團仔角度-取得活動詳細資料",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "664cb717ae8e74de4ae74872"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                    },
+                    "subtitle": {
+                      "type": "string",
+                      "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "address 最多100個字"
+                    },
+                    "location": {
+                      "type": "string",
+                      "example": "location 最多100個字"
+                    },
+                    "region": {
+                      "type": "string",
+                      "example": "北部"
+                    },
+                    "activityLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "name 最多50個字123ewq"
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://www.google.com/"
+                          },
+                          "_id": {
+                            "type": "string",
+                            "example": "664da320952a06a2b9c25e03"
+                          }
+                        }
+                      }
+                    },
+                    "activityDetail": {
+                      "type": "string",
+                      "example": "activityDetail 最多1000個字"
+                    },
+                    "activityNote": {
+                      "type": "string",
+                      "example": "activityNotice 最多200個字"
+                    },
+                    "activityTags": {
+                      "type": "array",
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "activityImageUrls": {
+                      "type": "array",
+                      "example": [
+                        "XXX",
+                        "XXX",
+                        "XXX"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 600
+                    },
+                    "activitySignupStartTime": {
+                      "type": "string",
+                      "example": "2024-05-17T06:39:19.740Z"
+                    },
+                    "activitySignupEndTime": {
+                      "type": "string",
+                      "example": "2024-06-15T06:39:19.740Z"
+                    },
+                    "activityStartTime": {
+                      "type": "string",
+                      "example": "2024-07-20T00:00:00.537Z"
+                    },
+                    "activityEndTime": {
+                      "type": "string",
+                      "example": "2024-07-21T10:00:00.000Z"
+                    },
+                    "bookedCapacity": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "remainingCapacity": {
+                      "type": "number",
+                      "example": 18
+                    },
+                    "organizer": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "664ca866ae10d7e7604c4fe7"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "email2@gmail.com"
+                        },
+                        "photo": {
+                          "type": "string",
+                          "example": "https://static.accupass.com/org/2304041722089876493900.jpg"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 4
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "XXX"
+                        }
+                      }
+                    },
+                    "isLiked": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tickets/{id}/confirm": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "主揪取得活動票券資訊 ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "主揪取得活動票券資訊",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "6661c20a2fc7bac3ef9ff823"
+                    },
+                    "ticketStatus": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "ticketNote": {
+                      "type": "string",
+                      "example": "測試資料"
+                    },
+                    "activity": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "664cb717ae8e74de4ae74871"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                        },
+                        "subtitle": {
+                          "type": "string",
+                          "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                        },
+                        "price": {
+                          "type": "number",
+                          "example": 600
+                        },
+                        "activityImageUrls": {
+                          "type": "array",
+                          "example": [
+                            "xxxx",
+                            "xxxx",
+                            "xxxx"
+                          ],
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "activityStartTime": {
+                          "type": "string",
+                          "example": "2024-07-27T00:00:00.537Z"
+                        },
+                        "activityEndTime": {
+                          "type": "string",
+                          "example": "2024-07-27T10:00:00.000Z"
+                        }
+                      }
+                    },
+                    "owner": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "6650ad94a723374e4c105f9f"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "name"
+                        },
+                        "mobile": {
+                          "type": "string",
+                          "example": "0911000000"
+                        }
+                      }
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "找不到票券",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "找不到票券"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "NOT_FOUND_TICKET"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "活動驗票，主揪做確認報到動作 ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "主揪驗票成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "ticketStatus": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "驗票成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "票券已確認報到",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "票券已確認報到"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "TICKET_USED"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "找不到票券",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "找不到票券"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "NOT_FOUND_TICKET"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tickets/": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "用戶取得活動票券列表",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "用戶取得活動票券列表",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "6661c20a2fc7bac3ef9ff823"
+                      },
+                      "ticketStatus": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "ticketNote": {
+                        "type": "string",
+                        "example": "測試資料"
+                      },
+                      "activity": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "664cb717ae8e74de4ae74871"
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                          },
+                          "subtitle": {
+                            "type": "string",
+                            "example": "池上大坡池水上娛樂，悠遊玩水趣"
+                          },
+                          "price": {
+                            "type": "number",
+                            "example": 600
+                          },
+                          "activityImageUrls": {
+                            "type": "array",
+                            "example": [
+                              "xxxx",
+                              "xxxx",
+                              "xxxx"
+                            ],
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "activityStartTime": {
+                            "type": "string",
+                            "example": "2024-07-27T00:00:00.537Z"
+                          },
+                          "activityEndTime": {
+                            "type": "string",
+                            "example": "2024-07-27T10:00:00.000Z"
+                          }
+                        }
+                      },
+                      "owner": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "6650ad94a723374e4c105f9f"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "name"
+                          },
+                          "mobile": {
+                            "type": "string",
+                            "example": "0911000000"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "找不到票券",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "找不到票券"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "NOT_FOUND_TICKET"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/liked-list/": {
+      "get": {
+        "tags": [
+          "Like-List"
+        ],
+        "description": "跟團仔取得收藏活動清單 ",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "跟團仔取得收藏活動清單",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "activityTags": {
+                      "type": "array",
+                      "example": [
+                        "fishing",
+                        "Hiking",
+                        "Camping"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "region": {
+                      "type": "array",
+                      "example": [
+                        "中部",
+                        "北部",
+                        "南部"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "likedList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "664cb717ae8e74de4ae74875"
+                          },
+                          "organizer": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "example": "664caee7ae10d7e7604c4feb"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "email1@gmail.com"
+                              },
+                              "photo": {
+                                "type": "string",
+                                "example": "https://static.accupass.com/org/2005260527172844358540.jpg"
+                              },
+                              "rating": {
+                                "type": "number",
+                                "example": 5
+                              }
+                            }
+                          },
+                          "subtitle": {
+                            "type": "string",
+                            "example": "嘉明湖 天使的眼淚"
+                          },
+                          "region": {
+                            "type": "string",
+                            "example": "南部"
+                          },
+                          "city": {
+                            "type": "string",
+                            "example": "臺東縣"
+                          },
+                          "activityImageUrls": {
+                            "type": "array",
+                            "example": [
+                              "XXX",
+                              "XXX",
+                              "XXX"
+                            ],
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "activityStartTime": {
+                            "type": "string",
+                            "example": "2024-07-07T00:00:00.537Z"
+                          },
+                          "activityEndTime": {
+                            "type": "string",
+                            "example": "2024-07-07T10:00:00.000Z"
+                          },
+                          "bookedCapacity": {
+                            "type": "number",
+                            "example": 8
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "message": "取得成功"
+          },
+          "20 0": {
+            "description": "沒有收藏活動",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "activityTags": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "region": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "likedList": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/liked-list/{activityID}": {
+      "post": {
+        "tags": [
+          "Like-List"
+        ],
+        "description": "跟團仔把活動加入收藏 ",
+        "parameters": [
+          {
+            "name": "activityID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "活動加入收藏成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "message": {
+                  "type": "string",
+                  "example": "活動加入收藏成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "409": {
+            "description": "活動已加入收藏",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "活動已加入收藏"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "ACTIVITY_ALREADY_ADD"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Like-List"
+        ],
+        "description": "跟團仔把活動移除收藏 ",
+        "parameters": [
+          {
+            "name": "activityID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "活動移除收藏成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "message": {
+                  "type": "string",
+                  "example": "活動移除收藏成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "用戶未收藏该活動",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "用戶未收藏该活動"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "NOT_FOUND_LIKE_LIST"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/payments/registration": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "使用者購買活動票券-成立訂單",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "body",
+            "description": "使用者購買活動票券",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "activityId": {
+                  "type": "string",
+                  "example": "xxxxxxxxxxxxxxxxxx"
+                },
+                "ticketCount": {
+                  "type": "number",
+                  "example": 1
+                },
+                "buyerName": {
+                  "type": "string",
+                  "example": "name"
+                },
+                "buyerMobile": {
+                  "type": "string",
+                  "example": "0911000000"
+                },
+                "buyerEmail": {
+                  "type": "string",
+                  "example": "email@gmail.com"
+                }
+              },
+              "required": [
+                "activityId",
+                "ticketCount",
+                "buyerName",
+                "buyerMobile",
+                "buyerEmail"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "建立成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "xxxxxxxxxxxxxxxxxx"
+                    },
+                    "ticketCount": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "totalPrice": {
+                      "type": "number",
+                      "example": 1000
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/payments/result": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "金流回傳付款結果",
+        "responses": {
+          "200": {
+            "description": "金流回傳付款結果成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "paymentStatus": {
+                      "type": "string",
+                      "example": "paid"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "成功"
                 }
               },
               "xml": {

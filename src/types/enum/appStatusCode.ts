@@ -30,7 +30,8 @@ export enum status400Codes {
   'ACCOUNT_NOT_VERIFIED' = '帳號尚未完成驗證' as any,
   'QUERY_FAILED' = 'QS 參數錯誤' as any,
   'ACCOUNT_LOCKED' = '帳號已被鎖定，請聯繫客服' as any,
-  'PASSWORD_ATTEMPTS' = '密碼錯誤次數過多，請聯繫客服' as any
+  'PASSWORD_ATTEMPTS' = '密碼錯誤次數過多，請聯繫客服' as any,
+  'TICKET_USED' = '票券已確認報到' as any
 }
 
 /**
@@ -55,7 +56,9 @@ export enum status403Codes {
  */
 export enum status404Codes {
   'NOT_FOUND_USER' = '找不到使用者' as any,
-  'NOT_FOUND_ACTIVITY' = '找不到活動' as any
+  'NOT_FOUND_ACTIVITY' = '找不到活動' as any,
+  'NOT_FOUND_TICKET' = '找不到票券' as any,
+  'NOT_FOUND_LIKE_LIST' = '用戶未收藏该活動' as any
 }
 
 /**
@@ -63,14 +66,19 @@ export enum status404Codes {
  */
 export enum status405Codes {
   'METHOD_NOT_ALLOWED' = '請求的方法（GET, POST, PUT, DELETE等）不被允許' as any,
-  'UNSUPPORTED_RESPONSE_TYPE' = '不支持的回應類型' as any
+  'UNSUPPORTED_RESPONSE_TYPE' = '不支持的回應類型' as any,
+  'EDIT_NOT_ALLOWED' = '不允許編輯' as any
 }
 
 /**
  * @description 409 用戶端錯誤代碼
  */
 export enum status409Codes {
-  'ALREADY_EXISTS' = '資料已存在' as any
+  'ALREADY_EXISTS' = '資料已存在' as any,
+  'ACTIVITY_ALREADY_ADD' = '活動已加入收藏' as any,
+  'REGISTRATION_NOT_STARTED' = '報名尚未開始' as any,
+  'REGISTRATION_CLOSED' = '報名已截止' as any,
+  'REGISTRATION_FULL' = '超過可報名人數' as any
 }
 
 /**
@@ -80,7 +88,9 @@ export enum status422Codes {
   'UNPROCESSABLE_CONTENT' = '格式不正確' as any,
   'INVALID_FORMAT' = '無效格式' as any,
   'UNPROCESSABLE_ENTITY' = '請求的格式錯誤，伺服器無法處理所包含的指令' as any,
-  'WORDS_EXCEEDS' = '字數超過限制' as any
+  'WORDS_EXCEEDS' = '字數超過限制' as any,
+  'INVALID_STARTENDTIME' = '活動時間不正確' as any,
+  'INVALID_SIGNUPTIME' = '活動報名時間不正確' as any
 }
 
 /**
@@ -92,7 +102,8 @@ export enum status500Codes {
   'FETCH_FAILED' = '活動取得失敗' as any,
   'UPDATE_FAILED' = '編輯失敗' as any,
   'INVALID_PUBLISH' = '發佈異常' as any,
-  'UPLOAD_FAILED' = '上傳失敗' as any
+  'UPLOAD_FAILED' = '上傳失敗' as any,
+  'DELETE_FAILED' = '刪除失敗' as any
 }
 
 export type StatusCodeEnum =

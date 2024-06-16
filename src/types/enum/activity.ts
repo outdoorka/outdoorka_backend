@@ -42,5 +42,6 @@ export enum ActivityTag {
   Sports = '球類',
   Surfing = '衝浪',
   Excursion = '郊遊',
-  Trip = '旅行'
+  Trip = '旅行',
+  Fishing = '釣魚'
 }
