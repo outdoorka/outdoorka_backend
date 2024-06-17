@@ -4,6 +4,7 @@ import { ActivityModel, UserModel, PaymentModel } from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
 import { status404Codes, status409Codes, status500Codes } from '../types/enum/appStatusCode';
 import { PaymentStatus } from '../types/enum/payment';
+import { generatePayment } from '../services/handleECpay';
 
 export const paymentController = {
   async createPayment(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -86,7 +87,8 @@ export const paymentController = {
       return;
     }
     const totalPrice = activity.price * ticketCount;
-    handleResponse(res, { _id: createPayment._id, ticketCount, totalPrice }, '建立成功');
+    const html = generatePayment(totalPrice);
+    handleResponse(res, { _id: createPayment._id, ticketCount, totalPrice, html }, '建立成功');
   },
   async updatePaymentResult(req: Request, res: Response, next: NextFunction): Promise<void> {
     handleResponse(res, [], '更新成功');
