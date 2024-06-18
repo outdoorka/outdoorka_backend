@@ -31,7 +31,8 @@ export enum status400Codes {
   'QUERY_FAILED' = 'QS 參數錯誤' as any,
   'ACCOUNT_LOCKED' = '帳號已被鎖定，請聯繫客服' as any,
   'PASSWORD_ATTEMPTS' = '密碼錯誤次數過多，請聯繫客服' as any,
-  'TICKET_USED' = '票券已確認報到' as any
+  'TICKET_USED' = '票券已確認報到' as any,
+  'INVALID_MAC' = 'MAC 驗證失敗' as any
 }
 
 /**
@@ -57,7 +58,8 @@ export enum status403Codes {
 export enum status404Codes {
   'NOT_FOUND_USER' = '找不到使用者' as any,
   'NOT_FOUND_ACTIVITY' = '找不到活動' as any,
-  'NOT_FOUND_TICKET' = '找不到票券' as any
+  'NOT_FOUND_TICKET' = '找不到票券' as any,
+  'NOT_FOUND_PAYMENT' = '找不到此筆訂單' as any
 }
 
 /**
