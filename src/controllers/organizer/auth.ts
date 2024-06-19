@@ -1,10 +1,17 @@
+import { config } from '../../config';
 import type { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import logtail from '../../utils/logtail';
+import { handleSendMail } from '../../services/handleSendMail';
 import { OrganizerModel } from '../../models/organizer';
 import { generatorOrganizerTokenAndSend } from '../../services/handleAuth';
 import { handleAppError, handleResponse } from '../../services/handleResponse';
-import { status400Codes, status404Codes, status409Codes } from '../../types/enum/appStatusCode';
+import {
+  status400Codes,
+  status404Codes,
+  status409Codes,
+  status500Codes
+} from '../../types/enum/appStatusCode';
 import type { OgAuthRegisterInput, OgLoginInput } from '../../validate/organizerSchemas';
 
 export const organizerAuthController = {
@@ -102,5 +109,37 @@ export const organizerAuthController = {
 
     const { password, ...responseData } = userData.toObject();
     handleResponse(res, responseData, '註冊成功');
+  },
+  // 忘記密碼
+  async authForgetPassword(
+    req: Request<{}, {}, OgAuthRegisterInput>,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { email } = req.body;
+
+    const resetUrl = `${config.FRONTEND_URL}?token=${email}`;
+    const content = `
+      <p>主揪您好，</p>
+      <p>請點擊以下連結重置您的密碼：</p>
+      <p><a href="${resetUrl}">${resetUrl}</a></p>
+      <p>若您未要求重置密碼，請忽略此信。</p>
+      <br>
+      <p><a href="${config.FRONTEND_URL}">OutdoorKA</a> 團隊敬上</p>
+    `;
+
+    handleSendMail(email, 'OutdoorKA 主揪密碼重置', content)
+      .then((sendResult) => {
+        handleResponse(res, {}, '重置的密碼連結已寄送至您的信箱');
+      })
+      .catch((err) => {
+        logtail.error('Send Mail Error', { email, error: err });
+        handleAppError(
+          500,
+          status500Codes[status500Codes.SEND_EMAIL_FAILED],
+          status500Codes.SEND_EMAIL_FAILED,
+          next
+        );
+      });
   }
 };

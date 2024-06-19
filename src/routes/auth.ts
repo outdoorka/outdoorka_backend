@@ -6,8 +6,8 @@ import {
   authLoginSchema,
   authRefreshTokenSchema,
   authRegistrationSchema,
-  authForgetPassowrdScheme,
-  authResetPassowrdScheme
+  authForgetPasswordScheme,
+  authResetPasswordScheme
 } from '../validate/authSchemas';
 import { handleErrorAsync } from '../services/handleResponse';
 
@@ -211,10 +211,35 @@ router.post(
   */
   handleErrorAsync(organizerAuthController.authLogin)
 );
+// 主揪忘記密碼
+router.post(
+  '/organizer/forget',
+  validateBody(authForgetPasswordScheme),
+  /**
+    #swagger.tags = ['Organizer Auth']
+    #swagger.description = '主揪忘記密碼'
+    #swagger.parameters['post'] = {
+      in: 'body',
+      description: '主揪忘記密碼',
+      required: true,
+      schema: {
+        $email: 'email',
+      }
+    }
+    #swagger.responses[200] = {
+      description: '忘記密碼成功回應',
+      schema: {
+        "message": "發送寄件成功"
+      }
+    }
+  */
+  handleErrorAsync(organizerAuthController.authForgetPassword)
+);
+
 // 忘記密碼
 router.post(
   '/forget',
-  validateBody(authForgetPassowrdScheme),
+  validateBody(authForgetPasswordScheme),
   /**
     #swagger.tags = ['User Auth']
     #swagger.description = '忘記密碼'
@@ -238,7 +263,7 @@ router.post(
 // 重置密碼
 router.post(
   '/forget/confirm',
-  validateBody(authResetPassowrdScheme),
+  validateBody(authResetPasswordScheme),
   /**
     #swagger.tags = ['User Auth']
     #swagger.description = '更換新密碼'

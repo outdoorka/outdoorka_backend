@@ -36,6 +36,7 @@
     "ecpay_aio_nodejs": "^1.2.2",
     "express": "^4.19.2",
     "firebase-admin": "^12.1.1",
+    "googleapis": "^140.0.0",
     "helmet": "^7.1.0",
     "http-errors": "^2.0.0",
     "isomorphic-dompurify": "^2.12.0",

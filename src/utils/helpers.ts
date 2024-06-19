@@ -1,4 +1,5 @@
 import { City, Region, ActivityTag } from '../types/enum/activity';
+import { Email } from './regexs';
 /**
  * 檢查是否為 string
  * @param input
@@ -6,6 +7,15 @@ import { City, Region, ActivityTag } from '../types/enum/activity';
  */
 export function isString(input: any) {
   return typeof input === 'string' && Object.prototype.toString.call(input) === '[object String]';
+}
+
+/**
+ * 檢查是否為 Email 格式
+ * @param email
+ * @returns
+ */
+export function isEmail(email: string) {
+  return Email.test(email);
 }
 
 /**
