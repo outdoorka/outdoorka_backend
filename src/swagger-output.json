@@ -2271,6 +2271,56 @@
         }
       }
     },
+    "/api/v1/organizer/forget/confirm": {
+      "post": {
+        "tags": [
+          "Organizer Auth"
+        ],
+        "description": "主揪重置密碼",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "主揪重置密碼",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "xxxxxxxxxxx"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "xxxxxxxxx"
+                }
+              },
+              "required": [
+                "token",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "主揪重置密碼成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "密碼重置成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/forget": {
       "post": {
         "tags": [

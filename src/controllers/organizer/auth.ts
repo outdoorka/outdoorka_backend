@@ -4,15 +4,21 @@ import bcrypt from 'bcrypt';
 import logtail from '../../utils/logtail';
 import { handleSendMail } from '../../services/handleSendMail';
 import { OrganizerModel } from '../../models/organizer';
-import { generatorOrganizerTokenAndSend } from '../../services/handleAuth';
+import {
+  generatorOrganizerTokenAndSend,
+  getResetPwdToken,
+  verifyResetPwdToken
+} from '../../services/handleAuth';
 import { handleAppError, handleResponse } from '../../services/handleResponse';
 import {
   status400Codes,
+  status401Codes,
   status404Codes,
   status409Codes,
   status500Codes
 } from '../../types/enum/appStatusCode';
 import type { OgAuthRegisterInput, OgLoginInput } from '../../validate/organizerSchemas';
+import { type AuthResetPasswordInput } from '../../validate/authSchemas';
 
 export const organizerAuthController = {
   // 主揪登入
@@ -117,10 +123,11 @@ export const organizerAuthController = {
     next: NextFunction
   ) {
     const { email } = req.body;
+    const getToken = getResetPwdToken(email);
 
-    const resetUrl = `${config.FRONTEND_URL}?token=${email}`;
+    const resetUrl = `${config.FRONTEND_URL}?token=${getToken}`;
     const content = `
-      <p>主揪您好，</p>
+      <p>主揪 您好，</p>
       <p>請點擊以下連結重置您的密碼：</p>
       <p><a href="${resetUrl}">${resetUrl}</a></p>
       <p>若您未要求重置密碼，請忽略此信。</p>
@@ -130,7 +137,7 @@ export const organizerAuthController = {
 
     handleSendMail(email, 'OutdoorKA 主揪密碼重置', content)
       .then((sendResult) => {
-        handleResponse(res, {}, '重置的密碼連結已寄送至您的信箱');
+        handleResponse(res, null, '重置的密碼連結已寄送至您的信箱');
       })
       .catch((err) => {
         logtail.error('Send Mail Error', { email, error: err });
@@ -138,6 +145,56 @@ export const organizerAuthController = {
           500,
           status500Codes[status500Codes.SEND_EMAIL_FAILED],
           status500Codes.SEND_EMAIL_FAILED,
+          next
+        );
+      });
+  },
+  // 更新主揪密碼
+  async authResetPassword(
+    req: Request<{}, {}, AuthResetPasswordInput>,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { token, password } = req.body;
+
+    const verifyToken = verifyResetPwdToken(token);
+
+    if (!verifyToken?.email || !verifyToken.role || verifyToken.role !== 'organizer') {
+      handleAppError(
+        400,
+        status401Codes[status401Codes.INVALID_TOKEN],
+        status401Codes.INVALID_TOKEN,
+        next
+      );
+      return;
+    }
+
+    const organizer = await OrganizerModel.findOne({ email: verifyToken.email });
+
+    if (!organizer) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_USER],
+        status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
+    }
+
+    organizer.password = password;
+    organizer.pwdAttempts = 0;
+
+    organizer
+      .save()
+      .then(() => {
+        handleResponse(res, null, '密碼重置成功');
+      })
+      .catch((err) => {
+        logtail.error('Reset Password Error', { email: organizer.email, error: err });
+        handleAppError(
+          500,
+          status500Codes[status500Codes.SERVER_ERROR],
+          status500Codes.SERVER_ERROR,
           next
         );
       });

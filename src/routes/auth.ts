@@ -211,6 +211,7 @@ router.post(
   */
   handleErrorAsync(organizerAuthController.authLogin)
 );
+
 // 主揪忘記密碼
 router.post(
   '/organizer/forget',
@@ -234,6 +235,32 @@ router.post(
     }
   */
   handleErrorAsync(organizerAuthController.authForgetPassword)
+);
+
+// 主揪重置密碼
+router.post(
+  '/organizer/forget/confirm',
+  validateBody(authResetPasswordScheme),
+  /**
+    #swagger.tags = ['Organizer Auth']
+    #swagger.description = '主揪重置密碼'
+    #swagger.parameters['post'] = {
+      in: 'body',
+      description: '主揪重置密碼',
+      required: true,
+      schema: {
+        $token: 'xxxxxxxxxxx',
+        $password: 'xxxxxxxxx'
+      }
+    }
+    #swagger.responses[200] = {
+      description: '主揪重置密碼成功回應',
+      schema: {
+        "message": "密碼重置成功"
+      }
+    }
+  */
+  handleErrorAsync(organizerAuthController.authResetPassword)
 );
 
 // 忘記密碼

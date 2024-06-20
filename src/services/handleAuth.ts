@@ -219,14 +219,53 @@ const updatePassword = async (userId: any, password: string) => {
   await user.save({ validateBeforeSave: false });
 };
 
+// 生產 reset password Token
+const getResetPwdToken = (email: string, role: 'user' | 'organizer' = 'organizer') => {
+  try {
+    const refreshToken = jwt.sign({ email, role }, REFRESH_TOKEN_SECRET, {
+      expiresIn: '10m'
+    });
+    return refreshToken;
+  } catch (error) {
+    console.error('Error generating refresh token:', error);
+    return null;
+  }
+};
+
+// 驗證 reset password Token
+const verifyResetPwdToken = (token: string) => {
+  try {
+    const decoded = jwt.verify(token, REFRESH_TOKEN_SECRET) as any;
+    if (decoded.email && decoded.role) {
+      return {
+        success: true,
+        email: decoded.email,
+        role: decoded.role
+      };
+    }
+
+    return {
+      success: false,
+      message: 'Token is invalid'
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.message ?? 'Token is invalid'
+    };
+  }
+};
+
 export {
   signAccessToken,
   generatorTokenAndSend,
   generateAccessToken,
   generatorOrganizerTokenAndSend,
+  getResetPwdToken,
   isAuth,
   isOgAuth,
   saveResetToken,
   verifyResetToken,
+  verifyResetPwdToken,
   updatePassword
 };
