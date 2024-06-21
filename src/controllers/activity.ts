@@ -12,6 +12,7 @@ import {
 } from '../services/handleActivityList';
 
 export const activityController = {
+  // 取得首頁的熱門活動/最新活動資料
   async getActivityHomeList(req: Request, res: Response, next: NextFunction): Promise<void> {
     const type = req.query.type;
 
@@ -58,23 +59,39 @@ export const activityController = {
           activityImageUrls: 1,
           activityStartTime: 1,
           activityEndTime: 1,
+          createdAt: 1,
           likers: { $size: '$likers' },
           bookedCapacity: 1,
           popularity: { $divide: ['$bookedCapacity', '$totalCapacity'] },
           organizer: {
             _id: '$organizer._id',
-            name: '$organizer.username',
+            name: '$organizer.name',
             photo: '$organizer.photo',
             rating: '$organizer.rating'
           }
         }
       },
-
       {
-        $sort: type === 'HOT' ? { popularity: -1 } : { activityStartTime: -1 }
+        $sort: type === 'HOT' ? { popularity: -1 } : { createdAt: -1 }
       },
       {
         $limit: 10
+      },
+      {
+        // 最後的 $project 階段再次排除 createdAt 這樣就可以排序它又不顯示它
+        $project: {
+          subtitle: 1,
+          region: 1,
+          city: 1,
+          activityImageUrls: 1,
+          activityStartTime: 1,
+          activityEndTime: 1,
+          // createdAt: 1,
+          likers: 1,
+          bookedCapacity: 1,
+          popularity: 1,
+          organizer: 1
+        }
       }
     ]);
 
@@ -90,6 +107,8 @@ export const activityController = {
 
     handleResponse(res, activities, '取得成功');
   },
+
+  // 跟團仔角度-取得活動詳細資料
   async getActivity(req: Request, res: Response, next: NextFunction): Promise<void> {
     const ObjectId = Types.ObjectId;
     const activityId = req.params.id;
@@ -101,6 +120,7 @@ export const activityController = {
         status400Codes.INVALID_REQEST,
         next
       );
+      return;
     }
 
     const _id = (req as JwtPayloadRequest).user._id;
@@ -117,7 +137,7 @@ export const activityController = {
     }
     const activity = await ActivityModel.findById(activityId).populate({
       path: 'organizer',
-      select: 'name, email photo rating socialMediaUrls'
+      select: 'name email photo rating socialMediaUrls'
     });
 
     console.log(activity);

@@ -315,8 +315,8 @@ router.get(
 );
 
 // 主揪角度-取得活動詳細資料
-router.post(
-  '/:id/activities',
+router.get(
+  '/activity/:id',
   isOgAuth,
   handleErrorAsync(organizerController.getActivity)
   /**
@@ -333,7 +333,8 @@ router.post(
         "organizer": {
             "_id": "664caee7ae10d7e7604c4feb",
             "email": "email1@gmail.com",
-            "photo": "https://static.accupass.com/org/2005260527172844358540.jpg"
+            "photo": "https://static.accupass.com/org/2005260527172844358540.jpg",
+            "name":"XXX"
           },
         "title": "池上大坡池水上娛樂，悠遊玩水趣",
         "subtitle": "池上大坡池水上娛樂，悠遊玩水趣",

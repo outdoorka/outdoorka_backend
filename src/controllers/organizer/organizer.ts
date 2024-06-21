@@ -355,7 +355,7 @@ export const organizerController = {
     })
       .populate({
         path: 'organizer', // 對的 organizer 欄位
-        select: 'username nickName'
+        select: 'name nickName'
       })
       .lean();
 

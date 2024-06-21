@@ -1453,8 +1453,8 @@
         ]
       }
     },
-    "/api/v1/organizer/{id}/activities": {
-      "post": {
+    "/api/v1/organizer/activity/{id}": {
+      "get": {
         "tags": ["Organizer Activity"],
         "description": "主揪角度-取得活動詳細資料",
         "parameters": [
@@ -1497,6 +1497,10 @@
                         "photo": {
                           "type": "string",
                           "example": "https://static.accupass.com/org/2005260527172844358540.jpg"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "XXX"
                         }
                       }
                     },
@@ -2227,7 +2231,7 @@
                             "type": "string",
                             "example": "664caee7ae10d7e7604c4feb"
                           },
-                          "username": {
+                          "name": {
                             "type": "string",
                             "example": "拼圖戶外生活"
                           },
@@ -2681,6 +2685,10 @@
                         "rating": {
                           "type": "number",
                           "example": 4
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "XXX"
                         }
                       }
                     },
@@ -3047,6 +3055,282 @@
         ]
       }
     },
+    "/api/v1/liked-list/": {
+      "get": {
+        "tags": ["Like-List"],
+        "description": "跟團仔取得收藏活動清單 ",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "跟團仔取得收藏活動清單",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "activityTags": {
+                      "type": "array",
+                      "example": ["fishing", "Hiking", "Camping"],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "region": {
+                      "type": "array",
+                      "example": ["中部", "北部", "南部"],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "likedList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "664cb717ae8e74de4ae74875"
+                          },
+                          "organizer": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "example": "664caee7ae10d7e7604c4feb"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "email1@gmail.com"
+                              },
+                              "photo": {
+                                "type": "string",
+                                "example": "https://static.accupass.com/org/2005260527172844358540.jpg"
+                              },
+                              "rating": {
+                                "type": "number",
+                                "example": 5
+                              }
+                            }
+                          },
+                          "subtitle": {
+                            "type": "string",
+                            "example": "嘉明湖 天使的眼淚"
+                          },
+                          "region": {
+                            "type": "string",
+                            "example": "南部"
+                          },
+                          "city": {
+                            "type": "string",
+                            "example": "臺東縣"
+                          },
+                          "activityImageUrls": {
+                            "type": "array",
+                            "example": ["XXX", "XXX", "XXX"],
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "activityStartTime": {
+                            "type": "string",
+                            "example": "2024-07-07T00:00:00.537Z"
+                          },
+                          "activityEndTime": {
+                            "type": "string",
+                            "example": "2024-07-07T10:00:00.000Z"
+                          },
+                          "bookedCapacity": {
+                            "type": "number",
+                            "example": 8
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "message": "取得成功"
+          },
+          "20 0": {
+            "description": "沒有收藏活動",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "activityTags": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "region": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "likedList": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/liked-list/{activityID}": {
+      "post": {
+        "tags": ["Like-List"],
+        "description": "跟團仔把活動加入收藏 ",
+        "parameters": [
+          {
+            "name": "activityID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "活動加入收藏成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "message": {
+                  "type": "string",
+                  "example": "活動加入收藏成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "409": {
+            "description": "活動已加入收藏",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "活動已加入收藏"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "ACTIVITY_ALREADY_ADD"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Like-List"],
+        "description": "跟團仔把活動移除收藏 ",
+        "parameters": [
+          {
+            "name": "activityID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "活動移除收藏成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "message": {
+                  "type": "string",
+                  "example": "活動移除收藏成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "用戶未收藏该活動",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "用戶未收藏该活動"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "NOT_FOUND_LIKE_LIST"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/payments/registration": {
       "post": {
         "tags": ["Payment"],
@@ -3092,7 +3376,7 @@
         ],
         "responses": {
           "200": {
-            "description": "購買成功",
+            "description": "建立成功",
             "schema": {
               "type": "object",
               "properties": {
