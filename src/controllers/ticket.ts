@@ -4,6 +4,8 @@ import { TicketModel, PaymentModel } from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
 import { status400Codes, status404Codes, status500Codes } from '../types/enum/appStatusCode';
 import { Types } from 'mongoose';
+import { TicketStatus } from '../types/enum/ticket';
+import { PaymentStatus } from '../types/enum/payment';
 
 export const ticketController = {
   async getTicketData(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -87,7 +89,7 @@ export const ticketController = {
       return;
     }
 
-    if (ticketData.ticketStatus === 1) {
+    if (ticketData.ticketStatus === TicketStatus.Used) {
       handleAppError(
         400,
         status400Codes[status400Codes.TICKET_USED],
@@ -99,7 +101,7 @@ export const ticketController = {
 
     const updateResult = await TicketModel.findByIdAndUpdate(
       ticketId,
-      { ticketStatus: 1 },
+      { ticketStatus: TicketStatus.Used },
       {
         new: true
       }
@@ -113,16 +115,17 @@ export const ticketController = {
       );
       return;
     }
-    handleResponse(res, { ticketStatus: 1 }, '驗票成功');
+    handleResponse(res, { ticketStatus: TicketStatus.Used }, '驗票成功');
   },
 
   async getOwnerTicketData(req: Request, res: Response, next: NextFunction): Promise<void> {
     const userId = (req as JwtPayloadRequest).user._id;
 
     // 查詢使用者購買的付款記錄
-    const payments = await PaymentModel.find({ buyer: userId, paymentStatus: 'paid' }).select(
-      '_id'
-    );
+    const payments = await PaymentModel.find({
+      buyer: userId,
+      paymentStatus: PaymentStatus.Paid
+    }).select('_id');
 
     // 提取付款payment ID
     const paymentIds = payments.map((payment: any) => payment._id);
