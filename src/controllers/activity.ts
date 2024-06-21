@@ -59,6 +59,7 @@ export const activityController = {
           activityImageUrls: 1,
           activityStartTime: 1,
           activityEndTime: 1,
+          createdAt: 1,
           likers: { $size: '$likers' },
           bookedCapacity: 1,
           popularity: { $divide: ['$bookedCapacity', '$totalCapacity'] },
@@ -70,12 +71,27 @@ export const activityController = {
           }
         }
       },
-
       {
-        $sort: type === 'HOT' ? { popularity: -1 } : { activityStartTime: -1 }
+        $sort: type === 'HOT' ? { popularity: -1 } : { createdAt: -1 }
       },
       {
         $limit: 10
+      },
+      {
+        // 最後的 $project 階段再次排除 createdAt 這樣就可以排序它又不顯示它
+        $project: {
+          subtitle: 1,
+          region: 1,
+          city: 1,
+          activityImageUrls: 1,
+          activityStartTime: 1,
+          activityEndTime: 1,
+          // createdAt: 1,
+          likers: 1,
+          bookedCapacity: 1,
+          popularity: 1,
+          organizer: 1
+        }
       }
     ]);
 

@@ -1,9 +1,16 @@
 import { handleResponse, handleAppError } from '../services/handleResponse';
 import type { NextFunction, Request, Response } from 'express';
-import { ActivityModel, UserModel, PaymentModel } from '../models';
+import { ActivityModel, UserModel, PaymentModel, TicketModel } from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
-import { status404Codes, status409Codes, status500Codes } from '../types/enum/appStatusCode';
+import {
+  status400Codes,
+  status404Codes,
+  status409Codes,
+  status500Codes
+} from '../types/enum/appStatusCode';
 import { PaymentStatus } from '../types/enum/payment';
+import { TicketStatus } from '../types/enum/ticket';
+import { generatePayment, getPaymentResult } from '../services/handleECpay';
 
 export const paymentController = {
   async createPayment(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -86,9 +93,106 @@ export const paymentController = {
       return;
     }
     const totalPrice = activity.price * ticketCount;
-    handleResponse(res, { _id: createPayment._id, ticketCount, totalPrice }, '建立成功');
+    const tradeDesc = activity.title;
+    const itemName = `${activity.title} * ${ticketCount}`;
+    const { html, MerchantTradeNo } = generatePayment(totalPrice, tradeDesc, itemName);
+    if (!html || !MerchantTradeNo) {
+      handleAppError(
+        500,
+        status500Codes[status500Codes.CREATE_FAILED],
+        status500Codes.CREATE_FAILED,
+        next
+      );
+      return;
+    }
+    createPayment.paymentTradeNo = MerchantTradeNo;
+    await createPayment.save();
+    handleResponse(res, { _id: createPayment._id, ticketCount, totalPrice, html }, '建立成功');
   },
   async updatePaymentResult(req: Request, res: Response, next: NextFunction): Promise<void> {
-    handleResponse(res, [], '更新成功');
+    const { checkMac, data } = getPaymentResult(req.body);
+    if (!checkMac) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_MAC],
+        status400Codes.INVALID_MAC,
+        next
+      );
+      return;
+    }
+    if (!data?.MerchantTradeNo) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_VALUE],
+        status400Codes.INVALID_VALUE,
+        next
+      );
+      return;
+    }
+    const paymentRecord = await PaymentModel.findOne({ paymentTradeNo: data.MerchantTradeNo });
+    if (!paymentRecord) {
+      handleAppError(
+        400,
+        status404Codes[status404Codes.NOT_FOUND_PAYMENT],
+        status404Codes.NOT_FOUND_PAYMENT,
+        next
+      );
+      return;
+    }
+    console.log('CheckMacValue is correct, record the payment details...');
+    paymentRecord.paymentStatus = data.RtnCode === '1' ? PaymentStatus.Paid : PaymentStatus.Failed;
+    paymentRecord.tradeNo = data.TradeNo;
+    paymentRecord.tradeRtnCode = data.RtnCode;
+    paymentRecord.tradeAt = new Date();
+    const updateResult = await paymentRecord.save();
+    if (!updateResult) {
+      handleAppError(
+        500,
+        status500Codes[status500Codes.UPDATE_FAILED],
+        status500Codes.UPDATE_FAILED,
+        next
+      );
+      return;
+    }
+
+    const reloadedPayment = await PaymentModel.findById(paymentRecord._id);
+    const activityInfo = await ActivityModel.findById(paymentRecord.activity);
+    if (!reloadedPayment || !activityInfo) {
+      handleAppError(
+        500,
+        status500Codes[status500Codes.SERVER_ERROR],
+        status500Codes.SERVER_ERROR,
+        next
+      );
+      return;
+    }
+    if (reloadedPayment.paymentStatus === PaymentStatus.Paid) {
+      const ticketList: any[] = [];
+      for (let i = 0; i < reloadedPayment.ticketCount; i++) {
+        const newTicket = new TicketModel({
+          organizer: activityInfo.organizer,
+          activity: reloadedPayment.activity,
+          payment: reloadedPayment._id,
+          owner: reloadedPayment.buyer,
+          ticketStatus: TicketStatus.Unused,
+          ticketCreatedAt: new Date(),
+          ticketAssignedAt: null,
+          ticketNote: '',
+          ticketNoteUpdatedAt: null
+        });
+        ticketList.push(newTicket);
+      }
+      const saveTickets = await TicketModel.insertMany(ticketList);
+      if (!saveTickets) {
+        handleAppError(
+          500,
+          status500Codes[status500Codes.CREATE_FAILED],
+          status500Codes.CREATE_FAILED,
+          next
+        );
+        return;
+      }
+      res.send('1|OK');
+    }
   }
 };
