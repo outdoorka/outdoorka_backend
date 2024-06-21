@@ -13,5 +13,8 @@ export interface IPaymentModel extends Document, SchemaTimestampsConfig {
   ticketPrice: number;
   paymentMethod: string;
   paymentStatus: PaymentStatus;
-  paymentCompletedAt: Date;
+  paymentTradeNo: string;
+  tradeNo: string;
+  tradeRtnCode: string;
+  tradeAt: Date;
 }
