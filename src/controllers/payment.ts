@@ -9,6 +9,7 @@ import {
   status500Codes
 } from '../types/enum/appStatusCode';
 import { PaymentStatus } from '../types/enum/payment';
+import { TicketStatus } from '../types/enum/ticket';
 import { generatePayment, getPaymentResult } from '../services/handleECpay';
 
 export const paymentController = {
@@ -173,7 +174,7 @@ export const paymentController = {
           activity: reloadedPayment.activity,
           payment: reloadedPayment._id,
           owner: reloadedPayment.buyer,
-          ticketStatus: 1,
+          ticketStatus: TicketStatus.Unused,
           ticketCreatedAt: new Date(),
           ticketAssignedAt: null,
           ticketNote: '',
