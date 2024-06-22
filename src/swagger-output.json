@@ -7,7 +7,10 @@
   },
   "host": "localhost:3006",
   "basePath": "/",
-  "schemes": ["http", "https"],
+  "schemes": [
+    "http",
+    "https"
+  ],
   "securityDefinitions": {
     "bearerAuth": {
       "type": "apiKey",
@@ -16,12 +19,18 @@
       "description": "請加上 Bearer \"Token\" 以取得授權"
     }
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api/v1/admin/authorizeAccess": {
       "post": {
-        "tags": ["Admin"],
+        "tags": [
+          "Admin"
+        ],
         "description": "開通主揪",
         "parameters": [
           {
@@ -41,7 +50,10 @@
                   "example": "email"
                 }
               },
-              "required": ["id", "email"]
+              "required": [
+                "id",
+                "email"
+              ]
             }
           }
         ],
@@ -88,7 +100,10 @@
                     },
                     "profileTags": {
                       "type": "array",
-                      "example": ["Camping", "Hiking"],
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -127,7 +142,9 @@
     },
     "/api/v1/users/all": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "description": "取得所有User資料",
         "parameters": [
           {
@@ -198,7 +215,9 @@
     },
     "/api/v1/users/": {
       "get": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "description": "取得User資料",
         "parameters": [
           {
@@ -264,7 +283,9 @@
         ]
       },
       "delete": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "description": "Delete User",
         "parameters": [
           {
@@ -298,7 +319,9 @@
         ]
       },
       "patch": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "description": "Update User",
         "parameters": [
           {
@@ -335,7 +358,13 @@
                   "example": "1990-01-01"
                 }
               },
-              "required": ["name", "photo", "mobile", "gender", "birthday"]
+              "required": [
+                "name",
+                "photo",
+                "mobile",
+                "gender",
+                "birthday"
+              ]
             }
           }
         ],
@@ -398,7 +427,9 @@
     },
     "/api/v1/users/email": {
       "patch": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "description": "Update User Email",
         "parameters": [
           {
@@ -423,7 +454,10 @@
                   "example": "xxxxxxx"
                 }
               },
-              "required": ["email", "password"]
+              "required": [
+                "email",
+                "password"
+              ]
             }
           }
         ],
@@ -486,7 +520,9 @@
     },
     "/api/v1/users/password": {
       "patch": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "description": "Update User 密碼",
         "parameters": [
           {
@@ -515,7 +551,11 @@
                   "example": "xxxxxxx"
                 }
               },
-              "required": ["password", "newPassword", "confirmPassword"]
+              "required": [
+                "password",
+                "newPassword",
+                "confirmPassword"
+              ]
             }
           }
         ],
@@ -578,7 +618,9 @@
     },
     "/api/v1/users/imageUpload": {
       "post": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "description": "上傳圖片",
         "parameters": [
           {
@@ -633,7 +675,9 @@
     },
     "/api/v1/organizer/profile": {
       "get": {
-        "tags": ["Organizer"],
+        "tags": [
+          "Organizer"
+        ],
         "description": "取得主揪資料",
         "parameters": [
           {
@@ -693,7 +737,9 @@
     },
     "/api/v1/organizer/activities": {
       "post": {
-        "tags": ["Organizer"],
+        "tags": [
+          "Organizer"
+        ],
         "description": "建立活動",
         "parameters": [
           {
@@ -747,7 +793,10 @@
                 },
                 "activityTags": {
                   "type": "array",
-                  "example": ["Camping", "Hiking"],
+                  "example": [
+                    "Camping",
+                    "Hiking"
+                  ],
                   "items": {
                     "type": "string"
                   }
@@ -770,7 +819,9 @@
                 },
                 "activityImageUrls": {
                   "type": "array",
-                  "example": ["https://thispersondoesnotexist.com/"],
+                  "example": [
+                    "https://thispersondoesnotexist.com/"
+                  ],
                   "items": {
                     "type": "string"
                   }
@@ -871,7 +922,10 @@
                     },
                     "activityTags": {
                       "type": "array",
-                      "example": ["Camping", "Hiking"],
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -903,7 +957,9 @@
                       "type": "array",
                       "items": {
                         "type": "array",
-                        "example": ["https://thispersondoesnotexist.com/"],
+                        "example": [
+                          "https://thispersondoesnotexist.com/"
+                        ],
                         "items": {
                           "type": "string"
                         }
@@ -960,7 +1016,9 @@
     },
     "/api/v1/organizer/activities/{id}": {
       "patch": {
-        "tags": ["Organizer"],
+        "tags": [
+          "Organizer"
+        ],
         "description": "更新活動",
         "parameters": [
           {
@@ -1020,7 +1078,10 @@
                 },
                 "activityTags": {
                   "type": "array",
-                  "example": ["Camping", "Hiking"],
+                  "example": [
+                    "Camping",
+                    "Hiking"
+                  ],
                   "items": {
                     "type": "string"
                   }
@@ -1043,7 +1104,9 @@
                 },
                 "activityImageUrls": {
                   "type": "array",
-                  "example": ["https://thispersondoesnotexist.com/"],
+                  "example": [
+                    "https://thispersondoesnotexist.com/"
+                  ],
                   "items": {
                     "type": "string"
                   }
@@ -1144,7 +1207,10 @@
                     },
                     "activityTags": {
                       "type": "array",
-                      "example": ["Camping", "Hiking"],
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -1176,7 +1242,9 @@
                       "type": "array",
                       "items": {
                         "type": "array",
-                        "example": ["https://thispersondoesnotexist.com/"],
+                        "example": [
+                          "https://thispersondoesnotexist.com/"
+                        ],
                         "items": {
                           "type": "string"
                         }
@@ -1233,7 +1301,9 @@
     },
     "/api/v1/organizer/imageUpload": {
       "post": {
-        "tags": ["Organizer"],
+        "tags": [
+          "Organizer"
+        ],
         "description": "上傳圖片",
         "parameters": [
           {
@@ -1288,7 +1358,9 @@
     },
     "/api/v1/organizer/image": {
       "delete": {
-        "tags": ["Organizer"],
+        "tags": [
+          "Organizer"
+        ],
         "description": "刪除圖片",
         "parameters": [
           {
@@ -1331,7 +1403,9 @@
     },
     "/api/v1/organizer/activity": {
       "get": {
-        "tags": ["Organizer Activity"],
+        "tags": [
+          "Organizer Activity"
+        ],
         "description": "主揪取得活動列表資料",
         "parameters": [
           {
@@ -1423,7 +1497,9 @@
                       },
                       "activityImageUrls": {
                         "type": "array",
-                        "example": ["XXXX"],
+                        "example": [
+                          "XXXX"
+                        ],
                         "items": {
                           "type": "string"
                         }
@@ -1455,7 +1531,9 @@
     },
     "/api/v1/organizer/activity/{id}": {
       "get": {
-        "tags": ["Organizer Activity"],
+        "tags": [
+          "Organizer Activity"
+        ],
         "description": "主揪角度-取得活動詳細資料",
         "parameters": [
           {
@@ -1546,7 +1624,10 @@
                     },
                     "activityTags": {
                       "type": "array",
-                      "example": ["Camping", "Hiking"],
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -1573,7 +1654,11 @@
                     },
                     "activityImageUrls": {
                       "type": "array",
-                      "example": ["XXXX", "XXXX", "XXXX"],
+                      "example": [
+                        "XXXX",
+                        "XXXX",
+                        "XXXX"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -1600,7 +1685,10 @@
                     },
                     "likers": {
                       "type": "array",
-                      "example": ["XX", "XX"],
+                      "example": [
+                        "XX",
+                        "XX"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -1639,7 +1727,9 @@
     },
     "/api/v1/register": {
       "post": {
-        "tags": ["User Auth"],
+        "tags": [
+          "User Auth"
+        ],
         "description": "會員註冊",
         "parameters": [
           {
@@ -1679,7 +1769,15 @@
                   "example": "password"
                 }
               },
-              "required": ["name", "photo", "mobile", "email", "gender", "birthday", "password"]
+              "required": [
+                "name",
+                "photo",
+                "mobile",
+                "email",
+                "gender",
+                "birthday",
+                "password"
+              ]
             }
           }
         ],
@@ -1733,7 +1831,9 @@
     },
     "/api/v1/login": {
       "post": {
-        "tags": ["User Auth"],
+        "tags": [
+          "User Auth"
+        ],
         "description": "會員登入",
         "parameters": [
           {
@@ -1753,7 +1853,10 @@
                   "example": "password"
                 }
               },
-              "required": ["email", "password"]
+              "required": [
+                "email",
+                "password"
+              ]
             }
           }
         ],
@@ -1817,7 +1920,9 @@
     },
     "/api/v1/refresh-token": {
       "post": {
-        "tags": ["User Auth"],
+        "tags": [
+          "User Auth"
+        ],
         "description": "更新登入token",
         "parameters": [
           {
@@ -1867,7 +1972,9 @@
     },
     "/api/v1/organizer/register": {
       "post": {
-        "tags": ["Organizer Auth"],
+        "tags": [
+          "Organizer Auth"
+        ],
         "description": "主揪註冊",
         "parameters": [
           {
@@ -1904,7 +2011,10 @@
                 },
                 "profileTags": {
                   "type": "array",
-                  "example": ["Camping", "Hiking"],
+                  "example": [
+                    "Camping",
+                    "Hiking"
+                  ],
                   "items": {
                     "type": "string"
                   }
@@ -1971,7 +2081,10 @@
                     },
                     "profileTags": {
                       "type": "array",
-                      "example": ["Camping", "Hiking"],
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -2014,7 +2127,9 @@
     },
     "/api/v1/organizer/login": {
       "post": {
-        "tags": ["Organizer Auth"],
+        "tags": [
+          "Organizer Auth"
+        ],
         "description": "主揪登入",
         "parameters": [
           {
@@ -2034,7 +2149,10 @@
                   "example": "password"
                 }
               },
-              "required": ["email", "password"]
+              "required": [
+                "email",
+                "password"
+              ]
             }
           }
         ],
@@ -2108,15 +2226,17 @@
         }
       }
     },
-    "/api/v1/forget": {
+    "/api/v1/organizer/forget": {
       "post": {
-        "tags": ["User Auth"],
-        "description": "忘記密碼",
+        "tags": [
+          "Organizer Auth"
+        ],
+        "description": "主揪忘記密碼",
         "parameters": [
           {
             "name": "post",
             "in": "body",
-            "description": "忘記密碼",
+            "description": "主揪忘記密碼",
             "required": true,
             "schema": {
               "type": "object",
@@ -2126,7 +2246,104 @@
                   "example": "email"
                 }
               },
-              "required": ["email"]
+              "required": [
+                "email"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "忘記密碼成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "發送寄件成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/organizer/forget/confirm": {
+      "post": {
+        "tags": [
+          "Organizer Auth"
+        ],
+        "description": "主揪重置密碼",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "主揪重置密碼",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "xxxxxxxxxxx"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "xxxxxxxxx"
+                }
+              },
+              "required": [
+                "token",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "主揪重置密碼成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "密碼重置成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/forget": {
+      "post": {
+        "tags": [
+          "User Auth"
+        ],
+        "description": "會員忘記密碼",
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "會員忘記密碼",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email"
+                }
+              },
+              "required": [
+                "email"
+              ]
             }
           }
         ],
@@ -2151,13 +2368,15 @@
     },
     "/api/v1/forget/confirm": {
       "post": {
-        "tags": ["User Auth"],
-        "description": "更換新密碼",
+        "tags": [
+          "User Auth"
+        ],
+        "description": "會員更換新密碼",
         "parameters": [
           {
             "name": "post",
             "in": "body",
-            "description": "更換新密碼",
+            "description": "會員更換新密碼",
             "required": true,
             "schema": {
               "type": "object",
@@ -2171,7 +2390,10 @@
                   "example": "xxxxxxxxx"
                 }
               },
-              "required": ["resetToken", "password"]
+              "required": [
+                "resetToken",
+                "password"
+              ]
             }
           }
         ],
@@ -2196,7 +2418,9 @@
     },
     "/api/v1/activity/homelist": {
       "get": {
-        "tags": ["Activity"],
+        "tags": [
+          "Activity"
+        ],
         "description": "取得首頁的熱門活動/最新活動資料",
         "parameters": [
           {
@@ -2255,7 +2479,11 @@
                       },
                       "activityImageUrls": {
                         "type": "array",
-                        "example": ["XXXX", "XXXX", "XXXX"],
+                        "example": [
+                          "XXXX",
+                          "XXXX",
+                          "XXXX"
+                        ],
                         "items": {
                           "type": "string"
                         }
@@ -2295,7 +2523,9 @@
     },
     "/api/v1/activity/list": {
       "get": {
-        "tags": ["Activity"],
+        "tags": [
+          "Activity"
+        ],
         "description": "取得活動列表清單",
         "parameters": [
           {
@@ -2458,7 +2688,10 @@
                       },
                       "activityTags": {
                         "type": "array",
-                        "example": ["Camping", "Hiking"],
+                        "example": [
+                          "Camping",
+                          "Hiking"
+                        ],
                         "items": {
                           "type": "string"
                         }
@@ -2549,7 +2782,9 @@
     },
     "/api/v1/activity/{id}": {
       "get": {
-        "tags": ["Activity"],
+        "tags": [
+          "Activity"
+        ],
         "description": "跟團仔角度-取得活動詳細資料",
         "parameters": [
           {
@@ -2627,14 +2862,21 @@
                     },
                     "activityTags": {
                       "type": "array",
-                      "example": ["Camping", "Hiking"],
+                      "example": [
+                        "Camping",
+                        "Hiking"
+                      ],
                       "items": {
                         "type": "string"
                       }
                     },
                     "activityImageUrls": {
                       "type": "array",
-                      "example": ["XXX", "XXX", "XXX"],
+                      "example": [
+                        "XXX",
+                        "XXX",
+                        "XXX"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -2718,7 +2960,9 @@
     },
     "/api/v1/tickets/{id}/confirm": {
       "get": {
-        "tags": ["Ticket"],
+        "tags": [
+          "Ticket"
+        ],
         "description": "主揪取得活動票券資訊 ",
         "parameters": [
           {
@@ -2775,7 +3019,11 @@
                         },
                         "activityImageUrls": {
                           "type": "array",
-                          "example": ["xxxx", "xxxx", "xxxx"],
+                          "example": [
+                            "xxxx",
+                            "xxxx",
+                            "xxxx"
+                          ],
                           "items": {
                             "type": "string"
                           }
@@ -2846,7 +3094,9 @@
         ]
       },
       "patch": {
-        "tags": ["Ticket"],
+        "tags": [
+          "Ticket"
+        ],
         "description": "活動驗票，主揪做確認報到動作 ",
         "parameters": [
           {
@@ -2934,7 +3184,9 @@
     },
     "/api/v1/tickets/": {
       "get": {
-        "tags": ["Ticket"],
+        "tags": [
+          "Ticket"
+        ],
         "description": "用戶取得活動票券列表",
         "parameters": [
           {
@@ -2987,7 +3239,11 @@
                           },
                           "activityImageUrls": {
                             "type": "array",
-                            "example": ["xxxx", "xxxx", "xxxx"],
+                            "example": [
+                              "xxxx",
+                              "xxxx",
+                              "xxxx"
+                            ],
                             "items": {
                               "type": "string"
                             }
@@ -3057,7 +3313,9 @@
     },
     "/api/v1/liked-list/": {
       "get": {
-        "tags": ["Like-List"],
+        "tags": [
+          "Like-List"
+        ],
         "description": "跟團仔取得收藏活動清單 ",
         "parameters": [
           {
@@ -3077,14 +3335,22 @@
                   "properties": {
                     "activityTags": {
                       "type": "array",
-                      "example": ["fishing", "Hiking", "Camping"],
+                      "example": [
+                        "fishing",
+                        "Hiking",
+                        "Camping"
+                      ],
                       "items": {
                         "type": "string"
                       }
                     },
                     "region": {
                       "type": "array",
-                      "example": ["中部", "北部", "南部"],
+                      "example": [
+                        "中部",
+                        "北部",
+                        "南部"
+                      ],
                       "items": {
                         "type": "string"
                       }
@@ -3133,7 +3399,11 @@
                           },
                           "activityImageUrls": {
                             "type": "array",
-                            "example": ["XXX", "XXX", "XXX"],
+                            "example": [
+                              "XXX",
+                              "XXX",
+                              "XXX"
+                            ],
                             "items": {
                               "type": "string"
                             }
@@ -3207,7 +3477,9 @@
     },
     "/api/v1/liked-list/{activityID}": {
       "post": {
-        "tags": ["Like-List"],
+        "tags": [
+          "Like-List"
+        ],
         "description": "跟團仔把活動加入收藏 ",
         "parameters": [
           {
@@ -3269,7 +3541,9 @@
         ]
       },
       "delete": {
-        "tags": ["Like-List"],
+        "tags": [
+          "Like-List"
+        ],
         "description": "跟團仔把活動移除收藏 ",
         "parameters": [
           {
@@ -3333,8 +3607,10 @@
     },
     "/api/v1/payments/registration": {
       "post": {
-        "tags": ["Payment"],
-        "description": "使用者購買活動票券",
+        "tags": [
+          "Payment"
+        ],
+        "description": "使用者購買活動票券-成立訂單",
         "parameters": [
           {
             "name": "authorization",
@@ -3370,7 +3646,13 @@
                   "example": "email@gmail.com"
                 }
               },
-              "required": ["activityId", "ticketCount", "buyerName", "buyerMobile", "buyerEmail"]
+              "required": [
+                "activityId",
+                "ticketCount",
+                "buyerName",
+                "buyerMobile",
+                "buyerEmail"
+              ]
             }
           }
         ],
@@ -3413,7 +3695,9 @@
     },
     "/api/v1/payments/result": {
       "post": {
-        "tags": ["Payment"],
+        "tags": [
+          "Payment"
+        ],
         "description": "金流回傳付款結果",
         "responses": {
           "200": {

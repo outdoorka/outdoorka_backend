@@ -25,7 +25,7 @@
     "pretty": true,
     "paths": {
       "ecpay_aio_nodejs": ["src/types/ecpayAioNodejs"]
-  },"esModuleInterop": true
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist", "src/__tests__"]
