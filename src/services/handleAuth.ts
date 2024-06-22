@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import { config } from '../config';
 import { handleAppError, handleErrorAsync, handleResponse } from '../services/handleResponse';
 import { UserModel, OrganizerModel } from '../models';
@@ -201,7 +200,6 @@ const saveResetToken = async (userId: any, token: string, expires: number) => {
 };
 
 const verifyResetToken = async (token: string) => {
-  console.log('success');
   return await UserModel.findOne({
     resetToken: token,
     resetTokenExpire: { $gt: Date.now() }
@@ -209,14 +207,13 @@ const verifyResetToken = async (token: string) => {
 };
 
 const updatePassword = async (userId: any, password: string) => {
-  const hashedPassword = await bcrypt.hash(password, 12);
+  // const hashedPassword = await bcrypt.hash(password, 12);
   const user = await UserModel.findById(userId);
-  console.log('User details:', user);
   if (!user) {
     throw new Error('User not found');
   }
-  user.password = hashedPassword;
-  await user.save({ validateBeforeSave: false });
+  user.password = password;
+  await user.save();
 };
 
 // 生產 reset password Token

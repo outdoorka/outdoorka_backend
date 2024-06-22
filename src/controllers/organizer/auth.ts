@@ -125,7 +125,7 @@ export const organizerAuthController = {
     const { email } = req.body;
     const getToken = getResetPwdToken(email);
 
-    const resetUrl = `${config.FRONTEND_URL}?token=${getToken}`;
+    const resetUrl = `${config.FRONTEND_URL}/organizer/reset-pwd/${getToken}/`;
     const content = `
       <p>主揪 您好，</p>
       <p>請點擊以下連結重置您的密碼：</p>

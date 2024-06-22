@@ -269,10 +269,10 @@ router.post(
   validateBody(authForgetPasswordScheme),
   /**
     #swagger.tags = ['User Auth']
-    #swagger.description = '忘記密碼'
+    #swagger.description = '會員忘記密碼'
     #swagger.parameters['post'] = {
       in: 'body',
-      description: '忘記密碼',
+      description: '會員忘記密碼',
       required: true,
       schema: {
         $email: 'email',
@@ -293,10 +293,10 @@ router.post(
   validateBody(authResetPasswordScheme),
   /**
     #swagger.tags = ['User Auth']
-    #swagger.description = '更換新密碼'
+    #swagger.description = '會員更換新密碼'
     #swagger.parameters['post'] = {
       in: 'body',
-      description: '更換新密碼',
+      description: '會員更換新密碼',
       required: true,
       schema: {
         $resetToken: 'xxxxxxxxxxx',

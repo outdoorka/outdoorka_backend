@@ -2326,12 +2326,12 @@
         "tags": [
           "User Auth"
         ],
-        "description": "忘記密碼",
+        "description": "會員忘記密碼",
         "parameters": [
           {
             "name": "post",
             "in": "body",
-            "description": "忘記密碼",
+            "description": "會員忘記密碼",
             "required": true,
             "schema": {
               "type": "object",
@@ -2371,12 +2371,12 @@
         "tags": [
           "User Auth"
         ],
-        "description": "更換新密碼",
+        "description": "會員更換新密碼",
         "parameters": [
           {
             "name": "post",
             "in": "body",
-            "description": "更換新密碼",
+            "description": "會員更換新密碼",
             "required": true,
             "schema": {
               "type": "object",
