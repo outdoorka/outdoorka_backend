@@ -102,7 +102,7 @@ export enum status500Codes {
   'SERVER_ERROR' = '後端程式錯誤 或 db處理中錯誤, 例外錯誤' as any,
   'CREATE_FAILED' = '建立失敗' as any,
   'FETCH_FAILED' = '活動取得失敗' as any,
-  'UPDATE_FAILED' = '編輯失敗' as any,
+  'UPDATE_FAILED' = '更新失敗' as any,
   'INVALID_PUBLISH' = '發佈異常' as any,
   'UPLOAD_FAILED' = '上傳失敗' as any,
   'DELETE_FAILED' = '刪除失敗' as any,

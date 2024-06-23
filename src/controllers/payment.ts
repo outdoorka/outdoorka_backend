@@ -132,7 +132,7 @@ export const paymentController = {
     const paymentRecord = await PaymentModel.findOne({ paymentTradeNo: data.MerchantTradeNo });
     if (!paymentRecord) {
       handleAppError(
-        400,
+        404,
         status404Codes[status404Codes.NOT_FOUND_PAYMENT],
         status404Codes.NOT_FOUND_PAYMENT,
         next

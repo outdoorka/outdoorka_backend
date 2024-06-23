@@ -3676,6 +3676,10 @@
                     "totalPrice": {
                       "type": "number",
                       "example": 1000
+                    },
+                    "html": {
+                      "type": "string",
+                      "example": "<form id=\"_form_aiochk\"....</form>"
                     }
                   }
                 }
@@ -3703,22 +3707,8 @@
           "200": {
             "description": "金流回傳付款結果成功",
             "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "paymentStatus": {
-                      "type": "string",
-                      "example": "paid"
-                    }
-                  }
-                },
-                "message": {
-                  "type": "string",
-                  "example": "成功"
-                }
-              },
+              "type": "string",
+              "example": "1|OK",
               "xml": {
                 "name": "main"
               }
