@@ -3311,6 +3311,118 @@
         ]
       }
     },
+    "/api/v1/tickets/{id}": {
+      "patch": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "用戶分票或修改票券備註",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "用戶分票或修改票券備註",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "667572dbe3201d783cc192e0"
+                    },
+                    "organizer": {
+                      "type": "string",
+                      "example": "664ca866ae10d7e7604c4fe7"
+                    },
+                    "activity": {
+                      "type": "string",
+                      "example": "664cb717ae8e74de4ae74871"
+                    },
+                    "payment": {
+                      "type": "string",
+                      "example": "66756e5a5e286c5c0d9327be"
+                    },
+                    "owner": {
+                      "type": "string",
+                      "example": "666c37a7c5c77a3e53660a07"
+                    },
+                    "ticketStatus": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "ticketCreatedAt": {
+                      "type": "string",
+                      "example": "2024-06-21T12:32:27.634Z"
+                    },
+                    "ticketAssignedAt": {},
+                    "ticketNote": {
+                      "type": "string",
+                      "example": "noteXXX"
+                    },
+                    "ticketNoteUpdatedAt": {
+                      "type": "string",
+                      "example": "2024-06-23T16:59:23.760Z"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-06-21T12:32:27.635Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-06-23T16:59:23.761Z"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "取得成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "找不到票券",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "找不到票券"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "NOT_FOUND_TICKET"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/liked-list/": {
       "get": {
         "tags": [

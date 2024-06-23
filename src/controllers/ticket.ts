@@ -1,8 +1,13 @@
 import { handleResponse, handleAppError } from '../services/handleResponse';
 import type { NextFunction, Request, Response } from 'express';
-import { TicketModel, PaymentModel } from '../models';
+import { TicketModel, PaymentModel, UserModel } from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
-import { status400Codes, status404Codes, status500Codes } from '../types/enum/appStatusCode';
+import {
+  status400Codes,
+  status403Codes,
+  status404Codes,
+  status500Codes
+} from '../types/enum/appStatusCode';
 import { Types } from 'mongoose';
 import { TicketStatus } from '../types/enum/ticket';
 import { PaymentStatus } from '../types/enum/payment';
@@ -202,5 +207,103 @@ export const ticketController = {
     }
 
     handleResponse(res, ticketData, '取得成功');
+  },
+  async updateTicketInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const userId = (req as JwtPayloadRequest).user._id;
+    let ticketId;
+    try {
+      ticketId = new Types.ObjectId(req.params.id);
+    } catch (error) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_REQEST],
+        status400Codes.INVALID_REQEST,
+        next
+      );
+      return;
+    }
+    const { ownerEmail, ticketNote } = req.body;
+    const updateData: {
+      owner?: Types.ObjectId;
+      ticketNote?: string;
+      ticketAssignedAt?: Date;
+      ticketNoteUpdatedAt?: Date;
+    } = {};
+
+    // 检查ownerEmail和ticketNote是否同时存在
+    if (ownerEmail && ticketNote) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_REQEST],
+        'ownerEmail and ticketNote cannot both be present',
+        next
+      );
+      return;
+    }
+    const ticketData = await TicketModel.aggregate([
+      { $match: { _id: ticketId, owner: userId } }
+    ]).exec();
+    if (ticketData.length === 0) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_TICKET],
+        status404Codes.NOT_FOUND_TICKET,
+        next
+      );
+      return;
+    }
+    if (ticketData[0].ticketStatus === TicketStatus.Used) {
+      handleAppError(403, status403Codes[status403Codes.FORBIDDEN], '票券已使用', next);
+      return;
+    }
+    if (ownerEmail) {
+      // only buyer can assign ticket to others
+      const checkPayment = await PaymentModel.find({
+        buyer: userId,
+        paymentStatus: PaymentStatus.Paid,
+        _id: ticketData[0].payment
+      }).select('_id');
+      console.log('checkPayment', checkPayment);
+      if (!checkPayment) {
+        handleAppError(
+          403,
+          status403Codes[status403Codes.BUYER_ONLY],
+          status403Codes.BUYER_ONLY,
+          next
+        );
+        return;
+      }
+      // 檢查ownerEmail是否存在User資料庫
+      const checkOwnerEmail = await UserModel.findOne({
+        email: ownerEmail
+      }).select('_id');
+      if (!checkOwnerEmail) {
+        handleAppError(
+          404,
+          status404Codes[status404Codes.NOT_FOUND_USER],
+          status404Codes.NOT_FOUND_USER,
+          next
+        );
+        return;
+      }
+      updateData.owner = new Types.ObjectId(checkOwnerEmail._id);
+      updateData.ticketAssignedAt = new Date();
+    } else if (ticketNote) {
+      updateData.ticketNote = ticketNote;
+      updateData.ticketNoteUpdatedAt = new Date();
+    }
+    // 更新票券資訊
+    try {
+      const updateResult = await TicketModel.findByIdAndUpdate(ticketId, updateData, { new: true });
+      handleResponse(res, updateResult, '取得成功');
+    } catch (error) {
+      console.error(error);
+      handleAppError(
+        500,
+        status500Codes[status500Codes.SERVER_ERROR],
+        status500Codes.SERVER_ERROR,
+        next
+      );
+    }
   }
 };

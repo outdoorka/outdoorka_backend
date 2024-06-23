@@ -49,6 +49,7 @@ export enum status401Codes {
  */
 export enum status403Codes {
   'FORBIDDEN' = '沒有權限' as any,
+  'BUYER_ONLY' = '只有購買者才有權限操作' as any,
   'ACCESS_DENIED' = '拒絕請求' as any
 }
 
