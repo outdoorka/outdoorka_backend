@@ -37,6 +37,7 @@ router.post(
           "_id": "xxxxxxxxxxxxxxxxxx",
           "ticketCount": 1,
           "totalPrice": 1000,
+          "html": "<form id=\"_form_aiochk\"....</form>"
         }
       }
     }
@@ -54,13 +55,7 @@ router.post(
   /*
   #swagger.responses[200] = {
       description: '金流回傳付款結果成功',
-      schema: {
-        "data": {
-                  "paymentStatus": "paid",
-        },
-        "message": "成功"
-      }
-
+      schema: '1|OK'
     }
   */
 );
