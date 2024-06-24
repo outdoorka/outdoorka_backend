@@ -159,8 +159,8 @@ export const organizerController = {
     if (!activityId) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
       return;
@@ -344,8 +344,8 @@ export const organizerController = {
     if (!ObjectId.isValid(activityId)) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
     }
@@ -382,8 +382,8 @@ export const organizerController = {
     if (!ObjectId.isValid(ticketId)) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
     }

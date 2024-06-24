@@ -146,8 +146,8 @@ export const userController = {
     if (!result) {
       handleAppError(
         404,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
       return;
@@ -222,8 +222,8 @@ export const userController = {
     if (!result) {
       handleAppError(
         404,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
       return;

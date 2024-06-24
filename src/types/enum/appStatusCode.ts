@@ -26,7 +26,7 @@ export enum status400Codes {
   'INVALID_INPUT' = '輸入資料異常' as any,
   'INVALID_FILTER_OR_SORTING' = '篩選或排序條件異常' as any,
   'INVALID_CREDENTIALS' = '用戶名稱或密碼不正確' as any,
-  'INVALID_REQEST' = '請求失敗' as any,
+  'INVALID_REQUEST' = '請求失敗' as any,
   'ACCOUNT_NOT_VERIFIED' = '帳號尚未完成驗證' as any,
   'QUERY_FAILED' = 'QS 參數錯誤' as any,
   'ACCOUNT_LOCKED' = '帳號已被鎖定，請聯繫客服' as any,

@@ -2838,7 +2838,7 @@
                         "type": "number",
                         "example": 5
                       },
-                      "organzierName": {
+                      "organizerName": {
                         "type": "string",
                         "example": "拼圖戶外生活"
                       },

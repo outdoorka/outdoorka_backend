@@ -22,8 +22,8 @@ export const ticketController = {
     if (!ObjectId.isValid(ticketId)) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
     }
@@ -64,8 +64,8 @@ export const ticketController = {
     if (!ObjectId.isValid(ticketId)) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
     }
@@ -217,8 +217,8 @@ export const ticketController = {
     } catch (error) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
       return;
@@ -235,7 +235,7 @@ export const ticketController = {
     if (ownerEmail && ticketNote) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
+        status400Codes[status400Codes.INVALID_REQUEST],
         'ownerEmail and ticketNote cannot both be present',
         next
       );
