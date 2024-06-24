@@ -32,6 +32,7 @@ export enum status400Codes {
   'ACCOUNT_LOCKED' = '帳號已被鎖定，請聯繫客服' as any,
   'PASSWORD_ATTEMPTS' = '密碼錯誤次數過多，請聯繫客服' as any,
   'TICKET_USED' = '票券已確認報到' as any,
+  'TICKET_UNUSED' = '票券尚未使用' as any,
   'INVALID_MAC' = 'MAC 驗證失敗' as any
 }
 

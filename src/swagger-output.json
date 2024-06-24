@@ -1725,6 +1725,109 @@
         ]
       }
     },
+    "/api/v1/organizer/tickets/{id}/rating": {
+      "post": {
+        "tags": [
+          "Review"
+        ],
+        "description": "主揪角度-評論使用者",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "body",
+            "description": "主揪角度-評論使用者",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rating": {
+                  "type": "number",
+                  "example": 5
+                },
+                "comment": {
+                  "type": "string",
+                  "example": "comment 最多200個字"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "建立成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "rating": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "comment": {
+                      "type": "string",
+                      "example": "comment 最多200個字"
+                    },
+                    "organizerId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "activityId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "ticketId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-06-24T16:22:33.333Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-06-24T16:22:33.333Z"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "建立成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/register": {
       "post": {
         "tags": [
