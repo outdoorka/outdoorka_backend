@@ -3422,6 +3422,25 @@
         "description": "用戶分票或修改票券備註",
         "parameters": [
           {
+            "name": "body",
+            "in": "body",
+            "description": "用戶分票或修改票券備註(ownerEmail, ticketNote二擇一)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ownerEmail": {
+                  "type": "string",
+                  "example": "email1@gmail.com"
+                },
+                "ticketNote": {
+                  "type": "string",
+                  "example": "備註為最多 100 個字"
+                }
+              }
+            }
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -3444,23 +3463,23 @@
                   "properties": {
                     "_id": {
                       "type": "string",
-                      "example": "667572dbe3201d783cc192e0"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "organizer": {
                       "type": "string",
-                      "example": "664ca866ae10d7e7604c4fe7"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "activity": {
                       "type": "string",
-                      "example": "664cb717ae8e74de4ae74871"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "payment": {
                       "type": "string",
-                      "example": "66756e5a5e286c5c0d9327be"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "owner": {
                       "type": "string",
-                      "example": "666c37a7c5c77a3e53660a07"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "ticketStatus": {
                       "type": "number",
@@ -3473,7 +3492,7 @@
                     "ticketAssignedAt": {},
                     "ticketNote": {
                       "type": "string",
-                      "example": "noteXXX"
+                      "example": "備註為最多 100 個字"
                     },
                     "ticketNoteUpdatedAt": {
                       "type": "string",
@@ -3526,7 +3545,7 @@
         ]
       }
     },
-    "/api/v1/tickets/tickets/{id}/rating": {
+    "/api/v1/tickets/{id}/rating": {
       "post": {
         "tags": [
           "Review"
