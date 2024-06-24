@@ -6,6 +6,7 @@ import {
   status400Codes,
   status403Codes,
   status404Codes,
+  status409Codes,
   status500Codes
 } from '../types/enum/appStatusCode';
 import { Types } from 'mongoose';
@@ -282,6 +283,15 @@ export const ticketController = {
           404,
           status404Codes[status404Codes.NOT_FOUND_USER],
           status404Codes.NOT_FOUND_USER,
+          next
+        );
+        return;
+      }
+      if (checkOwnerEmail._id.toString() === userId.toString()) {
+        handleAppError(
+          409,
+          status409Codes[status409Codes.ASSIGN_TO_SELF_CONFLICT],
+          status409Codes.ASSIGN_TO_SELF_CONFLICT,
           next
         );
         return;

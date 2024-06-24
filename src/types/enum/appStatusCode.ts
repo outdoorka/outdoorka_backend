@@ -81,7 +81,8 @@ export enum status409Codes {
   'ACTIVITY_ALREADY_ADD' = '活動已加入收藏' as any,
   'REGISTRATION_NOT_STARTED' = '報名尚未開始' as any,
   'REGISTRATION_CLOSED' = '報名已截止' as any,
-  'REGISTRATION_FULL' = '超過可報名人數' as any
+  'REGISTRATION_FULL' = '超過可報名人數' as any,
+  'ASSIGN_TO_SELF_CONFLICT' = '不允許將票券指派給自己' as any
 }
 
 /**
