@@ -1,6 +1,6 @@
 import { handleResponse, handleAppError } from '../services/handleResponse';
 import type { NextFunction, Request, Response } from 'express';
-import { TicketModel, PaymentModel, UserModel } from '../models';
+import { TicketModel, PaymentModel, UserModel, OrganizerRatingModel } from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
 import {
   status400Codes,
@@ -312,6 +312,70 @@ export const ticketController = {
         500,
         status500Codes[status500Codes.SERVER_ERROR],
         status500Codes.SERVER_ERROR,
+        next
+      );
+    }
+  },
+  // 跟團仔評論主揪
+  async createRating(req: Request, res: Response, next: NextFunction) {
+    const ObjectId = Types.ObjectId;
+    const ticketId = req.params.id;
+    const userId = (req as JwtPayloadRequest).user._id;
+    const { rating, comment } = req.body;
+
+    if (!ObjectId.isValid(ticketId)) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
+        next
+      );
+    }
+    const ticketData = await TicketModel.findOne({ _id: ticketId, owner: userId });
+    if (!ticketData || !ticketData.activity) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_TICKET],
+        status404Codes.NOT_FOUND_TICKET,
+        next
+      );
+      return;
+    }
+    if (ticketData.ticketStatus !== 1) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.TICKET_UNUSED],
+        status400Codes.TICKET_UNUSED,
+        next
+      );
+      return;
+    }
+    const checkRatingData = await OrganizerRatingModel.findOne({ ticketId });
+    if (checkRatingData) {
+      handleAppError(
+        409,
+        status409Codes[status409Codes.ALREADY_EXISTS],
+        status409Codes.ALREADY_EXISTS,
+        next
+      );
+      return;
+    }
+    try {
+      const createRating = await OrganizerRatingModel.create({
+        ticket: ticketId,
+        rating,
+        comment,
+        organizerId: ticketData.organizer,
+        activityId: ticketData.activity,
+        ticketId,
+        userId
+      });
+      handleResponse(res, createRating, '建立成功');
+    } catch (error) {
+      handleAppError(
+        500,
+        status500Codes[status500Codes.CREATE_FAILED],
+        status500Codes.CREATE_FAILED,
         next
       );
     }

@@ -4,6 +4,7 @@ import { handleErrorAsync } from '../services/handleResponse';
 import { isOgAuth, isAuth } from '../services/handleAuth';
 import { validateBody } from '../middleware/validationMiddleware';
 import { updateTicketInfoSchema } from '../validate/ticketSchemas';
+import { createRatingSchema } from '../validate/ratingSchemas';
 const router = express.Router();
 
 // 主揪取得活動票券資訊 (掃描後顯示活動待確認畫面)
@@ -178,4 +179,44 @@ router.patch(
   */
 );
 
+// 使用者角度-評論主揪
+router.post(
+  '/:id/rating',
+  isAuth,
+  validateBody(createRatingSchema),
+  handleErrorAsync(ticketController.createRating)
+  /**
+   * #swagger.tags = ["Review"]
+   * #swagger.security = [{ "bearerAuth": [] }]
+   * #swagger.description = "使用者角度-評論主揪"
+   * #swagger.parameters["post"] = {
+        in: "body",
+        description: "使用者角度-評論主揪",
+        required: true,
+        schema: {
+          rating: 5,
+          comment: "comment 最多200個字"
+        }
+      }
+   */
+  /*
+    #swagger.responses[200] = {
+      description: "建立成功回應",
+      schema: {
+        "data": {
+            "rating": 5,
+            "comment": "comment 最多200個字",
+            "organizerId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "activityId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "ticketId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "userId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "_id": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "createdAt": "2024-06-24T16:22:33.333Z",
+            "updatedAt": "2024-06-24T16:22:33.333Z"
+        },
+        "message": "建立成功"
+    }
+    }
+  */
+);
 export default router;
