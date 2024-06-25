@@ -28,6 +28,10 @@ import ticketsRouter from './routes/tickets';
 import likedListRouter from './routes/likedlist';
 import paymentRouter from './routes/payment';
 
+// passport
+import configurePassport from './services/passportAuth';
+import passport from 'passport';
+
 // const USER_BASE_URL = '/api/v1';
 // const ORGANIZER_BASE_URL = '/api/v1/organizer';
 
@@ -55,6 +59,10 @@ app.use(express.json()); // { limit: '10mb' } 可調整請求大小限制.
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Configure Passport
+configurePassport();
+app.use(passport.initialize());
 
 // Route
 // swagger api 文件不援使用帶變數的方式

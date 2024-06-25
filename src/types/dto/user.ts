@@ -4,6 +4,7 @@ import type { JwtPayload } from 'jsonwebtoken';
 
 export interface IUserModel extends Document<string>, SchemaTimestampsConfig {
   email: string;
+  providerId: string;
   password: string;
   isActive: boolean;
   name: string;

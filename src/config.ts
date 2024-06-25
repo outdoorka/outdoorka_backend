@@ -32,6 +32,8 @@ class Config {
   public GOOGLE_CLIENT_ID: string;
   public GOOGLE_CLIENT_SECRET: string;
   public GOOGLE_REFRESH_TOKEN: string;
+  public GOOGLE_LOGIN_CLIENT_ID: string;
+  public GOOGLE_LOGIN_CLIENT_SECRET: string;
 
   constructor() {
     this.PORT = process.env.PORT || '3006';
@@ -63,6 +65,9 @@ class Config {
     this.GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
     this.GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
     this.GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN || '';
+
+    this.GOOGLE_LOGIN_CLIENT_ID = process.env.GOOGLE_LOGIN_CLIENT_ID || '';
+    this.GOOGLE_LOGIN_CLIENT_SECRET = process.env.GOOGLE_LOGIN_CLIENT_SECRET || '';
   }
 
   /**

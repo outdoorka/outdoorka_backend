@@ -2073,6 +2073,32 @@
         }
       }
     },
+    "/api/v1/auth/google": {
+      "get": {
+        "tags": [
+          "User Auth"
+        ],
+        "description": "會員第三方 Google 登入",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/auth/google/callback": {
+      "get": {
+        "tags": [
+          "User Auth"
+        ],
+        "description": "會員第三方 Google OAuth 2.0 callback",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/v1/organizer/register": {
       "post": {
         "tags": [
@@ -3489,7 +3515,10 @@
                       "type": "string",
                       "example": "2024-06-21T12:32:27.634Z"
                     },
-                    "ticketAssignedAt": {},
+                    "ticketAssignedAt": {
+                      "type": "string",
+                      "example": "2024-06-21T12:34:27.634Z"
+                    },
                     "ticketNote": {
                       "type": "string",
                       "example": "備註為最多 100 個字"

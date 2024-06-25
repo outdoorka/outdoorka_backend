@@ -27,6 +27,8 @@ export declare global {
       GOOGLE_CLIENT_ID: string;
       GOOGLE_CLIENT_SECRET: string;
       GOOGLE_REFRESH_TOKEN: string;
+      GOOGLE_LOGIN_CLIENT_ID: string;
+      GOOGLE_LOGIN_CLIENT_SECRET: string;
       ECPAY_URL: string;
       MERCHANTID: string;
       HASHKEY: string;
