@@ -10,7 +10,8 @@ import {
   generateAccessToken,
   saveResetToken,
   verifyResetToken,
-  updatePassword
+  updatePassword,
+  signAccessToken
 } from '../services/handleAuth';
 import { handleAppError, handleResponse } from '../services/handleResponse';
 import {
@@ -84,7 +85,7 @@ export const authController = {
 
     const user = await UserModel.findOne({ email }).select('+password');
 
-    if (!user || !user.password) {
+    if (!user || !user.password || !!user.providerId) {
       handleAppError(
         404,
         status404Codes[status404Codes.NOT_FOUND_USER],
@@ -198,5 +199,31 @@ export const authController = {
         message: result.error
       });
     }
+  },
+
+  // 會員 Google OAuth 2.0 callback
+  async authGoogleCallback(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const profile: any = req.user;
+    if (!profile.id || !profile.provider || !profile.name || !profile.email) {
+      res.redirect(`${config.FRONTEND_URL}/login?error=google-auth-fail`);
+    }
+
+    UserModel.findOrCreate({
+      providerId: `${profile.provider}-${profile.id}`,
+      name: profile.name,
+      email: profile.email,
+      photo: profile.photo
+    }).then((user: any) => {
+      if (!user?._id) {
+        res.redirect(`${config.FRONTEND_URL}/login?error=google-auth-fail`);
+      } else {
+        const getSignAccessToken = signAccessToken(user._id);
+        if (getSignAccessToken) {
+          res.redirect(`${config.FRONTEND_URL}/auth/callback/${getSignAccessToken}`);
+        } else {
+          res.redirect(`${config.FRONTEND_URL}/login?error=token-auth-fail`);
+        }
+      }
+    });
   }
 };

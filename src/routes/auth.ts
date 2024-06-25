@@ -1,4 +1,6 @@
+import { config } from '../config';
 import express from 'express';
+import passport from 'passport';
 import { authController, organizerAuthController } from '../controllers';
 import { validateBody } from '../middleware/validationMiddleware';
 import { ogLoginSchema, ogRegistrationSchema } from '../validate/organizerSchemas';
@@ -122,6 +124,29 @@ router.post(
     }
   */
   handleErrorAsync(authController.authRefreshAccessToken)
+);
+// 會員 Google OAuth 2.0 登入
+router.get(
+  '/auth/google',
+  /**
+   * #swagger.tags = ['User Auth']
+   * #swagger.description = '會員第三方 Google 登入'
+   */
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+// 會員 Google OAuth 2.0 callback
+router.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    session: false,
+    failureRedirect: `${config.FRONTEND_URL}/login?error=google-auth-fail`,
+    failureMessage: true
+  }),
+  /**
+   * #swagger.tags = ['User Auth']
+   * #swagger.description = '會員第三方 Google OAuth 2.0 callback'
+   */
+  handleErrorAsync(authController.authGoogleCallback)
 );
 
 // 主揪註冊
