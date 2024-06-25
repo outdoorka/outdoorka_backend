@@ -4,6 +4,7 @@ import { handleErrorAsync } from '../services/handleResponse';
 import { isOgAuth, isAuth } from '../services/handleAuth';
 import { validateBody } from '../middleware/validationMiddleware';
 import { updateTicketInfoSchema } from '../validate/ticketSchemas';
+import { createRatingSchema } from '../validate/ratingSchemas';
 const router = express.Router();
 
 // 主揪取得活動票券資訊 (掃描後顯示活動待確認畫面)
@@ -148,19 +149,29 @@ router.patch(
     #swagger.tags = ['Ticket']
     #swagger.description = '用戶分票或修改票券備註'
     #swagger.security = [{ 'bearerAuth': [] }]
+    #swagger.parameters = {
+      name: 'body',
+      in: 'body',
+      description: '用戶分票或修改票券備註(ownerEmail, ticketNote二擇一)',
+      required: true,
+      schema: {
+        ownerEmail: 'email1@gmail.com',
+        ticketNote: '備註為最多 100 個字'
+      }
+    }
     #swagger.responses[200] = {
       description: '用戶分票或修改票券備註',
       schema: {
           "data": {
-              "_id": "667572dbe3201d783cc192e0",
-              "organizer": "664ca866ae10d7e7604c4fe7",
-              "activity": "664cb717ae8e74de4ae74871",
-              "payment": "66756e5a5e286c5c0d9327be",
-              "owner": "666c37a7c5c77a3e53660a07",
+              "_id": "XXXXXXXXXXXXXXXXXXXXXXXX",
+              "organizer": "XXXXXXXXXXXXXXXXXXXXXXXX",
+              "activity": "XXXXXXXXXXXXXXXXXXXXXXXX",
+              "payment": "XXXXXXXXXXXXXXXXXXXXXXXX",
+              "owner": "XXXXXXXXXXXXXXXXXXXXXXXX",
               "ticketStatus": 0,
               "ticketCreatedAt": "2024-06-21T12:32:27.634Z",
-              "ticketAssignedAt": null,
-              "ticketNote": "noteXXX",
+              "ticketAssignedAt":"2024-06-21T12:34:27.634Z",
+              "ticketNote": "備註為最多 100 個字",
               "ticketNoteUpdatedAt": "2024-06-23T16:59:23.760Z",
               "createdAt": "2024-06-21T12:32:27.635Z",
               "updatedAt": "2024-06-23T16:59:23.761Z"
@@ -178,4 +189,44 @@ router.patch(
   */
 );
 
+// 使用者角度-評論主揪
+router.post(
+  '/:id/rating',
+  isAuth,
+  validateBody(createRatingSchema),
+  handleErrorAsync(ticketController.createRating)
+  /**
+   * #swagger.tags = ["Review"]
+   * #swagger.security = [{ "bearerAuth": [] }]
+   * #swagger.description = "使用者角度-評論主揪"
+   * #swagger.parameters["post"] = {
+        in: "body",
+        description: "使用者角度-評論主揪",
+        required: true,
+        schema: {
+          rating: 5,
+          comment: "comment 最多200個字"
+        }
+      }
+   */
+  /*
+    #swagger.responses[200] = {
+      description: "建立成功回應",
+      schema: {
+        "data": {
+            "rating": 5,
+            "comment": "comment 最多200個字",
+            "organizerId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "activityId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "ticketId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "userId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "_id": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "createdAt": "2024-06-24T16:22:33.333Z",
+            "updatedAt": "2024-06-24T16:22:33.333Z"
+        },
+        "message": "建立成功"
+    }
+    }
+  */
+);
 export default router;

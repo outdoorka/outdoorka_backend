@@ -1725,6 +1725,109 @@
         ]
       }
     },
+    "/api/v1/organizer/tickets/{id}/rating": {
+      "post": {
+        "tags": [
+          "Review"
+        ],
+        "description": "主揪角度-評論使用者",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "body",
+            "description": "主揪角度-評論使用者",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rating": {
+                  "type": "number",
+                  "example": 5
+                },
+                "comment": {
+                  "type": "string",
+                  "example": "comment 最多200個字"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "建立成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "rating": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "comment": {
+                      "type": "string",
+                      "example": "comment 最多200個字"
+                    },
+                    "organizerId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "activityId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "ticketId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-06-24T16:22:33.333Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-06-24T16:22:33.333Z"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "建立成功"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/register": {
       "post": {
         "tags": [
@@ -2735,7 +2838,7 @@
                         "type": "number",
                         "example": 5
                       },
-                      "organzierName": {
+                      "organizerName": {
                         "type": "string",
                         "example": "拼圖戶外生活"
                       },
@@ -3319,6 +3422,25 @@
         "description": "用戶分票或修改票券備註",
         "parameters": [
           {
+            "name": "body",
+            "in": "body",
+            "description": "用戶分票或修改票券備註(ownerEmail, ticketNote二擇一)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ownerEmail": {
+                  "type": "string",
+                  "example": "email1@gmail.com"
+                },
+                "ticketNote": {
+                  "type": "string",
+                  "example": "備註為最多 100 個字"
+                }
+              }
+            }
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -3341,23 +3463,23 @@
                   "properties": {
                     "_id": {
                       "type": "string",
-                      "example": "667572dbe3201d783cc192e0"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "organizer": {
                       "type": "string",
-                      "example": "664ca866ae10d7e7604c4fe7"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "activity": {
                       "type": "string",
-                      "example": "664cb717ae8e74de4ae74871"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "payment": {
                       "type": "string",
-                      "example": "66756e5a5e286c5c0d9327be"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "owner": {
                       "type": "string",
-                      "example": "666c37a7c5c77a3e53660a07"
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
                     },
                     "ticketStatus": {
                       "type": "number",
@@ -3370,7 +3492,7 @@
                     "ticketAssignedAt": {},
                     "ticketNote": {
                       "type": "string",
-                      "example": "noteXXX"
+                      "example": "備註為最多 100 個字"
                     },
                     "ticketNoteUpdatedAt": {
                       "type": "string",
@@ -3408,6 +3530,109 @@
                 "errorCode": {
                   "type": "string",
                   "example": "NOT_FOUND_TICKET"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tickets/{id}/rating": {
+      "post": {
+        "tags": [
+          "Review"
+        ],
+        "description": "使用者角度-評論主揪",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "body",
+            "description": "使用者角度-評論主揪",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rating": {
+                  "type": "number",
+                  "example": 5
+                },
+                "comment": {
+                  "type": "string",
+                  "example": "comment 最多200個字"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "建立成功回應",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "rating": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "comment": {
+                      "type": "string",
+                      "example": "comment 最多200個字"
+                    },
+                    "organizerId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "activityId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "ticketId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "XXXXXXXXXXXXXXXXXXXXXXXX"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-06-24T16:22:33.333Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-06-24T16:22:33.333Z"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "建立成功"
                 }
               },
               "xml": {

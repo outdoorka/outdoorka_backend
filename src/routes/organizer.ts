@@ -4,6 +4,7 @@ import { handleErrorAsync } from '../services/handleResponse';
 import { isOgAuth } from '../services/handleAuth';
 import { validateBody, validateImage } from '../middleware/validationMiddleware';
 import { createActivitySchema } from '../validate/activitiesSchemas';
+import { createRatingSchema } from '../validate/ratingSchemas';
 
 const router = express.Router();
 
@@ -385,4 +386,46 @@ router.get(
     }
   */
 );
+
+// 主揪角度-評論使用者
+router.post(
+  '/tickets/:id/rating',
+  isOgAuth,
+  validateBody(createRatingSchema),
+  handleErrorAsync(organizerController.createRating)
+  /**
+   * #swagger.tags = ["Review"]
+   * #swagger.security = [{ "bearerAuth": [] }]
+   * #swagger.description = "主揪角度-評論使用者"
+   * #swagger.parameters["post"] = {
+        in: "body",
+        description: "主揪角度-評論使用者",
+        required: true,
+        schema: {
+          rating: 5,
+          comment: "comment 最多200個字"
+        }
+      }
+   */
+  /*
+    #swagger.responses[200] = {
+      description: "建立成功回應",
+      schema: {
+        "data": {
+            "rating": 5,
+            "comment": "comment 最多200個字",
+            "organizerId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "activityId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "ticketId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "userId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "_id": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "createdAt": "2024-06-24T16:22:33.333Z",
+            "updatedAt": "2024-06-24T16:22:33.333Z"
+        },
+        "message": "建立成功"
+    }
+    }
+  */
+);
+
 export default router;
