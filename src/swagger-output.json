@@ -140,79 +140,6 @@
         }
       }
     },
-    "/api/v1/users/all": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "取得所有User資料",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "取得所有User資料",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string",
-                        "example": "xxxxxxxxxxxxxxxxxx"
-                      },
-                      "name": {
-                        "type": "string",
-                        "example": "XXX"
-                      },
-                      "photo": {
-                        "type": "string",
-                        "example": "https://thispersondoesnotexist.com/"
-                      },
-                      "email": {
-                        "type": "string",
-                        "example": "xxxxxx@gmail.com"
-                      },
-                      "isActive": {
-                        "type": "boolean",
-                        "example": true
-                      },
-                      "mobile": {
-                        "type": "string",
-                        "example": "0911000000"
-                      },
-                      "gender": {
-                        "type": "string",
-                        "example": "male"
-                      },
-                      "birthday": {
-                        "type": "string",
-                        "example": "1990-01-01"
-                      }
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
     "/api/v1/users/": {
       "get": {
         "tags": [
@@ -268,42 +195,6 @@
                       "example": "1990-01-01"
                     }
                   }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "description": "Delete User",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User deleted",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "array",
-                  "example": [],
-                  "items": {}
                 }
               },
               "xml": {
