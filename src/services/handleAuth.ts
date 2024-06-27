@@ -43,7 +43,9 @@ const generatorTokenAndSend = (user: any, res: any) => {
     user: {
       _id: user._id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      photo: user.photo || '',
+      gender: user.gender
     },
     token: {
       access_token: token,
