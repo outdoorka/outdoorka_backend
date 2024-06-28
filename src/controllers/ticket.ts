@@ -191,8 +191,18 @@ export const ticketController = {
           // likers: { $size: '$activityInfo.likers' },
           paymentId: '$paymentInfo._id',
           paymentBuyer: '$paymentInfo.buyer',
-          ticketCount: { $size: '$tickets' },
-          tickets: 1
+          // ticketCount: { $size: '$tickets' },
+          ticketTotal: { $size: '$tickets' },
+          ticketUse: {
+            $size: {
+              $filter: {
+                input: '$tickets',
+                as: 'ticket',
+                cond: { $eq: ['$$ticket.ticketStatus', 1] }
+              }
+            }
+          }
+          // tickets: 1
         }
       }
     ]).exec();
