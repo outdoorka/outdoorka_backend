@@ -609,6 +609,36 @@
                     "mobile": {
                       "type": "string",
                       "example": "0911000000"
+                    },
+                    "profileDetail": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "profileTags": {
+                      "type": "array",
+                      "example": [
+                        ""
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "area": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "socialMediaUrls": {
+                      "type": "object",
+                      "properties": {
+                        "fbUrl": {
+                          "type": "string",
+                          "example": "https://"
+                        },
+                        "igUrl": {
+                          "type": "string",
+                          "example": "https://"
+                        }
+                      }
                     }
                   }
                 }
@@ -617,6 +647,91 @@
                 "name": "main"
               }
             }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Organizer"
+        ],
+        "description": "更新主揪資料",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "description": "更新主揪資料",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "name"
+                },
+                "nickName": {
+                  "type": "string",
+                  "example": "nickName"
+                },
+                "photo": {
+                  "type": "string",
+                  "example": "https://thispersondoesnotexist.com/"
+                },
+                "mobile": {
+                  "type": "string",
+                  "example": "0911000000"
+                },
+                "profileDetail": {
+                  "type": "string",
+                  "example": ""
+                },
+                "profileTags": {
+                  "type": "array",
+                  "example": [
+                    ""
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "socialMediaUrls": {
+                  "type": "object",
+                  "properties": {
+                    "fbUrl": {
+                      "type": "string",
+                      "example": "https://"
+                    },
+                    "igUrl": {
+                      "type": "string",
+                      "example": "https://"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "nickName",
+                "photo",
+                "mobile",
+                "profileDetail",
+                "profileTags",
+                "socialMediaUrls"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
           }
         },
         "security": [
@@ -3216,8 +3331,99 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "用戶取得活動票券列表",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "664cb717ae8e74de4ae74872"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                      },
+                      "bookedCapacity": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "region": {
+                        "type": "string",
+                        "example": "北部"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "新北市"
+                      },
+                      "activityImageUrl": {
+                        "type": "string",
+                        "example": "https://media.istockphoto.com/id/1367438696/photo/cute-redhead-boy-and-grandfather-fishing-in-the-river-in-quebec.jpg?s=612x612&w=0&k=20&c=34JDzuhY4Nlt5sHonFWh8ZAiUdHyybCCv44BhNtzvEw="
+                      },
+                      "activityStartTime": {
+                        "type": "string",
+                        "example": "2024-06-20T00:00:00.537Z"
+                      },
+                      "activityEndTime": {
+                        "type": "string",
+                        "example": "2024-07-02T10:00:00.000Z"
+                      },
+                      "activityExpired": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "paymentId": {
+                        "type": "string",
+                        "example": "666af51583090862d4bc0a6b"
+                      },
+                      "paymentBuyer": {
+                        "type": "string",
+                        "example": "6665ae57bdc4011bb2345c73"
+                      },
+                      "ticketTotal": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "ticketAssign": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "ticketUse": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "找不到票券",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "找不到票券"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "NOT_FOUND_TICKET"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         },
         "security": [
@@ -3259,70 +3465,130 @@
                     "properties": {
                       "_id": {
                         "type": "string",
-                        "example": "6661c20a2fc7bac3ef9ff823"
+                        "example": "666af51583090862d4bc0a6b"
                       },
-                      "ticketStatus": {
-                        "type": "number",
-                        "example": 0
-                      },
-                      "ticketNote": {
-                        "type": "string",
-                        "example": "測試資料"
-                      },
-                      "activity": {
-                        "type": "object",
-                        "properties": {
-                          "_id": {
-                            "type": "string",
-                            "example": "664cb717ae8e74de4ae74871"
-                          },
-                          "title": {
-                            "type": "string",
-                            "example": "池上大坡池水上娛樂，悠遊玩水趣"
-                          },
-                          "subtitle": {
-                            "type": "string",
-                            "example": "池上大坡池水上娛樂，悠遊玩水趣"
-                          },
-                          "price": {
-                            "type": "number",
-                            "example": 600
-                          },
-                          "activityImageUrls": {
-                            "type": "array",
-                            "example": [
-                              "xxxx",
-                              "xxxx",
-                              "xxxx"
-                            ],
-                            "items": {
-                              "type": "string"
+                      "tickets": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "ticketId": {
+                              "type": "string",
+                              "example": "66802440950deacc8d940396"
+                            },
+                            "ticketStatus": {
+                              "type": "number",
+                              "example": 0
+                            },
+                            "ticketNote": {
+                              "type": "string",
+                              "example": "測試資料2-2-2"
+                            },
+                            "ownerId": {
+                              "type": "string",
+                              "example": "6665ae57bdc4011bb2345c73"
+                            },
+                            "ownerName": {
+                              "type": "string",
+                              "example": "ingrid55"
+                            },
+                            "assignedAt": {
+                              "type": "string",
+                              "example": "2024-06-30T06:15:28.342Z"
                             }
-                          },
-                          "activityStartTime": {
-                            "type": "string",
-                            "example": "2024-07-27T00:00:00.537Z"
-                          },
-                          "activityEndTime": {
-                            "type": "string",
-                            "example": "2024-07-27T10:00:00.000Z"
                           }
                         }
                       },
-                      "owner": {
+                      "title": {
+                        "type": "string",
+                        "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                      },
+                      "subtitle": {
+                        "type": "string",
+                        "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                      },
+                      "region": {
+                        "type": "string",
+                        "example": "北部"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "新北市"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": 600
+                      },
+                      "activityImageUrl": {
+                        "type": "string",
+                        "example": "https://media.istockphoto.com/id/1367438696/photo/cute-redhead-boy-and-grandfather-fishing-in-the-river-in-quebec.jpg?s=612x612&w=0&k=20&c=34JDzuhY4Nlt5sHonFWh8ZAiUdHyybCCv44BhNtzvEw="
+                      },
+                      "activityStartTime": {
+                        "type": "string",
+                        "example": "2024-06-20T00:00:00.537Z"
+                      },
+                      "activityEndTime": {
+                        "type": "string",
+                        "example": "2024-07-02T10:00:00.000Z"
+                      },
+                      "activityExpired": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "organizer": {
                         "type": "object",
                         "properties": {
                           "_id": {
                             "type": "string",
-                            "example": "6650ad94a723374e4c105f9f"
+                            "example": "664cb717ae8e74de4ae74872"
                           },
                           "name": {
                             "type": "string",
-                            "example": "name"
+                            "example": "山旅行"
                           },
-                          "mobile": {
+                          "photo": {
                             "type": "string",
-                            "example": "0911000000"
+                            "example": "https://static.accupass.com/org/2304041722089876493900.jpg"
+                          },
+                          "rating": {
+                            "type": "number",
+                            "example": 4
+                          }
+                        }
+                      },
+                      "ticketTotal": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "ticketInspect": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "ticketId": {
+                              "type": "string",
+                              "example": "666c57ab83090862d4bc0a9f"
+                            },
+                            "ticketStatus": {
+                              "type": "number",
+                              "example": 0
+                            },
+                            "ticketNote": {
+                              "type": "string",
+                              "example": "測試資料2-10000000"
+                            },
+                            "ownerId": {
+                              "type": "string",
+                              "example": "66501456b53ce982332ef69a"
+                            },
+                            "ownerName": {
+                              "type": "string",
+                              "example": "ingriD1234"
+                            },
+                            "assignedAt": {
+                              "type": "string",
+                              "example": "2024-06-09T13:21:03.627Z"
+                            }
                           }
                         }
                       }

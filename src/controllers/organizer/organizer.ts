@@ -36,7 +36,18 @@ export const organizerController = {
       return;
     }
 
-    const { _id, name, nickName, email, photo, mobile } = ogData;
+    const {
+      _id,
+      name,
+      nickName,
+      email,
+      photo,
+      mobile,
+      area,
+      profileDetail,
+      profileTags,
+      socialMediaUrls
+    } = ogData;
     handleResponse(
       res,
       {
@@ -45,10 +56,54 @@ export const organizerController = {
         name,
         nickName,
         photo,
-        mobile
+        mobile,
+        area,
+        profileDetail,
+        profileTags,
+        socialMediaUrls
       },
       '取得成功'
     );
+  },
+  // 更新主揪資料
+  async updateOrganizer(req: Request, res: Response, next: NextFunction) {
+    const ogId = (req as JwtPayloadRequest).user._id;
+    const ogData = await OrganizerModel.findById(ogId);
+
+    if (!ogData) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_USER],
+        status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
+    }
+
+    const { name, nickName, mobile, photo, profileDetail, profileTags, socialMediaUrls } = req.body;
+
+    ogData.name = name;
+    ogData.nickName = nickName;
+    ogData.mobile = mobile;
+    ogData.photo = photo;
+    ogData.profileDetail = profileDetail;
+    ogData.profileTags = profileTags;
+    ogData.socialMediaUrls = socialMediaUrls;
+    ogData.pwdAttempts = 0;
+
+    const updateResult = await ogData.save();
+
+    if (!updateResult) {
+      handleAppError(
+        500,
+        status500Codes[status500Codes.UPDATE_FAILED],
+        status500Codes.UPDATE_FAILED,
+        next
+      );
+      return;
+    }
+
+    handleResponse(res, updateResult, '更新成功');
   },
 
   // 主揪建立活動

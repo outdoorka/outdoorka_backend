@@ -27,12 +27,50 @@ router.get(
           "nickName": 'nickName',
           "photo": "https://thispersondoesnotexist.com",
           "email": "test@gmail.com",
-          "mobile": "0911000000"
+          "mobile": "0911000000",
+          "profileDetail": "",
+          "profileTags": [''],
+          "area": "",
+          "socialMediaUrls": {
+            "fbUrl": "https://",
+            "igUrl": "https://"
+          }
         }
       }
     }
   */
   handleErrorAsync(organizerController.getOrganizer)
+);
+
+// 更新主揪資料
+router.patch(
+  '/profile',
+  isOgAuth,
+  /**
+   * #swagger.tags = ['Organizer']
+   * #swagger.security = [{ "bearerAuth": [] }]
+   * #swagger.description = '更新主揪資料'
+   */
+  /**
+    #swagger.parameters['patch'] = {
+      in: 'body',
+      description: '更新主揪資料',
+      required: true,
+      schema: {
+        $name: 'name',
+        $nickName: 'nickName',
+        $photo: 'https://thispersondoesnotexist.com/',
+        $mobile: '0911000000',
+        $profileDetail: '',
+        $profileTags: [''],
+        $socialMediaUrls: {
+          fbUrl: 'https://',
+          igUrl: 'https://'
+        }
+      }
+    }
+  */
+  handleErrorAsync(organizerController.updateOrganizer)
 );
 
 // 主揪建立活動

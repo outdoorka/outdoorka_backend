@@ -27,6 +27,25 @@ export const ogRegistrationSchema = z.object({
   })
 });
 
+export const ogUpdateProfileSchema = z.object({
+  body: object({
+    name: z.string().min(2, '最少2個字').max(20, '最多20個字'),
+    nickName: z.string().min(2, '最少2個字').max(20, '最多20個字'),
+    mobile: z.string().regex(MobileTW, '請輸入正確的手機號碼'),
+    profileDetail: z.string().max(100, '最多100個字').optional(),
+    profileTags: z.array(z.string(), { message: '須為字串陣列' }).optional(),
+    area: z.string().max(20).optional(),
+    photo: z
+      .string()
+      .optional()
+      .refine((photo) => {
+        if (!photo) return true;
+        return HttpUrl.test(photo);
+      }, '請輸入正確圖片網址'),
+    socialMediaUrls: z.object({}).optional()
+  })
+});
+
 export const ogLoginSchema = z.object({
   body: object({
     email: z
@@ -41,4 +60,5 @@ export const ogLoginSchema = z.object({
 });
 
 export type OgAuthRegisterInput = TypeOf<typeof ogRegistrationSchema>['body'];
+export type OgUpdateProfileInput = TypeOf<typeof ogUpdateProfileSchema>['body'];
 export type OgLoginInput = TypeOf<typeof ogLoginSchema>['body'];
