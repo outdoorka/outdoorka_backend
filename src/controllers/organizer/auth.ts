@@ -44,7 +44,7 @@ export const organizerAuthController = {
     const isPasswordValid = await bcrypt.compare(password, organizer.password);
 
     if (!isPasswordValid) {
-      const attempts = organizer.pwdAttempts + 1;
+      const attempts = organizer.pwdAttempts ? organizer.pwdAttempts + 1 : 1;
       await OrganizerModel.findByIdAndUpdate(organizer._id, {
         pwdAttempts: attempts
       });
@@ -60,7 +60,7 @@ export const organizerAuthController = {
       return;
     }
 
-    if (organizer.pwdAttempts > 5) {
+    if (organizer.pwdAttempts && organizer.pwdAttempts > 5) {
       handleAppError(
         400,
         status400Codes[status400Codes.PASSWORD_ATTEMPTS],

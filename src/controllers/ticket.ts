@@ -18,7 +18,7 @@ export const ticketController = {
     const ObjectId = Types.ObjectId;
     const ticketId = req.params.id;
     const ogId = (req as JwtPayloadRequest).user._id;
-    console.log(ogId);
+
     if (!ObjectId.isValid(ticketId)) {
       handleAppError(
         400,
@@ -124,7 +124,7 @@ export const ticketController = {
     handleResponse(res, { ticketStatus: TicketStatus.Used }, '驗票成功');
   },
 
-  async getOwnerTicketData(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async getOwnerTicketList(req: Request, res: Response, next: NextFunction): Promise<void> {
     const userId = (req as JwtPayloadRequest).user._id;
 
     // 查詢使用者購買的付款記錄
@@ -171,9 +171,145 @@ export const ticketController = {
           paymentInfo: { $first: '$paymentInfo' },
           tickets: {
             $push: {
+              ticketStatus: '$ticketStatus',
+              ticketAssignedAt: '$ticketAssignedAt'
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          title: '$activityInfo.title',
+          bookedCapacity: '$activityInfo.bookedCapacity',
+          region: '$activityInfo.region',
+          city: '$activityInfo.city',
+          activityImageUrl: { $first: '$activityInfo.activityImageUrls' },
+          activityStartTime: '$activityInfo.activityStartTime',
+          activityEndTime: '$activityInfo.activityEndTime',
+          activityExpired: { $lt: ['$activityInfo.activityEndTime', new Date()] },
+          paymentId: '$paymentInfo._id',
+          paymentBuyer: '$paymentInfo.buyer',
+          ticketTotal: { $size: '$tickets' },
+          ticketAssign: {
+            $size: {
+              $filter: {
+                input: '$tickets',
+                as: 'ticket',
+                cond: { $eq: ['$$ticket.ticketAssignedAt', null] }
+              }
+            }
+          },
+          ticketUse: {
+            $size: {
+              $filter: {
+                input: '$tickets',
+                as: 'ticket',
+                cond: { $eq: ['$$ticket.ticketStatus', TicketStatus.Used] }
+              }
+            }
+          }
+        }
+      }
+    ]).exec();
+
+    if (!ticketData) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_TICKET],
+        status404Codes.NOT_FOUND_TICKET,
+        next
+      );
+      return;
+    }
+
+    handleResponse(res, ticketData, '取得成功');
+  },
+
+  async getOwnerTicketInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const userId = (req as JwtPayloadRequest).user._id;
+    let paymentId;
+    try {
+      paymentId = new Types.ObjectId(req.params.id);
+    } catch (error) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
+        next
+      );
+      return;
+    }
+
+    // 查詢使用者購買的付款記錄
+    // const payments = await PaymentModel.find({
+    //   buyer: userId,
+    //   paymentStatus: PaymentStatus.Paid
+    // }).select('_id');
+    // 提取付款payment ID
+    // const paymentIds = payments.map((payment: any) => payment._id);
+
+    const ticketData = await TicketModel.aggregate([
+      { $match: { payment: paymentId } },
+      // {
+      //   $match: {
+      //     $or: [{ owner: userId }, { payment: paymentId }]
+      //   }
+      // },
+      {
+        $lookup: {
+          from: 'payments',
+          localField: 'payment',
+          foreignField: '_id',
+          as: 'paymentInfo'
+        }
+      },
+      {
+        $unwind: '$paymentInfo'
+      },
+      {
+        $lookup: {
+          from: 'activities',
+          localField: 'activity',
+          foreignField: '_id',
+          as: 'activityInfo'
+        }
+      },
+      {
+        $unwind: '$activityInfo'
+      },
+      {
+        $lookup: {
+          from: 'organizers',
+          localField: 'organizer',
+          foreignField: '_id',
+          as: 'organizerInfo'
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'owner',
+          foreignField: '_id',
+          as: 'ownerInfo'
+        }
+      },
+      {
+        $unwind: '$ownerInfo'
+      },
+      {
+        $group: {
+          _id: '$payment',
+          activityInfo: { $first: '$activityInfo' },
+          organizerInfo: { $first: '$organizerInfo' },
+          tickets: {
+            $push: {
               ticketId: '$_id',
               ticketStatus: '$ticketStatus',
-              ticketOwnerId: '$owner'
+              ticketNote: '$ticketNote',
+              ownerId: '$owner',
+              ownerName: '$ownerInfo.name',
+              assignedAt: '$ticketAssignedAt'
             }
           }
         }
@@ -182,16 +318,34 @@ export const ticketController = {
         $project: {
           _id: 1,
           title: '$activityInfo.title',
-          bookedCapacity: '$activityInfo.bookedCapacity',
+          subtitle: '$activityInfo.subtitle',
           region: '$activityInfo.region',
           city: '$activityInfo.city',
+          price: '$activityInfo.price',
           activityImageUrl: { $first: '$activityInfo.activityImageUrls' },
           activityStartTime: '$activityInfo.activityStartTime',
           activityEndTime: '$activityInfo.activityEndTime',
-          // likers: { $size: '$activityInfo.likers' },
-          paymentId: '$paymentInfo._id',
-          paymentBuyer: '$paymentInfo.buyer',
-          ticketCount: { $size: '$tickets' },
+          activityExpired: { $lt: ['$activityInfo.activityEndTime', new Date()] },
+          organizer: {
+            _id: '$activityInfo._id',
+            name: { $first: '$organizerInfo.name' },
+            photo: { $first: '$organizerInfo.photo' },
+            rating: { $first: '$organizerInfo.rating' }
+          },
+          ticketTotal: { $size: '$tickets' },
+          ticketInspect: {
+            $filter: {
+              input: '$tickets',
+              as: 'ticket',
+              cond: {
+                $and: [
+                  { $eq: ['$$ticket.ownerId', userId] },
+                  { $eq: ['$$ticket.ticketStatus', TicketStatus.Unused] },
+                  { $ne: ['$$ticket.assignedAt', null] }
+                ]
+              }
+            }
+          },
           tickets: 1
         }
       }
@@ -209,6 +363,7 @@ export const ticketController = {
 
     handleResponse(res, ticketData, '取得成功');
   },
+
   async updateTicketInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
     const userId = (req as JwtPayloadRequest).user._id;
     let ticketId;

@@ -3216,8 +3216,39 @@
           }
         ],
         "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tickets/{id}": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "用戶取得活動票券詳情",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
           "200": {
-            "description": "用戶取得活動票券列表",
+            "description": "用戶取得活動票券詳情",
             "schema": {
               "type": "object",
               "properties": {
@@ -3329,9 +3360,7 @@
             "bearerAuth": []
           }
         ]
-      }
-    },
-    "/api/v1/tickets/{id}": {
+      },
       "patch": {
         "tags": [
           "Ticket"
