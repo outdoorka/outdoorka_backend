@@ -23,11 +23,11 @@ const organizerRatingSchema = new Schema<IOrganizerRating>(
       required: [true, 'ActivityId is required'],
       ref: 'Activity'
     },
-    // ticketId: {
-    //   type: Schema.Types.ObjectId,
-    //   required: [true, 'TicketId is required'],
-    //   ref: 'Ticket'
-    // },
+    ticketId: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'TicketId is required'],
+      ref: 'Ticket'
+    },
     organizerId: {
       type: Schema.Types.ObjectId,
       required: [true, 'OrganizerId is required'],
@@ -69,11 +69,11 @@ const userRatingSchema = new Schema<IUserRating>(
       required: [true, 'ActivityId is required'],
       ref: 'Activity'
     },
-    // ticketId: {
-    //   type: Schema.Types.ObjectId,
-    //   required: [true, 'TicketId is required'],
-    //   ref: 'Ticket'
-    // },
+    ticketId: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'TicketId is required'],
+      ref: 'Ticket'
+    },
     userId: {
       type: Schema.Types.ObjectId,
       required: [true, 'UserId is required'],

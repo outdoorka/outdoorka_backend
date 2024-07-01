@@ -4,6 +4,7 @@ import { handleErrorAsync } from '../services/handleResponse';
 import { isOgAuth } from '../services/handleAuth';
 import { validateBody, validateImage } from '../middleware/validationMiddleware';
 import { createActivitySchema } from '../validate/activitiesSchemas';
+import { createRatingSchema } from '../validate/ratingSchemas';
 
 const router = express.Router();
 
@@ -26,12 +27,50 @@ router.get(
           "nickName": 'nickName',
           "photo": "https://thispersondoesnotexist.com",
           "email": "test@gmail.com",
-          "mobile": "0911000000"
+          "mobile": "0911000000",
+          "profileDetail": "",
+          "profileTags": [''],
+          "area": "",
+          "socialMediaUrls": {
+            "fbUrl": "https://",
+            "igUrl": "https://"
+          }
         }
       }
     }
   */
   handleErrorAsync(organizerController.getOrganizer)
+);
+
+// 更新主揪資料
+router.patch(
+  '/profile',
+  isOgAuth,
+  /**
+   * #swagger.tags = ['Organizer']
+   * #swagger.security = [{ "bearerAuth": [] }]
+   * #swagger.description = '更新主揪資料'
+   */
+  /**
+    #swagger.parameters['patch'] = {
+      in: 'body',
+      description: '更新主揪資料',
+      required: true,
+      schema: {
+        $name: 'name',
+        $nickName: 'nickName',
+        $photo: 'https://thispersondoesnotexist.com/',
+        $mobile: '0911000000',
+        $profileDetail: '',
+        $profileTags: [''],
+        $socialMediaUrls: {
+          fbUrl: 'https://',
+          igUrl: 'https://'
+        }
+      }
+    }
+  */
+  handleErrorAsync(organizerController.updateOrganizer)
 );
 
 // 主揪建立活動
@@ -385,4 +424,46 @@ router.get(
     }
   */
 );
+
+// 主揪角度-評論使用者
+router.post(
+  '/tickets/:id/rating',
+  isOgAuth,
+  validateBody(createRatingSchema),
+  handleErrorAsync(organizerController.createRating)
+  /**
+   * #swagger.tags = ["Review"]
+   * #swagger.security = [{ "bearerAuth": [] }]
+   * #swagger.description = "主揪角度-評論使用者"
+   * #swagger.parameters["post"] = {
+        in: "body",
+        description: "主揪角度-評論使用者",
+        required: true,
+        schema: {
+          rating: 5,
+          comment: "comment 最多200個字"
+        }
+      }
+   */
+  /*
+    #swagger.responses[200] = {
+      description: "建立成功回應",
+      schema: {
+        "data": {
+            "rating": 5,
+            "comment": "comment 最多200個字",
+            "organizerId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "activityId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "ticketId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "userId": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "_id": "XXXXXXXXXXXXXXXXXXXXXXXX",
+            "createdAt": "2024-06-24T16:22:33.333Z",
+            "updatedAt": "2024-06-24T16:22:33.333Z"
+        },
+        "message": "建立成功"
+    }
+    }
+  */
+);
+
 export default router;

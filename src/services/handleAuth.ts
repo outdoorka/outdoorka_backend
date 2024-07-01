@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import { config } from '../config';
 import { handleAppError, handleErrorAsync, handleResponse } from '../services/handleResponse';
 import { UserModel, OrganizerModel } from '../models';
@@ -44,7 +43,9 @@ const generatorTokenAndSend = (user: any, res: any) => {
     user: {
       _id: user._id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      photo: user.photo || '',
+      gender: user.gender
     },
     token: {
       access_token: token,
@@ -201,7 +202,6 @@ const saveResetToken = async (userId: any, token: string, expires: number) => {
 };
 
 const verifyResetToken = async (token: string) => {
-  console.log('success');
   return await UserModel.findOne({
     resetToken: token,
     resetTokenExpire: { $gt: Date.now() }
@@ -209,14 +209,50 @@ const verifyResetToken = async (token: string) => {
 };
 
 const updatePassword = async (userId: any, password: string) => {
-  const hashedPassword = await bcrypt.hash(password, 12);
+  // const hashedPassword = await bcrypt.hash(password, 12);
   const user = await UserModel.findById(userId);
-  console.log('User details:', user);
   if (!user) {
     throw new Error('User not found');
   }
-  user.password = hashedPassword;
-  await user.save({ validateBeforeSave: false });
+  user.password = password;
+  await user.save();
+};
+
+// 生產 reset password Token
+const getResetPwdToken = (email: string, role: 'user' | 'organizer' = 'organizer') => {
+  try {
+    const refreshToken = jwt.sign({ email, role }, REFRESH_TOKEN_SECRET, {
+      expiresIn: '10m'
+    });
+    return refreshToken;
+  } catch (error) {
+    console.error('Error generating refresh token:', error);
+    return null;
+  }
+};
+
+// 驗證 reset password Token
+const verifyResetPwdToken = (token: string) => {
+  try {
+    const decoded = jwt.verify(token, REFRESH_TOKEN_SECRET) as any;
+    if (decoded.email && decoded.role) {
+      return {
+        success: true,
+        email: decoded.email,
+        role: decoded.role
+      };
+    }
+
+    return {
+      success: false,
+      message: 'Token is invalid'
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.message ?? 'Token is invalid'
+    };
+  }
 };
 
 export {
@@ -224,9 +260,11 @@ export {
   generatorTokenAndSend,
   generateAccessToken,
   generatorOrganizerTokenAndSend,
+  getResetPwdToken,
   isAuth,
   isOgAuth,
   saveResetToken,
   verifyResetToken,
+  verifyResetPwdToken,
   updatePassword
 };

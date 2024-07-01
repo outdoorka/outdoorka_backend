@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { config } from '../config';
 
+// import { UserModel } from '../models/user';
+
 if (!config.DATABASE_URL) {
   throw new Error('資料庫連接資訊錯誤');
 }
@@ -14,8 +16,13 @@ export default () => {
     console.info('等待，資料庫連接中...');
     mongoose
       .connect(DB)
-      .then(() => {
+      .then(async () => {
         console.log('資料庫連接成功');
+
+        // 重建索引
+        // await UserModel.collection.dropIndexes();
+        // console.log('Indexes dropped : 重建索引成功');
+        // process.exit(0);
       })
       .catch((err) => {
         console.error('資料庫連接失敗: ', err.message);

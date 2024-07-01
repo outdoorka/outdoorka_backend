@@ -1,12 +1,13 @@
 import DOMPurify from 'isomorphic-dompurify';
 import { handleAppError, handleResponse } from '../../services/handleResponse';
-import { ActivityModel, OrganizerModel } from '../../models';
+import { ActivityModel, OrganizerModel, TicketModel, UserRatingModel } from '../../models';
 import {
   status404Codes,
   status422Codes,
   status500Codes,
   status400Codes,
-  status405Codes
+  status405Codes,
+  status409Codes
 } from '../../types/enum/appStatusCode';
 import { convertCityToArea } from '../../utils/helpers';
 import dayjs from 'dayjs';
@@ -35,7 +36,18 @@ export const organizerController = {
       return;
     }
 
-    const { _id, name, nickName, email, photo, mobile } = ogData;
+    const {
+      _id,
+      name,
+      nickName,
+      email,
+      photo,
+      mobile,
+      area,
+      profileDetail,
+      profileTags,
+      socialMediaUrls
+    } = ogData;
     handleResponse(
       res,
       {
@@ -44,10 +56,54 @@ export const organizerController = {
         name,
         nickName,
         photo,
-        mobile
+        mobile,
+        area,
+        profileDetail,
+        profileTags,
+        socialMediaUrls
       },
       '取得成功'
     );
+  },
+  // 更新主揪資料
+  async updateOrganizer(req: Request, res: Response, next: NextFunction) {
+    const ogId = (req as JwtPayloadRequest).user._id;
+    const ogData = await OrganizerModel.findById(ogId);
+
+    if (!ogData) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_USER],
+        status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
+    }
+
+    const { name, nickName, mobile, photo, profileDetail, profileTags, socialMediaUrls } = req.body;
+
+    ogData.name = name;
+    ogData.nickName = nickName;
+    ogData.mobile = mobile;
+    ogData.photo = photo;
+    ogData.profileDetail = profileDetail;
+    ogData.profileTags = profileTags;
+    ogData.socialMediaUrls = socialMediaUrls;
+    ogData.pwdAttempts = 0;
+
+    const updateResult = await ogData.save();
+
+    if (!updateResult) {
+      handleAppError(
+        500,
+        status500Codes[status500Codes.UPDATE_FAILED],
+        status500Codes.UPDATE_FAILED,
+        next
+      );
+      return;
+    }
+
+    handleResponse(res, updateResult, '更新成功');
   },
 
   // 主揪建立活動
@@ -158,8 +214,8 @@ export const organizerController = {
     if (!activityId) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
       return;
@@ -343,8 +399,8 @@ export const organizerController = {
     if (!ObjectId.isValid(activityId)) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
     }
@@ -370,5 +426,69 @@ export const organizerController = {
     }
 
     handleResponse(res, activityData, '取得成功');
+  },
+  // 主揪評論跟團仔
+  async createRating(req: Request, res: Response, next: NextFunction) {
+    const ObjectId = Types.ObjectId;
+    const ticketId = req.params.id;
+    const ogId = (req as JwtPayloadRequest).user._id;
+    const { rating, comment } = req.body;
+
+    if (!ObjectId.isValid(ticketId)) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
+        next
+      );
+    }
+    const ticketData = await TicketModel.findOne({ _id: ticketId, organizer: ogId });
+    if (!ticketData || !ticketData.activity) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_TICKET],
+        status404Codes.NOT_FOUND_TICKET,
+        next
+      );
+      return;
+    }
+    if (ticketData.ticketStatus !== 1) {
+      handleAppError(
+        400,
+        status400Codes[status400Codes.TICKET_UNUSED],
+        status400Codes.TICKET_UNUSED,
+        next
+      );
+      return;
+    }
+    const checkRatingData = await UserRatingModel.findOne({ ticketId });
+    if (checkRatingData) {
+      handleAppError(
+        409,
+        status409Codes[status409Codes.ALREADY_EXISTS],
+        status409Codes.ALREADY_EXISTS,
+        next
+      );
+      return;
+    }
+    try {
+      const createRating = await UserRatingModel.create({
+        ticket: ticketId,
+        rating,
+        comment,
+        organizerId: ogId,
+        activityId: ticketData.activity,
+        ticketId,
+        userId: ticketData.owner
+      });
+      handleResponse(res, createRating, '建立成功');
+    } catch (error) {
+      handleAppError(
+        500,
+        status500Codes[status500Codes.CREATE_FAILED],
+        status500Codes.CREATE_FAILED,
+        next
+      );
+    }
   }
 };

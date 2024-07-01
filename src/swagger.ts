@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 dotenv.config({ path: './config.env' });
 
 const APP_URL = process.env.APP_URL || 'localhost:3006';
-console.log('host : ', APP_URL);
+const SET_SCHEMES = APP_URL.includes('localhost') ? ['http', 'https'] : ['https'];
+
+console.log('schemes : ', SET_SCHEMES, 'host : ', APP_URL);
 
 const doc = {
   info: {
@@ -13,7 +15,7 @@ const doc = {
   },
   host: APP_URL,
   basePath: '/',
-  schemes: ['http', 'https'],
+  schemes: SET_SCHEMES,
   consumes: ['application/json'],
   produces: ['application/json'],
   securityDefinitions: {

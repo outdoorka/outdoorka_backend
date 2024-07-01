@@ -83,8 +83,12 @@ const organizerSchema = new Schema<IOrganizerModel, Model<IOrganizerModel>>(
 );
 
 organizerSchema.pre('save', async function (next) {
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
+  if (!this.isModified('password')) {
+    next();
+  } else {
+    this.password = await bcrypt.hash(this.password, 12);
+    next();
+  }
 });
 
 export const OrganizerModel = model('Organizer', organizerSchema);
