@@ -169,10 +169,11 @@ export const ticketController = {
           _id: '$activity',
           activityInfo: { $first: '$activityInfo' },
           paymentInfo: { $first: '$paymentInfo' },
-          tickets: {
+          ticketList: {
             $push: {
               ticketStatus: '$ticketStatus',
-              ticketAssignedAt: '$ticketAssignedAt'
+              ticketAssignedAt: '$ticketAssignedAt',
+              ownerId: '$owner'
             }
           }
         }
@@ -190,20 +191,40 @@ export const ticketController = {
           activityExpired: { $lt: ['$activityInfo.activityEndTime', new Date()] },
           paymentId: '$paymentInfo._id',
           paymentBuyer: '$paymentInfo.buyer',
-          ticketTotal: { $size: '$tickets' },
+          ticketTotal: { $size: '$ticketList' },
+          ticketStatu: {
+            $size: {
+              $filter: {
+                input: '$ticketList',
+                as: 'ticket',
+                cond: {
+                  $and: [
+                    { $eq: ['$$ticket.ticketStatus', TicketStatus.Used] },
+                    { $eq: ['$$ticket.ownerId', userId] }
+                  ]
+                }
+              }
+            }
+          },
           ticketAssign: {
             $size: {
               $filter: {
-                input: '$tickets',
+                input: '$ticketList',
                 as: 'ticket',
-                cond: { $eq: ['$$ticket.ticketAssignedAt', null] }
+                cond: {
+                  $and: [
+                    { $eq: ['$$ticket.ticketStatus', TicketStatus.Unused] },
+                    { $eq: ['$$ticket.ownerId', userId] },
+                    { $eq: ['$$ticket.ticketAssignedAt', null] }
+                  ]
+                }
               }
             }
           },
           ticketUse: {
             $size: {
               $filter: {
-                input: '$tickets',
+                input: '$ticketList',
                 as: 'ticket',
                 cond: { $eq: ['$$ticket.ticketStatus', TicketStatus.Used] }
               }
@@ -227,7 +248,7 @@ export const ticketController = {
   },
 
   async getOwnerTicketInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const userId = (req as JwtPayloadRequest).user._id;
+    const USER_ID = (req as JwtPayloadRequest).user._id;
     let paymentId;
     try {
       paymentId = new Types.ObjectId(req.params.id);
@@ -241,21 +262,8 @@ export const ticketController = {
       return;
     }
 
-    // 查詢使用者購買的付款記錄
-    // const payments = await PaymentModel.find({
-    //   buyer: userId,
-    //   paymentStatus: PaymentStatus.Paid
-    // }).select('_id');
-    // 提取付款payment ID
-    // const paymentIds = payments.map((payment: any) => payment._id);
-
     const ticketData = await TicketModel.aggregate([
       { $match: { payment: paymentId } },
-      // {
-      //   $match: {
-      //     $or: [{ owner: userId }, { payment: paymentId }]
-      //   }
-      // },
       {
         $lookup: {
           from: 'payments',
@@ -298,11 +306,29 @@ export const ticketController = {
         $unwind: '$ownerInfo'
       },
       {
+        $lookup: {
+          from: 'organizerratings',
+          let: { activityId: '$activityId', userId: '$userId' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [{ $eq: ['$activity', '$$activityId'] }, { $eq: ['$userId', USER_ID] }]
+                }
+              }
+            },
+            { $project: { _id: 0, ticketId: 1 } }
+          ],
+          as: 'rating'
+        }
+      },
+      {
         $group: {
           _id: '$payment',
           activityInfo: { $first: '$activityInfo' },
           organizerInfo: { $first: '$organizerInfo' },
-          tickets: {
+          ratingList: { $first: '$rating' },
+          ticketList: {
             $push: {
               ticketId: '$_id',
               ticketStatus: '$ticketStatus',
@@ -325,28 +351,24 @@ export const ticketController = {
           activityImageUrl: { $first: '$activityInfo.activityImageUrls' },
           activityStartTime: '$activityInfo.activityStartTime',
           activityEndTime: '$activityInfo.activityEndTime',
+          activityNotice: '$activityInfo.activityNotice',
           activityExpired: { $lt: ['$activityInfo.activityEndTime', new Date()] },
           organizer: {
             _id: '$activityInfo._id',
             name: { $first: '$organizerInfo.name' },
             photo: { $first: '$organizerInfo.photo' },
-            rating: { $first: '$organizerInfo.rating' }
+            rating: { $first: '$organizerInfo.rating' },
+            mobile: { $first: '$organizerInfo.mobile' },
+            email: { $first: '$organizerInfo.email' }
           },
-          ticketTotal: { $size: '$tickets' },
-          ticketInspect: {
+          tickets: {
             $filter: {
-              input: '$tickets',
+              input: '$ticketList',
               as: 'ticket',
-              cond: {
-                $and: [
-                  { $eq: ['$$ticket.ownerId', userId] },
-                  { $eq: ['$$ticket.ticketStatus', TicketStatus.Unused] },
-                  { $ne: ['$$ticket.assignedAt', null] }
-                ]
-              }
+              cond: { $eq: ['$$ticket.ownerId', USER_ID] }
             }
           },
-          tickets: 1
+          ratingList: 1
         }
       }
     ]).exec();
