@@ -6,6 +6,34 @@ import { status404Codes, status400Codes, status409Codes } from '../types/enum/ap
 import { Types } from 'mongoose';
 
 export const likedListController = {
+  async getlikedListID(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const userID = (req as JwtPayloadRequest).user._id;
+    const checkUserId = await UserModel.findById(userID);
+
+    if (!checkUserId) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_USER],
+        status404Codes.NOT_FOUND_USER,
+        next
+      );
+      return;
+    }
+    const likedList = await ActivityModel.find({ likers: userID }, '_id');
+
+    if (!likedList) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_ACTIVITY],
+        status404Codes.NOT_FOUND_ACTIVITY,
+        next
+      );
+      return;
+    }
+
+    handleResponse(res, likedList, '取得成功');
+  },
+
   async getlikedListData(req: Request, res: Response, next: NextFunction): Promise<void> {
     const userID = (req as JwtPayloadRequest).user._id;
     const checkUserId = await UserModel.findById(userID);
@@ -23,7 +51,7 @@ export const likedListController = {
     }
     const likedList = await ActivityModel.find(
       { likers: userID },
-      'subtitle region city activityImageUrls activityStartTime activityEndTime bookedCapacity'
+      'subtitle region activityTags city activityImageUrls activityStartTime activityEndTime bookedCapacity'
     ).populate({
       path: 'organizer',
       select: 'name email photo rating socialMediaUrls'
