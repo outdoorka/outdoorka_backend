@@ -1,5 +1,5 @@
 import express from 'express';
-import { commonController, organizerController } from '../controllers';
+import { commonController, organizerController, activityOgController } from '../controllers';
 import { handleErrorAsync } from '../services/handleResponse';
 import { isOgAuth } from '../services/handleAuth';
 import { validateBody, validateImage } from '../middleware/validationMiddleware';
@@ -464,6 +464,42 @@ router.post(
     }
     }
   */
+);
+
+// 主揪角度-取得活動(票卷)跟團仔列表
+router.get(
+  '/activity/:id/participants',
+  isOgAuth,
+  /**
+    #swagger.tags = ['Organizer Activity']
+    #swagger.security = [{ "bearerAuth": [] }]
+    #swagger.description = '主揪取得活動(票卷)跟團仔列表'
+    #swagger.responses[200] = {
+      description: '活動(票卷)跟團仔列表',
+      schema: {
+        "data": [{
+          "_id": "XXXXXXXXXXXXXXXXXXXXXXXXX",
+          "organizer": "XXXXXXXXXXXXXXXXXXXXXXXXX",
+          "activity": "XXXXXXXXXXXXXXXXXXXXXXXXX",
+          "payment": "XXXXXXXXXXXXXXXXXXXXXXXXX",
+          "owner": {
+            "_id": "XXXXXXXXXXXXXXXXXXXXXXXXX",
+            "name": "username",
+            "mobile": "0988888888",
+            "photo": "https://thispersondoesnotexist.com"
+          },
+          "ticketStatus": 1,
+          "ticketCreatedAt": "2024-06-21T12:26:36.090Z",
+          "ticketAssignedAt": null,
+          "ticketNote": "",
+          "ticketNoteUpdatedAt": null,
+          "createdAt": "2024-06-21T12:26:36.091Z",
+          "updatedAt": "2024-06-21T12:26:36.091Z"
+        }]
+      }
+    }
+  */
+  handleErrorAsync(activityOgController.getActivityParticipant)
 );
 
 export default router;
