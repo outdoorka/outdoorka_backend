@@ -1834,6 +1834,112 @@
         ]
       }
     },
+    "/api/v1/organizer/activity/{id}/participants": {
+      "get": {
+        "tags": [
+          "Organizer Activity"
+        ],
+        "description": "主揪取得活動(票卷)跟團仔列表",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "活動(票卷)跟團仔列表",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "XXXXXXXXXXXXXXXXXXXXXXXXX"
+                      },
+                      "organizer": {
+                        "type": "string",
+                        "example": "XXXXXXXXXXXXXXXXXXXXXXXXX"
+                      },
+                      "activity": {
+                        "type": "string",
+                        "example": "XXXXXXXXXXXXXXXXXXXXXXXXX"
+                      },
+                      "payment": {
+                        "type": "string",
+                        "example": "XXXXXXXXXXXXXXXXXXXXXXXXX"
+                      },
+                      "owner": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "XXXXXXXXXXXXXXXXXXXXXXXXX"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "username"
+                          },
+                          "mobile": {
+                            "type": "string",
+                            "example": "0988888888"
+                          },
+                          "photo": {
+                            "type": "string",
+                            "example": "https://thispersondoesnotexist.com"
+                          }
+                        }
+                      },
+                      "ticketStatus": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "ticketCreatedAt": {
+                        "type": "string",
+                        "example": "2024-06-21T12:26:36.090Z"
+                      },
+                      "ticketAssignedAt": {},
+                      "ticketNote": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "ticketNoteUpdatedAt": {},
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2024-06-21T12:26:36.091Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2024-06-21T12:26:36.091Z"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/register": {
       "post": {
         "tags": [

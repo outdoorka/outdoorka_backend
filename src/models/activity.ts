@@ -32,8 +32,8 @@ const activitySchema = new Schema<IActivityModel>(
     city: { type: String, enum: Object.values(City), required: [true, 'city 未填寫'] },
     address: { type: String, required: [true, 'address 未填寫'], trim: true, maxlength: 100 },
     location: { type: String, required: [true, 'location 未填寫'], trim: true, maxlength: 100 },
-    activityDetail: { type: String, required: [true, 'activityDetail 未填寫'], maxlength: 1000 },
-    activityNotice: { type: String, required: [true, 'activityNotice 未填寫'], maxlength: 200 },
+    activityDetail: { type: String, required: [true, 'activityDetail 未填寫'], maxlength: 1600 },
+    activityNotice: { type: String, required: [true, 'activityNotice 未填寫'], maxlength: 1100 },
     activityTags: [
       { type: String, enum: Object.keys(ActivityTag), required: [true, 'activityTags 未填寫'] }
     ],

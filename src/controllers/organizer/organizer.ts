@@ -375,7 +375,7 @@ export const organizerController = {
       },
       { $sort: { activityStartTime: sortOrder } }
     ]);
-    console.log(activityData);
+    // console.log(activityData);
 
     if (!activityData || activityData.length === 0) {
       handleAppError(
