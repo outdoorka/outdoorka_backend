@@ -26,8 +26,8 @@ export const createActivitySchema = z.object({
     city: z.nativeEnum(City),
     address: z.string().min(1, '活動地址為 2~100 個字').max(100, '活動地址為 2~100 個字'),
     location: z.string().min(2, '集合地點為 2~100 個字').max(100, '集合地點 為 2~100 個字'),
-    activityDetail: z.string().min(2, '活動介紹為 2~600 個字').max(1000, '活動介紹為 2~600 個字'),
-    activityNotice: z.string().min(2, '注意事項為 2~200 個字').max(200, '注意事項為 2~200 個字'),
+    activityDetail: z.string().min(2, '活動介紹為 2~1500 個字').max(1500, '活動介紹為 2~1500 個字'),
+    activityNotice: z.string().min(2, '注意事項為 2~1000 個字').max(1000, '注意事項為 2~1000 個字'),
     activityTags: z
       .array(z.enum(activityEnumValue as [string, ...string[]]), {
         message: '須為字串陣列'

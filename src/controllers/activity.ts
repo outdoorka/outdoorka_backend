@@ -286,9 +286,12 @@ export const activityController = {
           bookedCapacity: 1,
           totalCapacity: 1,
           activityTags: 1,
-          organizerRating: '$organizer.rating',
-          organzierName: '$organizer.username',
-          organizerId: '$organizer._id'
+          organizer: {
+            _id: '$organizer._id',
+            name: '$organizer.name',
+            photo: '$organizer.photo',
+            rating: '$organizer.rating'
+          }
         }
       },
       {
