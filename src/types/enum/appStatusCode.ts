@@ -61,6 +61,7 @@ export enum status404Codes {
   'NOT_FOUND_USER' = '找不到使用者' as any,
   'NOT_FOUND_ACTIVITY' = '找不到活動' as any,
   'NOT_FOUND_TICKET' = '找不到票券' as any,
+  'NOT_FOUND_SUSPENSE_TICKET' = '找不到待處理的票券' as any,
   'NOT_FOUND_PAYMENT' = '找不到此筆訂單' as any,
   'NOT_FOUND_LIKE_LIST' = '用戶未收藏该活動' as any
 }
