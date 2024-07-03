@@ -91,6 +91,40 @@ router.get(
     }
   */
 );
+
+// 跟團仔取得收藏活動清單
+router.get(
+  '/showID',
+  isAuth,
+  handleErrorAsync(likedListController.getlikedListID)
+  /**
+   * #swagger.tags = ['Like-List']
+   * #swagger.description = '跟團仔取得收藏活動清單_只顯示活動ID '
+   * #swagger.security = [{ "bearerAuth": [] }]
+   */
+  /*
+
+  #swagger.responses[200] = {
+      description: '跟團仔取得收藏活動清單',
+      schema: {
+              "data": [
+                {
+                  "_id": "664cb717ae8e74de4ae74875"
+                }
+              ],
+              "message": "取得成功"
+            }
+    }
+
+  #swagger.responses[20 0] = {
+      description: '沒有收藏活動',
+      schema: {
+        	"data":[],
+        "message": "取得成功"
+      }
+    }
+  */
+);
 // 跟團仔把活動加入收藏
 router.post(
   '/:activityID',
