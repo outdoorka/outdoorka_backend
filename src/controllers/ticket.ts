@@ -230,7 +230,7 @@ export const ticketController = {
                 }
               }
             }
-          },
+          }
         }
       }
     ]).exec();
@@ -256,38 +256,41 @@ export const ticketController = {
       buyer: userId,
       paymentStatus: PaymentStatus.Paid
     }).select('_id');
-
     const paymentIds = payments.map((payment: any) => payment._id);
 
     // 查詢票券資料
     const tickets = await TicketModel.find({
       $or: [{ owner: userId }, { payment: { $in: paymentIds } }]
-    }).select('_id ticketStatus');
+    }).select('_id ticketStatus payment');
 
     // 整理票券資料
-    const ticketData = tickets.map((payment: {_id:string}) => {
-      const relevantTickets = tickets.filter((ticket:any) => ticket.payment == payment._id);
-      const unusedCount = relevantTickets.reduce((count:number, ticket: any) => {
-        if (ticket.ticketStatus === TicketStatus.Unused) return count + 1;
-        return count;
-      }, 0);
-      return {
-        paymentId: payment._id,
-        tickets: relevantTickets.map((ticket:any) => ({
-          ticketId: ticket._id,
-          ticketStatus: ticket.ticketStatus,
-        })),
-        unused: unusedCount
-      };
-    });
+    const ticketData = tickets.reduce((newTickets: any, ticketItem: any) => {
+      const existingPayment = newTickets.find(
+        (p: any) => p.paymentId.toString() === ticketItem.payment.toString()
+      );
+      const unusedNum = ticketItem.ticketStatus === TicketStatus.Unused ? 1 : 0;
+      if (existingPayment) {
+        existingPayment.tickets.push({
+          ticketId: ticketItem._id,
+          ticketStatus: ticketItem.ticketStatus
+        });
+        existingPayment.unused += unusedNum;
+      } else {
+        newTickets.push({
+          paymentId: ticketItem.payment,
+          tickets: [
+            {
+              ticketId: ticketItem._id,
+              ticketStatus: ticketItem.ticketStatus
+            }
+          ],
+          unused: unusedNum
+        });
+      }
+      return newTickets;
+    }, []);
 
-    // 加總有待處理的活動票眷
-    const suspenseTotal = ticketData.reduce((total:number, payment: any) => {
-      if (payment.unused > 0) return total + 1;
-      return total
-    }, 0);
-
-    if (suspenseTotal === 0) {
+    if (ticketData.lenghth === 0) {
       handleAppError(
         404,
         status404Codes[status404Codes.NOT_FOUND_SUSPENSE_TICKET],
@@ -297,14 +300,8 @@ export const ticketController = {
       return;
     }
 
-    const result = {
-      list: ticketData,
-      total: suspenseTotal
-    };
-
-    handleResponse(res, result, '取得成功');
+    handleResponse(res, ticketData, '取得成功');
   },
-
 
   async getOwnerTicketInfo(req: Request, res: Response, next: NextFunction): Promise<void> {
     const USER_ID = (req as JwtPayloadRequest).user._id;
@@ -506,7 +503,6 @@ export const ticketController = {
         paymentStatus: PaymentStatus.Paid,
         _id: ticketData[0].payment
       }).select('_id');
-      console.log('checkPayment', checkPayment);
       if (!checkPayment) {
         handleAppError(
           403,
