@@ -182,6 +182,7 @@ export const ticketController = {
         $project: {
           _id: 0,
           title: '$activityInfo.title',
+          subtitle: '$activityInfo.subtitle',
           bookedCapacity: '$activityInfo.bookedCapacity',
           region: '$activityInfo.region',
           city: '$activityInfo.city',
@@ -192,20 +193,6 @@ export const ticketController = {
           paymentId: '$paymentInfo._id',
           paymentBuyer: '$paymentInfo.buyer',
           ticketTotal: { $size: '$ticketList' },
-          ticketStatu: {
-            $size: {
-              $filter: {
-                input: '$ticketList',
-                as: 'ticket',
-                cond: {
-                  $and: [
-                    { $eq: ['$$ticket.ticketStatus', TicketStatus.Used] },
-                    { $eq: ['$$ticket.ownerId', userId] }
-                  ]
-                }
-              }
-            }
-          },
           ticketAssign: {
             $size: {
               $filter: {
@@ -229,6 +216,20 @@ export const ticketController = {
                 cond: { $eq: ['$$ticket.ticketStatus', TicketStatus.Used] }
               }
             }
+          },
+          ticketStatu: {
+            $size: {
+              $filter: {
+                input: '$ticketList',
+                as: 'ticket',
+                cond: {
+                  $and: [
+                    { $eq: ['$$ticket.ticketStatus', TicketStatus.Used] },
+                    { $eq: ['$$ticket.ownerId', userId] }
+                  ]
+                }
+              }
+            }
           }
         }
       }
@@ -239,6 +240,61 @@ export const ticketController = {
         404,
         status404Codes[status404Codes.NOT_FOUND_TICKET],
         status404Codes.NOT_FOUND_TICKET,
+        next
+      );
+      return;
+    }
+
+    handleResponse(res, ticketData, '取得成功');
+  },
+
+  async getUnusedTicketCount(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const userId = (req as JwtPayloadRequest).user._id;
+
+    // 查詢使用者購買的付款記錄
+    const payments = await PaymentModel.find({
+      buyer: userId,
+      paymentStatus: PaymentStatus.Paid
+    }).select('_id');
+    const paymentIds = payments.map((payment: any) => payment._id);
+
+    // 查詢票券資料
+    const tickets = await TicketModel.find({
+      $or: [{ owner: userId }, { payment: { $in: paymentIds } }]
+    }).select('_id ticketStatus payment');
+
+    // 整理票券資料
+    const ticketData = tickets.reduce((newTickets: any, ticketItem: any) => {
+      const existingPayment = newTickets.find(
+        (p: any) => p.paymentId.toString() === ticketItem.payment.toString()
+      );
+      const unusedNum = ticketItem.ticketStatus === TicketStatus.Unused ? 1 : 0;
+      if (existingPayment) {
+        existingPayment.tickets.push({
+          ticketId: ticketItem._id,
+          ticketStatus: ticketItem.ticketStatus
+        });
+        existingPayment.unused += unusedNum;
+      } else {
+        newTickets.push({
+          paymentId: ticketItem.payment,
+          tickets: [
+            {
+              ticketId: ticketItem._id,
+              ticketStatus: ticketItem.ticketStatus
+            }
+          ],
+          unused: unusedNum
+        });
+      }
+      return newTickets;
+    }, []);
+
+    if (ticketData.lenghth === 0) {
+      handleAppError(
+        404,
+        status404Codes[status404Codes.NOT_FOUND_SUSPENSE_TICKET],
+        status404Codes.NOT_FOUND_SUSPENSE_TICKET,
         next
       );
       return;
@@ -368,7 +424,13 @@ export const ticketController = {
               cond: { $eq: ['$$ticket.ownerId', USER_ID] }
             }
           },
-          ratingList: 1
+          ratingList: {
+            $map: {
+              input: '$ratingList',
+              as: 'rating',
+              in: '$$rating.ticketId'
+            }
+          }
         }
       }
     ]).exec();
@@ -441,7 +503,6 @@ export const ticketController = {
         paymentStatus: PaymentStatus.Paid,
         _id: ticketData[0].payment
       }).select('_id');
-      console.log('checkPayment', checkPayment);
       if (!checkPayment) {
         handleAppError(
           403,

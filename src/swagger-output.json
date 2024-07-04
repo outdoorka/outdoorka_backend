@@ -3428,7 +3428,7 @@
         "tags": [
           "Ticket"
         ],
-        "description": "用戶取得活動票券列表",
+        "description": "跟團仔取得活動票券列表",
         "parameters": [
           {
             "name": "authorization",
@@ -3438,7 +3438,7 @@
         ],
         "responses": {
           "200": {
-            "description": "用戶取得活動票券列表",
+            "description": "跟團仔取得活動票券列表，ticketTotal：此訂單票卷數量，ticketAssign：待分票票卷數量，包含自己的，ticketUse：已使用票卷數量，ticketStatu：自己的票卷使用狀況，0未使用>0已使用",
             "schema": {
               "type": "object",
               "properties": {
@@ -3447,11 +3447,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "_id": {
-                        "type": "string",
-                        "example": "664cb717ae8e74de4ae74872"
-                      },
                       "title": {
+                        "type": "string",
+                        "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                      },
+                      "subtitle": {
                         "type": "string",
                         "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
                       },
@@ -3473,11 +3473,11 @@
                       },
                       "activityStartTime": {
                         "type": "string",
-                        "example": "2024-06-20T00:00:00.537Z"
+                        "example": "2024-07-20T00:00:00.537Z"
                       },
                       "activityEndTime": {
                         "type": "string",
-                        "example": "2024-07-02T10:00:00.000Z"
+                        "example": "2024-08-02T10:00:00.000Z"
                       },
                       "activityExpired": {
                         "type": "boolean",
@@ -3501,7 +3501,11 @@
                       },
                       "ticketUse": {
                         "type": "number",
-                        "example": 0
+                        "example": 1
+                      },
+                      "ticketStatu": {
+                        "type": "number",
+                        "example": 1
                       }
                     }
                   }
@@ -3524,6 +3528,90 @@
                 "errorCode": {
                   "type": "string",
                   "example": "NOT_FOUND_TICKET"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/tickets/suspense": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "跟團仔取得待處理(未使用)活動票券數量",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "跟團仔取得待處理(未使用)活動票券數量",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "paymentId": {
+                        "type": "string",
+                        "example": "666af51583090862d4bc0a6b"
+                      },
+                      "tickets": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "ticketId": {
+                              "type": "string",
+                              "example": "666c57ab83090862d4bc0a9f"
+                            },
+                            "ticketStatus": {
+                              "type": "number",
+                              "example": 1
+                            }
+                          }
+                        }
+                      },
+                      "unused": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "找不到待處理的票券",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": {
+                  "type": "string",
+                  "example": "找不到待處理的票券"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "example": "NOT_FOUND_SUSPENSE_TICKET"
                 }
               },
               "xml": {
@@ -3571,55 +3659,23 @@
                     "properties": {
                       "_id": {
                         "type": "string",
-                        "example": "666af51583090862d4bc0a6b"
-                      },
-                      "tickets": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "ticketId": {
-                              "type": "string",
-                              "example": "66802440950deacc8d940396"
-                            },
-                            "ticketStatus": {
-                              "type": "number",
-                              "example": 0
-                            },
-                            "ticketNote": {
-                              "type": "string",
-                              "example": "測試資料2-2-2"
-                            },
-                            "ownerId": {
-                              "type": "string",
-                              "example": "6665ae57bdc4011bb2345c73"
-                            },
-                            "ownerName": {
-                              "type": "string",
-                              "example": "ingrid55"
-                            },
-                            "assignedAt": {
-                              "type": "string",
-                              "example": "2024-06-30T06:15:28.342Z"
-                            }
-                          }
-                        }
+                        "example": "666ae9e583090862d4bc0a49"
                       },
                       "title": {
                         "type": "string",
-                        "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                        "example": "娛樂，悠遊玩水趣"
                       },
                       "subtitle": {
                         "type": "string",
-                        "example": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點"
+                        "example": "池上大坡池水上娛樂，悠遊玩水趣"
                       },
                       "region": {
                         "type": "string",
-                        "example": "北部"
+                        "example": "南部"
                       },
                       "city": {
                         "type": "string",
-                        "example": "新北市"
+                        "example": "臺東縣"
                       },
                       "price": {
                         "type": "number",
@@ -3627,15 +3683,19 @@
                       },
                       "activityImageUrl": {
                         "type": "string",
-                        "example": "https://media.istockphoto.com/id/1367438696/photo/cute-redhead-boy-and-grandfather-fishing-in-the-river-in-quebec.jpg?s=612x612&w=0&k=20&c=34JDzuhY4Nlt5sHonFWh8ZAiUdHyybCCv44BhNtzvEw="
+                        "example": "https://media.istockphoto.com/id/1071632168/photo/happy-family-kayak-walking-sunset-sea-island.webp?b=1&s=170667a&w=0&k=20&c=oCziJF4r4oEPkDZS64itjf5Ymj08YMs44WVjWWaoRco="
                       },
                       "activityStartTime": {
                         "type": "string",
-                        "example": "2024-06-20T00:00:00.537Z"
+                        "example": "2024-07-27T00:00:00.537Z"
                       },
                       "activityEndTime": {
                         "type": "string",
-                        "example": "2024-07-02T10:00:00.000Z"
+                        "example": "2024-08-02T10:00:00.000Z"
+                      },
+                      "activityNotice": {
+                        "type": "string",
+                        "example": "activityNotice 最多200個字"
                       },
                       "activityExpired": {
                         "type": "boolean",
@@ -3646,34 +3706,38 @@
                         "properties": {
                           "_id": {
                             "type": "string",
-                            "example": "664cb717ae8e74de4ae74872"
+                            "example": "664cb717ae8e74de4ae74871"
                           },
                           "name": {
                             "type": "string",
-                            "example": "山旅行"
+                            "example": "拼圖戶外生活"
                           },
                           "photo": {
                             "type": "string",
-                            "example": "https://static.accupass.com/org/2304041722089876493900.jpg"
+                            "example": "https://static.accupass.com/org/2005260527172844358540.jpg"
                           },
                           "rating": {
                             "type": "number",
-                            "example": 4
+                            "example": 5
+                          },
+                          "mobile": {
+                            "type": "string",
+                            "example": "0911000001"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "email1@gmail.com"
                           }
                         }
                       },
-                      "ticketTotal": {
-                        "type": "number",
-                        "example": 2
-                      },
-                      "ticketInspect": {
+                      "tickets": {
                         "type": "array",
                         "items": {
                           "type": "object",
                           "properties": {
                             "ticketId": {
                               "type": "string",
-                              "example": "666c57ab83090862d4bc0a9f"
+                              "example": "666af54f83090862d4bc0a72"
                             },
                             "ticketStatus": {
                               "type": "number",
@@ -3681,7 +3745,7 @@
                             },
                             "ticketNote": {
                               "type": "string",
-                              "example": "測試資料2-10000000"
+                              "example": "測試資料1-3-1"
                             },
                             "ownerId": {
                               "type": "string",
@@ -3691,11 +3755,18 @@
                               "type": "string",
                               "example": "ingriD1234"
                             },
-                            "assignedAt": {
-                              "type": "string",
-                              "example": "2024-06-09T13:21:03.627Z"
-                            }
+                            "assignedAt": {}
                           }
+                        }
+                      },
+                      "ratingList": {
+                        "type": "array",
+                        "example": [
+                          "666aeace83090862d4bc0a4d",
+                          "666c57ab83090862d4bc0a9f"
+                        ],
+                        "items": {
+                          "type": "string"
                         }
                       }
                     }
