@@ -49,13 +49,52 @@ export const likedListController = {
       );
       return;
     }
-    const likedList = await ActivityModel.find(
-      { likers: userID },
-      'subtitle region activityTags city activityImageUrls activityStartTime activityEndTime bookedCapacity'
-    ).populate({
-      path: 'organizer',
-      select: 'name email photo rating socialMediaUrls'
-    });
+    // const likedList = await ActivityModel.find(
+    //   { likers: userID },
+    //   'title subtitle region activityTags city activityImageUrls activityStartTime activityEndTime bookedCapacity'
+    // ).populate({
+    //   path: 'organizer',
+    //   select: 'name email photo rating socialMediaUrls'
+    // });
+
+    const likedList = await ActivityModel.aggregate([
+      { $match: { likers: userID } },
+      {
+        $lookup: {
+          from: 'organizers', // 關聯的集合名
+          localField: 'organizer', // 原集合中的欄位
+          foreignField: '_id', // 關聯的 _id
+          as: 'organizer' // 關聯查询结果的输出
+        }
+      },
+      {
+        $addFields: {
+          organizer: { $arrayElemAt: ['$organizer', 0] }
+        }
+      },
+      {
+        $project: {
+          title: 1,
+          subtitle: 1,
+          activityTags: 1,
+          region: 1,
+          city: 1,
+          activityImageUrls: 1,
+          activityStartTime: 1,
+          activityEndTime: 1,
+          likeCount: { $size: '$likers' },
+          bookedCapacity: 1,
+          organizer: {
+            _id: '$organizer._id',
+            name: '$organizer.name',
+            email: '$organizer.email',
+            photo: '$organizer.photo',
+            rating: '$organizer.rating',
+            socialMediaUrls: '$organizer.socialMediaUrls'
+          }
+        }
+      }
+    ]);
 
     if (!likedList) {
       handleAppError(

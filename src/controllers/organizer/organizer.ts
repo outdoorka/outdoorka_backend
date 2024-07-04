@@ -411,7 +411,7 @@ export const organizerController = {
     })
       .populate({
         path: 'organizer', // 對的 organizer 欄位
-        select: 'name nickName'
+        select: 'name email photo rating socialMediaUrls'
       })
       .lean();
 
@@ -425,70 +425,6 @@ export const organizerController = {
       return;
     }
 
-    handleResponse(res, activityData, '取得成功');
-  },
-  // 主揪評論跟團仔
-  async createRating(req: Request, res: Response, next: NextFunction) {
-    const ObjectId = Types.ObjectId;
-    const ticketId = req.params.id;
-    const ogId = (req as JwtPayloadRequest).user._id;
-    const { rating, comment } = req.body;
-
-    if (!ObjectId.isValid(ticketId)) {
-      handleAppError(
-        400,
-        status400Codes[status400Codes.INVALID_REQUEST],
-        status400Codes.INVALID_REQUEST,
-        next
-      );
-    }
-    const ticketData = await TicketModel.findOne({ _id: ticketId, organizer: ogId });
-    if (!ticketData || !ticketData.activity) {
-      handleAppError(
-        404,
-        status404Codes[status404Codes.NOT_FOUND_TICKET],
-        status404Codes.NOT_FOUND_TICKET,
-        next
-      );
-      return;
-    }
-    if (ticketData.ticketStatus !== 1) {
-      handleAppError(
-        400,
-        status400Codes[status400Codes.TICKET_UNUSED],
-        status400Codes.TICKET_UNUSED,
-        next
-      );
-      return;
-    }
-    const checkRatingData = await UserRatingModel.findOne({ ticketId });
-    if (checkRatingData) {
-      handleAppError(
-        409,
-        status409Codes[status409Codes.ALREADY_EXISTS],
-        status409Codes.ALREADY_EXISTS,
-        next
-      );
-      return;
-    }
-    try {
-      const createRating = await UserRatingModel.create({
-        ticket: ticketId,
-        rating,
-        comment,
-        organizerId: ogId,
-        activityId: ticketData.activity,
-        ticketId,
-        userId: ticketData.owner
-      });
-      handleResponse(res, createRating, '建立成功');
-    } catch (error) {
-      handleAppError(
-        500,
-        status500Codes[status500Codes.CREATE_FAILED],
-        status500Codes.CREATE_FAILED,
-        next
-      );
-    }
+    handleResponse(res, { ...activityData, likeCount: activityData.likers.length }, '取得成功');
   }
 };

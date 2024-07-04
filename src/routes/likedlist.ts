@@ -32,26 +32,6 @@ router.get(
               ],
               "likedList": [
                 {
-                  "_id": "664cb717ae8e74de4ae74872",
-                  "organizer": {
-                    "_id": "664ca866ae10d7e7604c4fe7",
-                    "email": "email2@gmail.com",
-                    "photo": "https://static.accupass.com/org/2304041722089876493900.jpg",
-                    "rating": 4
-                  },
-                  "subtitle": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點",
-                  "region": "北部",
-                  "city": "新北市",
-                  "activityImageUrls": [
-                        "XXX",
-                        "XXX",
-                        "XXX"
-                  ],
-                  "activityStartTime": "2024-07-20T00:00:00.537Z",
-                  "activityEndTime": "2024-07-21T10:00:00.000Z",
-                  "bookedCapacity": 2
-                },
-                {
                   "_id": "664cb717ae8e74de4ae74875",
                   "organizer": {
                     "_id": "664caee7ae10d7e7604c4feb",
@@ -59,7 +39,9 @@ router.get(
                     "photo": "https://static.accupass.com/org/2005260527172844358540.jpg",
                     "rating": 5
                   },
+                  "title": "嘉明湖 天使的眼淚",
                   "subtitle": "嘉明湖 天使的眼淚",
+                   "activityTags": "Camping",
                   "region": "南部",
                   "city": "臺東縣",
                   "activityImageUrls": [
@@ -69,7 +51,8 @@ router.get(
                   ],
                   "activityStartTime": "2024-07-07T00:00:00.537Z",
                   "activityEndTime": "2024-07-07T10:00:00.000Z",
-                  "bookedCapacity": 8
+                  "bookedCapacity": 8,
+                  "likeCount": 1
                 }
               ]
             },

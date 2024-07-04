@@ -2706,6 +2706,10 @@
                           }
                         }
                       },
+                      "title": {
+                        "type": "string",
+                        "example": "大屯溪古道上小觀音山｜拼圖戶外生活 X 山旅戶外"
+                      },
                       "subtitle": {
                         "type": "string",
                         "example": "大屯溪古道上小觀音山｜拼圖戶外生活 X 山旅戶外"
@@ -2737,14 +2741,17 @@
                         "type": "string",
                         "example": "1970-01-01T00:00:00.000Z"
                       },
-                      "likers": {
-                        "type": "array",
-                        "example": [],
-                        "items": {}
+                      "likeCount": {
+                        "type": "number",
+                        "example": 0
                       },
                       "bookedCapacity": {
                         "type": "number",
                         "example": 12
+                      },
+                      "popularity": {
+                        "type": "number",
+                        "example": 0
                       }
                     }
                   }
@@ -3178,6 +3185,10 @@
                     "isLiked": {
                       "type": "boolean",
                       "example": true
+                    },
+                    "likeCount": {
+                      "type": "number",
+                      "example": 0
                     }
                   }
                 },
@@ -4114,9 +4125,17 @@
                               }
                             }
                           },
+                          "title": {
+                            "type": "string",
+                            "example": "嘉明湖 天使的眼淚"
+                          },
                           "subtitle": {
                             "type": "string",
                             "example": "嘉明湖 天使的眼淚"
+                          },
+                          "activityTags": {
+                            "type": "string",
+                            "example": "Camping"
                           },
                           "region": {
                             "type": "string",
@@ -4148,6 +4167,10 @@
                           "bookedCapacity": {
                             "type": "number",
                             "example": 8
+                          },
+                          "likeCount": {
+                            "type": "number",
+                            "example": 1
                           }
                         }
                       }
