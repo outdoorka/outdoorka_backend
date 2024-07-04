@@ -152,7 +152,7 @@ export const activityController = {
     }
     let isLiked = true;
 
-    const index = activity.likers.findIndex((element) => element.toString() === _id);
+    const index = activity.likers.findIndex((element) => element.toString() === _id.toString());
     if (index === -1) {
       isLiked = false;
     }
