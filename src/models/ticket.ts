@@ -25,9 +25,9 @@ const ticketSchema = new Schema<ITicketModel>(
     },
     ticketStatus: { type: Number, required: [true, 'ticketStatus 未填寫'] },
     ticketCreatedAt: { type: Date, required: true },
-    ticketAssignedAt: { type: Date, required: true },
+    ticketAssignedAt: { type: Date, required: false },
     ticketNote: { type: String, maxlength: 200 },
-    ticketNoteUpdatedAt: { type: Date, required: true }
+    ticketNoteUpdatedAt: { type: Date, required: false }
   },
   { versionKey: false, timestamps: true }
 );

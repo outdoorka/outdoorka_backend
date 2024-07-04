@@ -22,7 +22,10 @@
     "noImplicitOverride": true, // 使用 @override 時，必須要有父類別的方法
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "pretty": true
+    "pretty": true,
+    "paths": {
+      "ecpay_aio_nodejs": ["src/types/ecpayAioNodejs"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist", "src/__tests__"]

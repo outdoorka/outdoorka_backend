@@ -1,12 +1,17 @@
-import { Schema, model } from 'mongoose';
+import { type Model, Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
 import type { IUserModel } from '../types/dto/user';
 import { Gender } from '../types/enum/user';
+import logtail from '../utils/logtail';
 
 const alphanumericRegex = /^[a-zA-Z0-9]+$/;
 
-const userSchema = new Schema<IUserModel>(
+interface IExUserModel extends Model<IUserModel> {
+  findOrCreate: (doc: any) => any;
+}
+
+const userSchema = new Schema<IUserModel, IExUserModel>(
   {
     email: {
       type: String,
@@ -16,6 +21,11 @@ const userSchema = new Schema<IUserModel>(
       unique: true,
       lowercase: true,
       trim: true
+    },
+    providerId: {
+      type: String,
+      unique: true,
+      sparse: true
     },
     password: {
       type: String,
@@ -41,7 +51,7 @@ const userSchema = new Schema<IUserModel>(
     },
     mobile: {
       type: String,
-      required: [true, 'Mobile is required'],
+      // required: [true, 'Mobile is required'],
       trim: true
     },
     photo: {
@@ -76,4 +86,29 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-export const UserModel = model('User', userSchema);
+userSchema.static('findOrCreate', async function findOrCreate(doc) {
+  let result: any = await this.findOne({ providerId: doc.providerId });
+  if (result) {
+    return result;
+  }
+
+  try {
+    // 新增會員資料
+    result = await this.create({
+      providerId: doc.providerId,
+      email: doc.email,
+      password: 'ProviderConfirm9',
+      name: doc.name,
+      mobile: '',
+      photo: doc.photo,
+      gender: Gender.Other,
+      birthday: ''
+    });
+    return result;
+  } catch (error: any) {
+    logtail.error(`MongoError Creating User - ${error?.message ?? ''} : `, error);
+    return null;
+  }
+});
+
+export const UserModel = model<IUserModel, IExUserModel>('User', userSchema);

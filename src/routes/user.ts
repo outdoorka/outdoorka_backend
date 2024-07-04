@@ -11,32 +11,32 @@ import {
 
 const router = express.Router();
 
-router.get(
-  '/all',
-  isAuth,
-  /**
-   * #swagger.tags = ['User']
-   * #swagger.security = [{ "bearerAuth": [] }]
-   * #swagger.description = '取得所有User資料'
-   */
-  /* #swagger.responses[200] = {
-      description: '取得所有User資料',
-      schema: {
-        "data": [{
-          "_id": "xxxxxxxxxxxxxxxxxx",
-          "name": "XXX",
-          "photo": "https://thispersondoesnotexist.com/",
-          "email": "xxxxxx@gmail.com",
-          "isActive": true,
-          "mobile": "0911000000",
-          "gender": "male",
-          "birthday": "1990-01-01"
-        }]
-      }
-    }
-  */
-  handleErrorAsync(userController.getUserList)
-);
+// router.get(
+//   '/all',
+//   isAuth,
+//   /**
+//    * #swagger.tags = ['User']
+//    * #swagger.security = [{ "bearerAuth": [] }]
+//    * #swagger.description = '取得所有User資料'
+//    */
+//   /* #swagger.responses[200] = {
+//       description: '取得所有User資料',
+//       schema: {
+//         "data": [{
+//           "_id": "xxxxxxxxxxxxxxxxxx",
+//           "name": "XXX",
+//           "photo": "https://thispersondoesnotexist.com/",
+//           "email": "xxxxxx@gmail.com",
+//           "isActive": true,
+//           "mobile": "0911000000",
+//           "gender": "male",
+//           "birthday": "1990-01-01"
+//         }]
+//       }
+//     }
+//   */
+//   handleErrorAsync(userController.getUserList)
+// );
 router.get(
   '/',
   isAuth,
@@ -64,23 +64,23 @@ router.get(
   */
   handleErrorAsync(userController.getUser)
 );
-router.delete(
-  '/',
-  isAuth,
-  /**
-   * #swagger.tags = ['User']
-   * #swagger.security = [{ "bearerAuth": [] }]
-   * #swagger.description = 'Delete User'
-   */
-  /* #swagger.responses[200] = {
-      description: 'User deleted',
-      schema: {
-        "data": []
-      }
-    }
-  */
-  handleErrorAsync(userController.deleteUser)
-);
+// router.delete(
+//   '/',
+//   isAuth,
+//   /**
+//    * #swagger.tags = ['User']
+//    * #swagger.security = [{ "bearerAuth": [] }]
+//    * #swagger.description = 'Delete User'
+//    */
+//   /* #swagger.responses[200] = {
+//       description: 'User deleted',
+//       schema: {
+//         "data": []
+//       }
+//     }
+//   */
+//   handleErrorAsync(userController.deleteUser)
+// );
 router.patch(
   '/',
   isAuth,

@@ -1,4 +1,6 @@
+import { config } from '../config';
 import express from 'express';
+import passport from 'passport';
 import { authController, organizerAuthController } from '../controllers';
 import { validateBody } from '../middleware/validationMiddleware';
 import { ogLoginSchema, ogRegistrationSchema } from '../validate/organizerSchemas';
@@ -6,8 +8,8 @@ import {
   authLoginSchema,
   authRefreshTokenSchema,
   authRegistrationSchema,
-  authForgetPassowrdScheme,
-  authResetPassowrdScheme
+  authForgetPasswordScheme,
+  authResetPasswordScheme
 } from '../validate/authSchemas';
 import { handleErrorAsync } from '../services/handleResponse';
 
@@ -123,6 +125,29 @@ router.post(
   */
   handleErrorAsync(authController.authRefreshAccessToken)
 );
+// 會員 Google OAuth 2.0 登入
+router.get(
+  '/auth/google',
+  /**
+   * #swagger.tags = ['User Auth']
+   * #swagger.description = '會員第三方 Google 登入'
+   */
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+// 會員 Google OAuth 2.0 callback
+router.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    session: false,
+    failureRedirect: `${config.FRONTEND_URL}/login?error=google-auth-fail`,
+    failureMessage: true
+  }),
+  /**
+   * #swagger.tags = ['User Auth']
+   * #swagger.description = '會員第三方 Google OAuth 2.0 callback'
+   */
+  handleErrorAsync(authController.authGoogleCallback)
+);
 
 // 主揪註冊
 router.post(
@@ -211,16 +236,68 @@ router.post(
   */
   handleErrorAsync(organizerAuthController.authLogin)
 );
+
+// 主揪忘記密碼
+router.post(
+  '/organizer/forget',
+  validateBody(authForgetPasswordScheme),
+  /**
+    #swagger.tags = ['Organizer Auth']
+    #swagger.description = '主揪忘記密碼'
+    #swagger.parameters['post'] = {
+      in: 'body',
+      description: '主揪忘記密碼',
+      required: true,
+      schema: {
+        $email: 'email',
+      }
+    }
+    #swagger.responses[200] = {
+      description: '忘記密碼成功回應',
+      schema: {
+        "message": "發送寄件成功"
+      }
+    }
+  */
+  handleErrorAsync(organizerAuthController.authForgetPassword)
+);
+
+// 主揪重置密碼
+router.post(
+  '/organizer/forget/confirm',
+  validateBody(authResetPasswordScheme),
+  /**
+    #swagger.tags = ['Organizer Auth']
+    #swagger.description = '主揪重置密碼'
+    #swagger.parameters['post'] = {
+      in: 'body',
+      description: '主揪重置密碼',
+      required: true,
+      schema: {
+        $token: 'xxxxxxxxxxx',
+        $password: 'xxxxxxxxx'
+      }
+    }
+    #swagger.responses[200] = {
+      description: '主揪重置密碼成功回應',
+      schema: {
+        "message": "密碼重置成功"
+      }
+    }
+  */
+  handleErrorAsync(organizerAuthController.authResetPassword)
+);
+
 // 忘記密碼
 router.post(
   '/forget',
-  validateBody(authForgetPassowrdScheme),
+  validateBody(authForgetPasswordScheme),
   /**
     #swagger.tags = ['User Auth']
-    #swagger.description = '忘記密碼'
+    #swagger.description = '會員忘記密碼'
     #swagger.parameters['post'] = {
       in: 'body',
-      description: '忘記密碼',
+      description: '會員忘記密碼',
       required: true,
       schema: {
         $email: 'email',
@@ -238,13 +315,13 @@ router.post(
 // 重置密碼
 router.post(
   '/forget/confirm',
-  validateBody(authResetPassowrdScheme),
+  validateBody(authResetPasswordScheme),
   /**
     #swagger.tags = ['User Auth']
-    #swagger.description = '更換新密碼'
+    #swagger.description = '會員更換新密碼'
     #swagger.parameters['post'] = {
       in: 'body',
-      description: '更換新密碼',
+      description: '會員更換新密碼',
       required: true,
       schema: {
         $resetToken: 'xxxxxxxxxxx',

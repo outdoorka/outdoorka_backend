@@ -203,7 +203,7 @@ router.get(
             "bookedCapacity": 2,
             "likeCount": 2,
             "organizerRating": 5,
-            "organzierName": "拼圖戶外生活",
+            "organizerName": "拼圖戶外生活",
             "organizerId": "664caee7ae10d7e7604c4feb"
         }
     ],

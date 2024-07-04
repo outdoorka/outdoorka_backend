@@ -46,7 +46,7 @@ export const authRefreshTokenSchema = z.object({
   })
 });
 
-export const authForgetPassowrdScheme = z.object({
+export const authForgetPasswordScheme = z.object({
   body: object({
     email: z
       .string({
@@ -56,7 +56,7 @@ export const authForgetPassowrdScheme = z.object({
   })
 });
 
-export const authResetPassowrdScheme = z.object({
+export const authResetPasswordScheme = z.object({
   body: z.object({
     token: z.string(),
     password: z.string().regex(Password, {
@@ -68,5 +68,5 @@ export const authResetPassowrdScheme = z.object({
 export type AuthRegisterInput = TypeOf<typeof authRegistrationSchema>['body'];
 export type AuthLoginInput = TypeOf<typeof authLoginSchema>['body'];
 export type AuthRefreshTokenInput = TypeOf<typeof authRefreshTokenSchema>['body'];
-export type AuthForgetPasswordInput = TypeOf<typeof authForgetPassowrdScheme>['body'];
-export type AuthResetPasswordInput = TypeOf<typeof authResetPassowrdScheme>['body'];
+export type AuthForgetPasswordInput = TypeOf<typeof authForgetPasswordScheme>['body'];
+export type AuthResetPasswordInput = TypeOf<typeof authResetPasswordScheme>['body'];

@@ -10,14 +10,13 @@ class Config {
   public NODE_ENV: string;
   public LOG_TOKEN: string;
   public APP_URL: string;
+  public FRONTEND_URL: string;
   public DATABASE_URL: string;
   public DATABASE_PASSWORD: string;
   public JWT_EXPIRES_DAYS: string;
   public JWT_ACCESS_TOKEN: string;
   public JWT_REFRESH_TOKEN: string;
   public REFRESH_TOKEN_EXPIRES_IN: string;
-  public NODEMAIL_PASSWORD: string;
-  public REDIRECT_URL: string;
   public FILE_SIZE_LIMIT: number;
   public FIREBASE_TYPE: string;
   public FIREBASE_PROJECT_ID: string;
@@ -29,20 +28,25 @@ class Config {
   public FIREBASE_TOKEN_URI: string;
   public FIREBASE_AUTH_PROVIDER_X509_CERT_URL: string;
   public FIREBASE_CLIENT_X509_CERT_URL: string;
+  public GOOGLE_EMAIL: string;
+  public GOOGLE_CLIENT_ID: string;
+  public GOOGLE_CLIENT_SECRET: string;
+  public GOOGLE_REFRESH_TOKEN: string;
+  public GOOGLE_LOGIN_CLIENT_ID: string;
+  public GOOGLE_LOGIN_CLIENT_SECRET: string;
 
   constructor() {
     this.PORT = process.env.PORT || '3006';
     this.NODE_ENV = process.env.NODE_ENV || 'production';
     this.LOG_TOKEN = process.env.LOG_TOKEN || '';
     this.APP_URL = process.env.APP_URL || 'http://localhost:3006';
+    this.FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
     this.DATABASE_URL = process.env.DATABASE_URL || '';
     this.DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || '';
     this.JWT_EXPIRES_DAYS = process.env.JWT_EXPIRES_DAYS || '7d';
     this.JWT_ACCESS_TOKEN = process.env.JWT_ACCESS_TOKEN || 'test';
     this.JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN || 'test';
     this.REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '7d';
-    this.NODEMAIL_PASSWORD = process.env.NODEMAIL_PASSWORD ?? '';
-    this.REDIRECT_URL = process.env.REDIRECT_URL ?? '';
 
     this.FILE_SIZE_LIMIT = parseInt(process.env.FILE_SIZE_LIMIT || '2', 10) || 2;
     this.FIREBASE_TYPE = process.env.FIREBASE_TYPE || '';
@@ -56,6 +60,14 @@ class Config {
     this.FIREBASE_AUTH_PROVIDER_X509_CERT_URL =
       process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL || '';
     this.FIREBASE_CLIENT_X509_CERT_URL = process.env.FIREBASE_CLIENT_X509_CERT_URL || '';
+
+    this.GOOGLE_EMAIL = process.env.GOOGLE_EMAIL || '';
+    this.GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+    this.GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
+    this.GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN || '';
+
+    this.GOOGLE_LOGIN_CLIENT_ID = process.env.GOOGLE_LOGIN_CLIENT_ID || '';
+    this.GOOGLE_LOGIN_CLIENT_SECRET = process.env.GOOGLE_LOGIN_CLIENT_SECRET || '';
   }
 
   /**
@@ -67,14 +79,13 @@ class Config {
       NODE_ENV: this.NODE_ENV,
       LOG_TOKEN: this.LOG_TOKEN,
       APP_URL: this.APP_URL,
+      FRONTEND_URL: this.FRONTEND_URL,
       DATABASE_URL: this.DATABASE_URL,
       JWT_EXPIRES_DAYS: this.JWT_EXPIRES_DAYS,
       JWT_ACCESS_TOKEN: this.JWT_ACCESS_TOKEN,
       JWT_REFRESH_TOKEN: this.JWT_REFRESH_TOKEN,
       REFRESH_TOKEN_EXPIRES_IN: this.REFRESH_TOKEN_EXPIRES_IN,
-      FILE_SIZE_LIMIT: this.FILE_SIZE_LIMIT,
-      NODEMAIL_PASSWORD: this.NODEMAIL_PASSWORD,
-      REDIRECT_URL: this.REDIRECT_URL
+      FILE_SIZE_LIMIT: this.FILE_SIZE_LIMIT
     });
 
     for (const [key, value] of Object.entries(this)) {

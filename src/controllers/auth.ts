@@ -1,17 +1,25 @@
+import { config } from '../config';
 import type { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import nodemailer from 'nodemailer';
+import logtail from '../utils/logtail';
 import { UserModel } from '../models/user';
+import { handleSendMail } from '../services/handleSendMail';
 import {
   generatorTokenAndSend,
   generateAccessToken,
   saveResetToken,
   verifyResetToken,
-  updatePassword
+  updatePassword,
+  signAccessToken
 } from '../services/handleAuth';
 import { handleAppError, handleResponse } from '../services/handleResponse';
-import { status400Codes, status404Codes, status409Codes } from '../types/enum/appStatusCode';
+import {
+  status400Codes,
+  status404Codes,
+  status409Codes,
+  status500Codes
+} from '../types/enum/appStatusCode';
 import type {
   AuthLoginInput,
   AuthRefreshTokenInput,
@@ -19,7 +27,6 @@ import type {
   AuthForgetPasswordInput,
   AuthResetPasswordInput
 } from '../validate/authSchemas';
-import { config } from '../config';
 
 export const authController = {
   // 會員註冊
@@ -78,7 +85,7 @@ export const authController = {
 
     const user = await UserModel.findOne({ email }).select('+password');
 
-    if (!user || !user.password) {
+    if (!user || !user.password || !!user.providerId) {
       handleAppError(
         404,
         status404Codes[status404Codes.NOT_FOUND_USER],
@@ -102,56 +109,52 @@ export const authController = {
 
     generatorTokenAndSend(user, res);
   },
-  // 忘記密碼
+  // 會員忘記密碼
   async authForgetPassword(
     req: Request<{}, {}, AuthForgetPasswordInput>,
-    res: Response
+    res: Response,
+    next: NextFunction
   ): Promise<void> {
-    try {
-      const { email } = req.body;
+    const { email } = req.body;
 
-      // 查找用户
-      const user = await UserModel.findOne({ email });
-      if (!user) {
-        res.status(404).send({ message: '未找到此用戶' });
-        return;
-      }
-
-      // 生成重置token
-      const resetToken = crypto.randomBytes(20).toString('hex');
-      const expireTime = Date.now() + 3600000; // token有效期，時間1小時
-
-      // 保存重置token和過期時間到資料庫
-      await saveResetToken(user._id, resetToken, expireTime);
-
-      // 設置郵件發送
-      const transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: 'outdoorkacontact@gmail.com',
-          pass: config.NODEMAIL_PASSWORD
-        }
-      });
-
-      const resetUrl = `https://outdoorka-frontend-ten.vercel.app/?token=${resetToken}`;
-      const mailOptions = {
-        from: 'outdoorkacontact@gmail.com',
-        to: email,
-        subject: '密碼重置',
-        html: `重置的網址: <a href="${resetUrl}">${resetUrl}</a>`
-      };
-
-      // 發送信件
-      await transporter.sendMail(mailOptions);
-
-      res.send({ message: '重置的密碼連結已寄送至您的信箱' });
-    } catch (error) {
-      console.error('Error in authForgetPassword:', error);
-      res.status(500).send({ message: '伺服器錯誤' });
+    // 查找用户
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      res.status(404).send({ message: '未找到此用戶' });
+      return;
     }
-  },
 
-  // 重置密碼
+    // 生成重置token
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    const expireTime = Date.now() + 3600000; // token有效期，時間1小時
+
+    // 保存重置token和過期時間到資料庫
+    await saveResetToken(user._id, resetToken, expireTime);
+
+    const resetUrl = `${config.FRONTEND_URL}/reset-pwd/${resetToken}/`;
+    const content = `
+        <p>親愛的會員 您好，</p>
+        <p>請點擊以下連結重置您的密碼：</p>
+        <p><a href="${resetUrl}">${resetUrl}</a></p>
+        <p>若您未要求重置密碼，請忽略此信。</p>
+        <br>
+        <p><a href="${config.FRONTEND_URL}">OutdoorKA</a> 團隊敬上</p>
+      `;
+    handleSendMail(email, 'OutdoorKA 會員密碼重置', content)
+      .then(() => {
+        handleResponse(res, null, '重置的密碼連結已寄送至您的信箱');
+      })
+      .catch((err) => {
+        logtail.error('Send Mail Error', { email, error: err });
+        handleAppError(
+          500,
+          status500Codes[status500Codes.SEND_EMAIL_FAILED],
+          status500Codes.SEND_EMAIL_FAILED,
+          next
+        );
+      });
+  },
+  // 會員重置密碼
   async authResetPassword(
     req: Request<{}, {}, AuthResetPasswordInput>,
     res: Response
@@ -196,5 +199,31 @@ export const authController = {
         message: result.error
       });
     }
+  },
+
+  // 會員 Google OAuth 2.0 callback
+  async authGoogleCallback(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const profile: any = req.user;
+    if (!profile.id || !profile.provider || !profile.name || !profile.email) {
+      res.redirect(`${config.FRONTEND_URL}/login?error=google-auth-fail`);
+    }
+
+    UserModel.findOrCreate({
+      providerId: `${profile.provider}-${profile.id}`,
+      name: profile.name,
+      email: profile.email,
+      photo: profile.photo
+    }).then((user: any) => {
+      if (!user?._id) {
+        res.redirect(`${config.FRONTEND_URL}/login?error=google-auth-fail`);
+      } else {
+        const getSignAccessToken = signAccessToken(user._id);
+        if (getSignAccessToken) {
+          res.redirect(`${config.FRONTEND_URL}/auth/callback/${getSignAccessToken}`);
+        } else {
+          res.redirect(`${config.FRONTEND_URL}/login?error=token-auth-fail`);
+        }
+      }
+    });
   }
 };

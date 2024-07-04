@@ -26,12 +26,14 @@ export enum status400Codes {
   'INVALID_INPUT' = '輸入資料異常' as any,
   'INVALID_FILTER_OR_SORTING' = '篩選或排序條件異常' as any,
   'INVALID_CREDENTIALS' = '用戶名稱或密碼不正確' as any,
-  'INVALID_REQEST' = '請求失敗' as any,
+  'INVALID_REQUEST' = '請求失敗' as any,
   'ACCOUNT_NOT_VERIFIED' = '帳號尚未完成驗證' as any,
   'QUERY_FAILED' = 'QS 參數錯誤' as any,
   'ACCOUNT_LOCKED' = '帳號已被鎖定，請聯繫客服' as any,
   'PASSWORD_ATTEMPTS' = '密碼錯誤次數過多，請聯繫客服' as any,
-  'TICKET_USED' = '票券已確認報到' as any
+  'TICKET_USED' = '票券已確認報到' as any,
+  'TICKET_UNUSED' = '票券尚未使用' as any,
+  'INVALID_MAC' = 'MAC 驗證失敗' as any
 }
 
 /**
@@ -48,6 +50,7 @@ export enum status401Codes {
  */
 export enum status403Codes {
   'FORBIDDEN' = '沒有權限' as any,
+  'BUYER_ONLY' = '只有購買者才有權限操作' as any,
   'ACCESS_DENIED' = '拒絕請求' as any
 }
 
@@ -58,6 +61,8 @@ export enum status404Codes {
   'NOT_FOUND_USER' = '找不到使用者' as any,
   'NOT_FOUND_ACTIVITY' = '找不到活動' as any,
   'NOT_FOUND_TICKET' = '找不到票券' as any,
+  'NOT_FOUND_SUSPENSE_TICKET' = '找不到待處理的票券' as any,
+  'NOT_FOUND_PAYMENT' = '找不到此筆訂單' as any,
   'NOT_FOUND_LIKE_LIST' = '用戶未收藏该活動' as any
 }
 
@@ -78,7 +83,8 @@ export enum status409Codes {
   'ACTIVITY_ALREADY_ADD' = '活動已加入收藏' as any,
   'REGISTRATION_NOT_STARTED' = '報名尚未開始' as any,
   'REGISTRATION_CLOSED' = '報名已截止' as any,
-  'REGISTRATION_FULL' = '超過可報名人數' as any
+  'REGISTRATION_FULL' = '超過可報名人數' as any,
+  'ASSIGN_TO_SELF_CONFLICT' = '不允許將票券指派給自己' as any
 }
 
 /**
@@ -100,10 +106,11 @@ export enum status500Codes {
   'SERVER_ERROR' = '後端程式錯誤 或 db處理中錯誤, 例外錯誤' as any,
   'CREATE_FAILED' = '建立失敗' as any,
   'FETCH_FAILED' = '活動取得失敗' as any,
-  'UPDATE_FAILED' = '編輯失敗' as any,
+  'UPDATE_FAILED' = '更新失敗' as any,
   'INVALID_PUBLISH' = '發佈異常' as any,
   'UPLOAD_FAILED' = '上傳失敗' as any,
-  'DELETE_FAILED' = '刪除失敗' as any
+  'DELETE_FAILED' = '刪除失敗' as any,
+  'SEND_EMAIL_FAILED' = '發送郵件失敗' as any
 }
 
 export type StatusCodeEnum =

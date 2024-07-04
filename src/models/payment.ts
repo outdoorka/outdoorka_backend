@@ -44,7 +44,10 @@ const paymentSchema = new Schema<IPaymentModel>(
       enum: Object.values(PaymentStatus),
       required: [true, 'paymentStatus 未填寫']
     },
-    paymentCompletedAt: { type: Date, default: null }
+    paymentTradeNo: { type: String, length: 20 },
+    tradeNo: { type: String },
+    tradeRtnCode: { type: String },
+    tradeAt: { type: Date, default: null }
   },
   { versionKey: false, timestamps: true }
 );

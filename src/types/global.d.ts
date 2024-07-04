@@ -5,6 +5,7 @@ export declare global {
       NODE_ENV: string;
       LOG_TOKEN: string;
       APP_URL: string;
+      FRONTEND_URL: string;
       DATABASE_URL: string;
       DATABASE_PASSWORD: string;
       JWT_EXPIRES_DAYS: string;
@@ -22,6 +23,17 @@ export declare global {
       FIREBASE_TOKEN_URI: string;
       FIREBASE_AUTH_PROVIDER_X509_CERT_URL: string;
       FIREBASE_CLIENT_X509_CERT_URL: string;
+      GOOGLE_EMAIL: string;
+      GOOGLE_CLIENT_ID: string;
+      GOOGLE_CLIENT_SECRET: string;
+      GOOGLE_REFRESH_TOKEN: string;
+      GOOGLE_LOGIN_CLIENT_ID: string;
+      GOOGLE_LOGIN_CLIENT_SECRET: string;
+      ECPAY_URL: string;
+      MERCHANTID: string;
+      HASHKEY: string;
+      HASHIV: string;
+      HOST: string;
     }
   }
 }

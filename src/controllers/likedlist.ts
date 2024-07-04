@@ -151,8 +151,8 @@ export const likedListController = {
     if (!ObjectId.isValid(activityId)) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
       return;
@@ -203,8 +203,8 @@ export const likedListController = {
     if (!ObjectId.isValid(activityId)) {
       handleAppError(
         400,
-        status400Codes[status400Codes.INVALID_REQEST],
-        status400Codes.INVALID_REQEST,
+        status400Codes[status400Codes.INVALID_REQUEST],
+        status400Codes.INVALID_REQUEST,
         next
       );
       return;
