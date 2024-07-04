@@ -355,7 +355,7 @@ export const organizerController = {
     })
       .populate({
         path: 'organizer', // 對的 organizer 欄位
-        select: 'name nickName'
+        select: 'name email photo rating socialMediaUrls'
       })
       .lean();
 
@@ -369,6 +369,6 @@ export const organizerController = {
       return;
     }
 
-    handleResponse(res, activityData, '取得成功');
+    handleResponse(res, { ...activityData, likeCount: activityData.likers.length }, '取得成功');
   }
 };

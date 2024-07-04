@@ -53,13 +53,14 @@ export const activityController = {
       },
       {
         $project: {
+          title: 1,
           subtitle: 1,
           region: 1,
           city: 1,
           activityImageUrls: 1,
           activityStartTime: 1,
           activityEndTime: 1,
-          likers: { $size: '$likers' },
+          likeCount: { $size: '$likers' },
           bookedCapacity: 1,
           popularity: { $divide: ['$bookedCapacity', '$totalCapacity'] },
           organizer: {
@@ -135,11 +136,12 @@ export const activityController = {
       return;
     }
     let isLiked = true;
-
+    const likeCount = activity.likers.length;
     const index = activity.likers.findIndex((element) => element.toString() === _id);
     if (index === -1) {
       isLiked = false;
     }
+
     const {
       title,
       subtitle,
@@ -178,7 +180,8 @@ export const activityController = {
       bookedCapacity,
       remainingCapacity: activity.totalCapacity - activity.bookedCapacity,
       organizer: activity.organizer,
-      isLiked
+      isLiked,
+      likeCount
     };
 
     handleResponse(res, finalRes, '取得成功');
