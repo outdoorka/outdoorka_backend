@@ -188,6 +188,53 @@ const isOgAuth = handleErrorAsync(async (req: Request, res: Response, next: Next
   next();
 });
 
+// 同時驗證會員、主揪 Token
+const isBothAuth = handleErrorAsync(async (req: Request, res: Response, next: NextFunction) => {
+  let token;
+  const { authorization } = req.headers;
+
+  // Check Token exist
+  if (authorization?.startsWith('Bearer')) {
+    token = authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    handleAppError(
+      401,
+      status401Codes[status401Codes.UNAUTHORIZED],
+      status401Codes.UNAUTHORIZED,
+      next
+    );
+    return;
+  }
+
+  // Verify Token
+  const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET) as jwt.JwtPayload;
+
+  // 驗證會員
+  const currentUser = await UserModel.findById(decoded.userId);
+  if (currentUser && currentUser._id) {
+    (req as JwtPayloadRequest).user = currentUser;
+    next();
+    return;
+  }
+
+  // 驗證主揪
+  const currentOgUser = await OrganizerModel.findById(decoded.userId);
+  if (!currentOgUser || !currentOgUser._id) {
+    handleAppError(
+      401,
+      status401Codes[status401Codes.INVALID_TOKEN],
+      status401Codes.INVALID_TOKEN,
+      next
+    );
+    return;
+  }
+
+  (req as JwtPayloadRequest).user = currentOgUser;
+  next();
+});
+
 const saveResetToken = async (userId: any, token: string, expires: number) => {
   try {
     // 更新使用者紀錄，添加重置token和時間
@@ -263,6 +310,7 @@ export {
   getResetPwdToken,
   isAuth,
   isOgAuth,
+  isBothAuth,
   saveResetToken,
   verifyResetToken,
   verifyResetPwdToken,
