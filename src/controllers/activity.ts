@@ -80,6 +80,7 @@ export const activityController = {
       {
         // 最後的 $project 階段再次排除 createdAt 這樣就可以排序它又不顯示它
         $project: {
+          title: 1,
           subtitle: 1,
           region: 1,
           city: 1,
@@ -87,7 +88,7 @@ export const activityController = {
           activityStartTime: 1,
           activityEndTime: 1,
           // createdAt: 1,
-          likers: 1,
+          likeCount: 1,
           bookedCapacity: 1,
           popularity: 1,
           organizer: 1
