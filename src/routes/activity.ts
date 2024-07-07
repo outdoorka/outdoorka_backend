@@ -3,7 +3,7 @@ import { activityController } from '../controllers';
 import { validateBody } from '../middleware/validationMiddleware';
 import { getActivityListSchema } from '../validate/activitiesSchemas';
 
-import { isAuth } from '../services/handleAuth';
+import { isBothAuth } from '../services/handleAuth';
 import { handleErrorAsync } from '../services/handleResponse';
 const router = express.Router();
 
@@ -28,29 +28,31 @@ router.get(
   #swagger.responses[200] = {
       description: '取得首頁的熱門活動/最新活動資料',
       schema: {
-			     "data": [
-              {
-                "_id": "664cb717ae8e74de4ae74873",
-                "organizerId": {
-                  "_id": "664caee7ae10d7e7604c4feb",
-                  "name": "拼圖戶外生活",
-                  "photo": "https://static.accupass.com/org/2005260527172844358540.jpg"
-                },
-                "subtitle": "大屯溪古道上小觀音山｜拼圖戶外生活 X 山旅戶外",
-                "region": "Northern",
-                "city": "Taipei",
-                "activityImageUrls": [
-                  "XXXX",
-                  "XXXX",
-                  "XXXX"
-                ],
-                "activityStartTime": "2024-07-10T08:00:00.537Z",
-                "activityEndTime": "1970-01-01T00:00:00.000Z",
-                "likers": [],
-                "bookedCapacity": 12
-              }
-            ],
-            "message": "取得成功"
+          "data": [
+            {
+              "_id": "664cb717ae8e74de4ae74873",
+              "organizerId": {
+                "_id": "664caee7ae10d7e7604c4feb",
+                "name": "拼圖戶外生活",
+                "photo": "https://static.accupass.com/org/2005260527172844358540.jpg"
+              },
+              "title":"大屯溪古道上小觀音山｜拼圖戶外生活 X 山旅戶外",
+              "subtitle": "大屯溪古道上小觀音山｜拼圖戶外生活 X 山旅戶外",
+              "region": "Northern",
+              "city": "Taipei",
+              "activityImageUrls": [
+                "XXXX",
+                "XXXX",
+                "XXXX"
+              ],
+              "activityStartTime": "2024-07-10T08:00:00.537Z",
+              "activityEndTime": "1970-01-01T00:00:00.000Z",
+              "likeCount": 0,
+              "bookedCapacity": 12,
+              "popularity":0
+            }
+          ],
+          "message": "取得成功"
       }
     }
   */
@@ -220,7 +222,7 @@ router.get(
 // 跟團仔角度-取得活動詳細資料
 router.get(
   '/:id',
-  isAuth,
+  isBothAuth,
   handleErrorAsync(activityController.getActivity)
   /**
    * #swagger.tags = ['Activity']
@@ -275,7 +277,8 @@ router.get(
             "rating": 4,
             "name":"XXX"
           },
-          "isLiked": true
+          "isLiked": true,
+          "likeCount":0
         },
         "message": "取得成功"
       }

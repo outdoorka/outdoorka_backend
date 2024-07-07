@@ -53,14 +53,14 @@ export const activityController = {
       },
       {
         $project: {
+          title: 1,
           subtitle: 1,
           region: 1,
           city: 1,
           activityImageUrls: 1,
           activityStartTime: 1,
           activityEndTime: 1,
-          createdAt: 1,
-          likers: { $size: '$likers' },
+          likeCount: { $size: '$likers' },
           bookedCapacity: 1,
           popularity: { $divide: ['$bookedCapacity', '$totalCapacity'] },
           organizer: {
@@ -80,6 +80,7 @@ export const activityController = {
       {
         // 最後的 $project 階段再次排除 createdAt 這樣就可以排序它又不顯示它
         $project: {
+          title: 1,
           subtitle: 1,
           region: 1,
           city: 1,
@@ -87,7 +88,7 @@ export const activityController = {
           activityStartTime: 1,
           activityEndTime: 1,
           // createdAt: 1,
-          likers: 1,
+          likeCount: 1,
           bookedCapacity: 1,
           popularity: 1,
           organizer: 1
@@ -151,11 +152,12 @@ export const activityController = {
       return;
     }
     let isLiked = true;
-
-    const index = activity.likers.findIndex((element) => element.toString() === _id.toString());
+    const likeCount = activity.likers.length;
+    const index = activity.likers.findIndex((element) => element.toString() === _id);
     if (index === -1) {
       isLiked = false;
     }
+
     const {
       title,
       subtitle,
@@ -194,7 +196,8 @@ export const activityController = {
       bookedCapacity,
       remainingCapacity: activity.totalCapacity - activity.bookedCapacity,
       organizer: activity.organizer,
-      isLiked
+      isLiked,
+      likeCount
     };
 
     handleResponse(res, finalRes, '取得成功');

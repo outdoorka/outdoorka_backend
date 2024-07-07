@@ -1,6 +1,12 @@
 import { handleResponse, handleAppError } from '../services/handleResponse';
 import type { NextFunction, Request, Response } from 'express';
-import { TicketModel, PaymentModel, UserModel, OrganizerRatingModel } from '../models';
+import {
+  TicketModel,
+  PaymentModel,
+  UserModel,
+  OrganizerRatingModel,
+  OrganizerModel
+} from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
 import {
   status400Codes,
@@ -608,6 +614,33 @@ export const ticketController = {
         ticketId,
         userId
       });
+      try {
+        // updateOrganizerRating
+        // find all organizerRatings by organizerId
+        const allOrganizerRating = await OrganizerRatingModel.find({
+          organizerId: ticketData.organizer
+        });
+        // get average rating
+        const ratingSum = allOrganizerRating.reduce((acc, cur) => acc + cur.rating, 0);
+        const ratingCount = allOrganizerRating.length;
+        const ratingAverage = ratingSum / ratingCount;
+        // update organizer rating
+        const updateOrganizerRating = await OrganizerModel.findByIdAndUpdate(
+          ticketData.organizer,
+          { rating: ratingAverage },
+          { new: true }
+        );
+        if (!updateOrganizerRating) {
+          throw new Error('update organizer rating failed: organizer not found');
+        }
+      } catch (error) {
+        handleAppError(
+          500,
+          status500Codes[status500Codes.UPDATE_FAILED],
+          status500Codes.UPDATE_FAILED,
+          next
+        );
+      }
       handleResponse(res, createRating, '建立成功');
     } catch (error) {
       handleAppError(
