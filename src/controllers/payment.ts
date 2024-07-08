@@ -192,6 +192,9 @@ export const paymentController = {
         );
         return;
       }
+      // update activity bookedCapacity
+      activityInfo.bookedCapacity += reloadedPayment.ticketCount;
+      await activityInfo.save();
       res.send('1|OK');
     }
   }
