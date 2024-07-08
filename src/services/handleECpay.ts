@@ -51,7 +51,7 @@ export function generatePayment(
     TradeDesc: tradeDesc,
     ItemName: itemName,
     ReturnURL: `${HOST}/payments/result`,
-    ClientBackURL: `${FRONTEND_URL}/ticket/` // 前端返回頁面
+    ClientBackURL: `${FRONTEND_URL}/check/success/` // 前端返回頁面
   };
   try {
     // eslint-disable-next-line new-cap
