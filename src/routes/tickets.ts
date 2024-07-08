@@ -113,35 +113,27 @@ router.get(
             "title": "娛樂，悠遊玩水趣",
             "subtitle": "池上大坡池水上娛樂，悠遊玩水趣",
             "bookedCapacity": 2,
+            "totalCapacity": 20,
             "region": "南部",
             "city": "臺東縣",
             "activityImageUrl": "https://media.istockphoto.com/id/1071632168/photo/happy-family-kayak-walking-sunset-sea-island.webp?b=1&s=170667a&w=0&k=20&c=oCziJF4r4oEPkDZS64itjf5Ymj08YMs44WVjWWaoRco=",
             "activityStartTime": "2024-07-27T00:00:00.537Z",
             "activityEndTime": "2024-08-02T10:00:00.000Z",
-            "activityExpired": false,
             "paymentId": "666ae9e583090862d4bc0a49",
-            "paymentBuyer": "66501456b53ce982332ef69a",
-            "ticketTotal": 3,
-            "ticketAssign": 1,
-            "ticketUse": 1,
-            "ticketStatu": 1
+            "ticketTotal": 3
           },
           {
             "title": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點",
             "subtitle": "新手釣魚團-北海岸淺水灣紅燈防波堤釣點",
             "bookedCapacity": 2,
+            "totalCapacity": 10,
             "region": "北部",
             "city": "新北市",
             "activityImageUrl": "https://media.istockphoto.com/id/1367438696/photo/cute-redhead-boy-and-grandfather-fishing-in-the-river-in-quebec.jpg?s=612x612&w=0&k=20&c=34JDzuhY4Nlt5sHonFWh8ZAiUdHyybCCv44BhNtzvEw=",
             "activityStartTime": "2024-07-20T00:00:00.537Z",
             "activityEndTime": "2024-08-02T10:00:00.000Z",
-            "activityExpired": false,
             "paymentId": "666af51583090862d4bc0a6b",
-            "paymentBuyer": "6665ae57bdc4011bb2345c73",
             "ticketTotal": 1,
-            "ticketAssign": 0,
-            "ticketUse": 1,
-            "ticketStatu": 1
           }
         ]
       }
@@ -214,7 +206,6 @@ router.get(
             "activityStartTime": "2024-07-27T00:00:00.537Z",
             "activityEndTime": "2024-08-02T10:00:00.000Z",
             "activityNotice": "activityNotice 最多200個字",
-            "activityExpired": false,
             "organizer": {
               "_id": "664cb717ae8e74de4ae74871",
               "name": "拼圖戶外生活",

@@ -3470,6 +3470,10 @@
                         "type": "number",
                         "example": 2
                       },
+                      "totalCapacity": {
+                        "type": "number",
+                        "example": 10
+                      },
                       "region": {
                         "type": "string",
                         "example": "北部"
@@ -3490,31 +3494,11 @@
                         "type": "string",
                         "example": "2024-08-02T10:00:00.000Z"
                       },
-                      "activityExpired": {
-                        "type": "boolean",
-                        "example": false
-                      },
                       "paymentId": {
                         "type": "string",
                         "example": "666af51583090862d4bc0a6b"
                       },
-                      "paymentBuyer": {
-                        "type": "string",
-                        "example": "6665ae57bdc4011bb2345c73"
-                      },
                       "ticketTotal": {
-                        "type": "number",
-                        "example": 1
-                      },
-                      "ticketAssign": {
-                        "type": "number",
-                        "example": 0
-                      },
-                      "ticketUse": {
-                        "type": "number",
-                        "example": 1
-                      },
-                      "ticketStatu": {
                         "type": "number",
                         "example": 1
                       }
@@ -3707,10 +3691,6 @@
                       "activityNotice": {
                         "type": "string",
                         "example": "activityNotice 最多200個字"
-                      },
-                      "activityExpired": {
-                        "type": "boolean",
-                        "example": false
                       },
                       "organizer": {
                         "type": "object",
