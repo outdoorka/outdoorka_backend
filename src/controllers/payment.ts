@@ -193,7 +193,10 @@ export const paymentController = {
         return;
       }
       // update activity bookedCapacity
-      activityInfo.bookedCapacity += reloadedPayment.ticketCount;
+      const allTicketCount = await TicketModel.countDocuments({
+        activity: reloadedPayment.activity
+      });
+      activityInfo.bookedCapacity = allTicketCount;
       await activityInfo.save();
       res.send('1|OK');
     }
