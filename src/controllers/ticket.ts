@@ -190,49 +190,21 @@ export const ticketController = {
           title: '$activityInfo.title',
           subtitle: '$activityInfo.subtitle',
           bookedCapacity: '$activityInfo.bookedCapacity',
+          totalCapacity: '$activityInfo.totalCapacity',
           region: '$activityInfo.region',
           city: '$activityInfo.city',
           activityImageUrl: { $first: '$activityInfo.activityImageUrls' },
           activityStartTime: '$activityInfo.activityStartTime',
           activityEndTime: '$activityInfo.activityEndTime',
-          activityExpired: { $lt: ['$activityInfo.activityEndTime', new Date()] },
           paymentId: '$paymentInfo._id',
           paymentBuyer: '$paymentInfo.buyer',
-          ticketTotal: { $size: '$ticketList' },
-          ticketAssign: {
+          ticketTotal: {
             $size: {
               $filter: {
                 input: '$ticketList',
                 as: 'ticket',
                 cond: {
-                  $and: [
-                    { $eq: ['$$ticket.ticketStatus', TicketStatus.Unused] },
-                    { $eq: ['$$ticket.ownerId', userId] },
-                    { $eq: ['$$ticket.ticketAssignedAt', null] }
-                  ]
-                }
-              }
-            }
-          },
-          ticketUse: {
-            $size: {
-              $filter: {
-                input: '$ticketList',
-                as: 'ticket',
-                cond: { $eq: ['$$ticket.ticketStatus', TicketStatus.Used] }
-              }
-            }
-          },
-          ticketStatu: {
-            $size: {
-              $filter: {
-                input: '$ticketList',
-                as: 'ticket',
-                cond: {
-                  $and: [
-                    { $eq: ['$$ticket.ticketStatus', TicketStatus.Used] },
-                    { $eq: ['$$ticket.ownerId', userId] }
-                  ]
+                  $and: { $eq: ['$$ticket.ownerId', userId] }
                 }
               }
             }
@@ -414,7 +386,6 @@ export const ticketController = {
           activityStartTime: '$activityInfo.activityStartTime',
           activityEndTime: '$activityInfo.activityEndTime',
           activityNotice: '$activityInfo.activityNotice',
-          activityExpired: { $lt: ['$activityInfo.activityEndTime', new Date()] },
           organizer: {
             _id: '$activityInfo._id',
             name: { $first: '$organizerInfo.name' },
