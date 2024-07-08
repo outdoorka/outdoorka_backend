@@ -2,6 +2,7 @@ import { handleResponse, handleAppError } from '../services/handleResponse';
 import type { NextFunction, Request, Response } from 'express';
 import { ActivityModel, UserModel, PaymentModel, TicketModel } from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
+import { type ObjectId } from 'mongoose';
 import {
   status400Codes,
   status404Codes,
@@ -92,10 +93,12 @@ export const paymentController = {
       );
       return;
     }
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    const paymentId = (createPayment._id as ObjectId).toString();
     const totalPrice = activity.price * ticketCount;
     const tradeDesc = activity.title;
     const itemName = `${activity.title} * ${ticketCount}`;
-    const { html, MerchantTradeNo } = generatePayment(totalPrice, tradeDesc, itemName);
+    const { html, MerchantTradeNo } = generatePayment(paymentId, totalPrice, tradeDesc, itemName);
     if (!html || !MerchantTradeNo) {
       handleAppError(
         500,
