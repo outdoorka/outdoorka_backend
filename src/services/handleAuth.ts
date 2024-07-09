@@ -223,6 +223,7 @@ const isBothAuth = handleErrorAsync(async (req: Request, res: Response, next: Ne
   const currentUser = await UserModel.findById(decoded.userId);
   if (currentUser && currentUser._id) {
     (req as JwtPayloadRequest).user = currentUser;
+    (req as JwtPayloadRequest).user.role = 'user';
     next();
     return;
   }
@@ -240,6 +241,7 @@ const isBothAuth = handleErrorAsync(async (req: Request, res: Response, next: Ne
   }
 
   (req as JwtPayloadRequest).user = currentOgUser;
+  (req as JwtPayloadRequest).user.role = 'organizer';
   next();
 });
 
