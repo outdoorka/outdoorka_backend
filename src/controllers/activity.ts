@@ -125,8 +125,14 @@ export const activityController = {
     }
 
     const userId = (req as JwtPayloadRequest).user._id;
+    const userRole = (req as JwtPayloadRequest).user.role;
+
     const checkUserId = await UserModel.findById(userId);
-    const checkOrganizerId = await OrganizerModel.findById(userId);
+    let checkOrganizerId = null;
+    if (userRole === 'organizer') {
+      checkOrganizerId = await OrganizerModel.findById(userId);
+    }
+
     if (!checkUserId && !checkOrganizerId) {
       handleAppError(
         404,
@@ -190,7 +196,8 @@ export const activityController = {
       remainingCapacity: activity.totalCapacity - activity.bookedCapacity,
       organizer: activity.organizer,
       isLiked,
-      likeCount
+      likeCount,
+      role: userRole
     };
 
     handleResponse(res, finalRes, '取得成功');
