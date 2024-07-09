@@ -196,6 +196,14 @@ const isBothAuth = handleErrorAsync(async (req: Request, res: Response, next: Ne
   // Check Token exist
   if (authorization?.startsWith('Bearer')) {
     token = authorization.split(' ')[1];
+  } else {
+    handleAppError(
+      401,
+      status401Codes[status401Codes.UNAUTHORIZED],
+      status401Codes.UNAUTHORIZED,
+      next
+    );
+    return;
   }
 
   if (!token) {

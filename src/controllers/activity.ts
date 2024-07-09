@@ -1,6 +1,6 @@
 import { handleResponse, handleAppError } from '../services/handleResponse';
 import type { NextFunction, Request, Response } from 'express';
-import { ActivityModel, UserModel } from '../models';
+import { ActivityModel, OrganizerModel, UserModel } from '../models';
 import { type JwtPayloadRequest } from '../types/dto/user';
 import { status400Codes, status404Codes } from '../types/enum/appStatusCode';
 import { getActivityListSchema, type GetActivityListInput } from '../validate/activitiesSchemas';
@@ -109,7 +109,7 @@ export const activityController = {
     handleResponse(res, activities, '取得成功');
   },
 
-  // 跟團仔角度-取得活動詳細資料
+  // 跟團仔/主揪共用-取得活動詳細資料
   async getActivity(req: Request, res: Response, next: NextFunction): Promise<void> {
     const ObjectId = Types.ObjectId;
     const activityId = req.params.id;
@@ -124,10 +124,10 @@ export const activityController = {
       return;
     }
 
-    const _id = (req as JwtPayloadRequest).user._id;
-    const checkUserId = await UserModel.findById(_id);
-
-    if (!checkUserId) {
+    const userId = (req as JwtPayloadRequest).user._id;
+    const checkUserId = await UserModel.findById(userId);
+    const checkOrganizerId = await OrganizerModel.findById(userId);
+    if (!checkUserId && !checkOrganizerId) {
       handleAppError(
         404,
         status404Codes[status404Codes.NOT_FOUND_USER],
@@ -140,8 +140,6 @@ export const activityController = {
       path: 'organizer',
       select: 'name email photo rating socialMediaUrls'
     });
-
-    console.log(activity);
     if (!activity) {
       handleAppError(
         404,
@@ -151,13 +149,8 @@ export const activityController = {
       );
       return;
     }
-    let isLiked = true;
     const likeCount = activity.likers.length;
-    const index = activity.likers.findIndex((element) => element.toString() === _id);
-    if (index === -1) {
-      isLiked = false;
-    }
-
+    const isLiked = activity.likers.includes(userId);
     const {
       title,
       subtitle,
