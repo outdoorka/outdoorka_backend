@@ -10,10 +10,9 @@ export const options = {
     HashKey: HASHKEY,
     HashIV: HASHIV
   },
-  IgnorePayment: 'ATM#CVS#BARCODE#BNPL',
+  IgnorePayment: ['ATM', 'CVS', 'BARCODE', 'BNPL'],
   IsProjectContractor: false
 };
-
 export function generatePayment(
   paymentId: string,
   totalPrice: number,
