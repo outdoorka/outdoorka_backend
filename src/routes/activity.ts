@@ -219,7 +219,7 @@ router.get(
   */
 );
 
-// 跟團仔角度-取得活動詳細資料
+// 跟團仔＆主揪共用-取得活動詳細資料
 router.get(
   '/:id',
   isBothAuth,
