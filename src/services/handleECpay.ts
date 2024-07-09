@@ -10,14 +10,7 @@ export const options = {
     HashKey: HASHKEY,
     HashIV: HASHIV
   },
-  IgnorePayment: [
-    //    "Credit",
-    //    "WebATM",
-    //    "ATM",
-    //    "CVS",
-    //    "BARCODE",
-    //    "AndroidPay"
-  ],
+  IgnorePayment: 'ATM#CVS#BARCODE#BNPL',
   IsProjectContractor: false
 };
 
