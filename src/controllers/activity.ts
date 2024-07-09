@@ -149,13 +149,8 @@ export const activityController = {
       );
       return;
     }
-    let isLiked = true;
     const likeCount = activity.likers.length;
-    const index = activity.likers.findIndex((element) => element.toString() === userId);
-    if (index === -1) {
-      isLiked = false;
-    }
-
+    const isLiked = activity.likers.includes(userId);
     const {
       title,
       subtitle,
