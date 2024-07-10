@@ -6,7 +6,7 @@
 https://outdoorka-backend.onrender.com/api-docs
 ```
 
-### 參考 `example.env` 建立 `config.env` 檔
+### 環境變數說明，參考 `example.env` 建立 `config.env` 檔
 
 ```text
 PORT=
@@ -30,6 +30,19 @@ FIREBASE_AUTH_URI=
 FIREBASE_TOKEN_URI=
 FIREBASE_AUTH_PROVIDER_X509_CERT_URL=
 FIREBASE_CLIENT_X509_CERT_URL=
+
+GOOGLE_EMAIL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REFRESH_TOKEN=
+GOOGLE_LOGIN_CLIENT_ID=
+GOOGLE_LOGIN_CLIENT_SECRET=
+
+ECPAY_URL=
+MERCHANTID=
+HASHKEY=
+HASHIV=
+HOST=
 ```
 
 ### Setup
@@ -60,7 +73,7 @@ SwaggerUI ： <http://localhost:3006/api-docs>
 pnpm run swagger
 ```
 
-### 使用的工具套件
+### 專案技術
 
 - Node.js
 - Express
@@ -74,7 +87,15 @@ pnpm run swagger
 - SwaggerUI
 - Pino Logging
 
-### File Structure
+### 第三方服務
+
+- Cloud Storage for Firebase
+- Google SSO
+- Better Stack
+- EC Pay
+- Render
+
+### 資料夾說明
 
 ```text
 ┣ 📂public
