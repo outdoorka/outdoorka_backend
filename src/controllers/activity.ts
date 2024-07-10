@@ -61,6 +61,7 @@ export const activityController = {
           activityStartTime: 1,
           activityEndTime: 1,
           likeCount: { $size: '$likers' },
+          createdAt: 1,
           bookedCapacity: 1,
           popularity: { $divide: ['$bookedCapacity', '$totalCapacity'] },
           organizer: {
