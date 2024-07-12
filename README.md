@@ -113,3 +113,15 @@ pnpm run swagger
 ┃ ┣ 📂utils
 ┃ ┣ 📂validate
 ```
+
+## Contributing
+
+<a href="https://github.com/outdoorka/outdoorka_backend/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=outdoorka/outdoorka_backend" />
+</a>
+
+.
+
+<img src="https://i.imgur.com/woq9oCr.png" width="216" height="40">
+
+© 2024 outdoorka
